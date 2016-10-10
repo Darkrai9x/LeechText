@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer id="numConn">5</integer>
+    <integer id="reConn">3</integer>
+    <integer id="timeout">10000</integer>
+    <integer id="delay">100</integer>
+    <boolean id="autopause" value="1"/>
+    <string id="drop" value="0">PHNwYW4gY2xhc3M9ImRyb3AiPltEUk9QXTwvc3Bhbj4=</string>
+    <string id="html" value="1">
+        PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBodG1sIFBVQkxJQyAiLS8vVzNDLy9EVEQgWEhUTUwgMS4xLy9FTiIKICAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxMS9EVEQveGh0bWwxMS5kdGQiPgoKPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiPgo8aGVhZD4KICA8dGl0bGU+ezV9W05VTV9DSEFQXXs1fVs6XXs2fVtOQU1FX0NIQVBdezZ9PC90aXRsZT4KICA8bGluayBocmVmPSIuLi9zdHlsZXNoZWV0LmNzcyIgcmVsPSJzdHlsZXNoZWV0IiB0eXBlPSJ0ZXh0L2NzcyIgLz4KICA8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD11dGYtOCIgLz4KPC9oZWFkPgoKPGJvZHk+CnsxfTxkaXYgY2xhc3M9ImhlYWRlciIgaWQ9InRvYy1bSURdIj5bTkFNRV08L2Rpdj57MX0KezJ9PGRpdiBjbGFzcz0iYXV0aG9yIj5bQVVUSE9SXTwvZGl2PnsyfQp7M308ZGl2IGNsYXNzPSJjaGFwIj5bTlVNX1BBUlRdPC9kaXY+ezN9Cns0fTxkaXYgY2xhc3M9InBhcnQiPltOQU1FX1BBUlRdPC9kaXY+ezR9Cns1fTxkaXYgY2xhc3M9ImNoYXAiPltOVU1fQ0hBUF08L2Rpdj57NX0KezZ9PGg0PltOQU1FX0NIQVBdPC9oND57Nn0Kezd9PHA+W1BBUkFHUkFQSF08L3A+ezd9CjwvYm9keT4KPC9odG1sPgo=
+    </string>
+    <string id="txt" value="0">
+        ezF9W05BTUVdezF9CnsyfVtBVVRIT1JdezJ9CnszfVtOVU1fUEFSVF17M317On17NH1bTkFNRV9QQVJUXXs0fQp7NX1bTlVNX0NIQVBdezV9WzpdezZ9W05BTUVfQ0hBUF17Nn0KCns3fVtQQVJBR1JBUEhdezd9
+    </string>
+    <string id="css" value="0">
+        LmhlYWRlciB7CiAgICBmb250LXNpemU6IDIwMCU7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIG1hcmdpbjogMCAwIDVweDsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjb2xvcjogIzczNTYyRDsKICAgIHRleHQtc2hhZG93OiAwcHggMHB4IDFweCAjMDAwOwp9CgoKLmF1dGhvciB7CiAgICBmb250LXNpemU6IDEwMCU7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBjb2xvcjogIzhjOGU2ZjsKICAgIHRleHQtc2hhZG93OiAwcHggMHB4IDFweCAjOGM4ZTZmOwp9CgouY2hhcCwgLnBhcnQgewogICAgZm9udC1zaXplOiAxNTAlOwogICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICB0ZXh0LXNoYWRvdzogMHB4IDBweCAxcHggIzAwMDsKfQoKLnRobyB7CiAgICBmb250LXN0eWxlOiBpdGFsaWM7CiAgICBtYXJnaW4tdG9wOiAtMC41ZW07CiAgICBmb250LXNpemU6IDg1JTsKfQoKaDQgewogICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgY29sb3I6ICM2NjY2MzM7CiAgICB0ZXh0LXNoYWRvdzogMHB4IDBweCAxcHggIzAwMDsKfQoKcCB7CiAgICB0ZXh0LWluZGVudDogMjBwdDsKICAgIGxpbmUtaGVpZ2h0OiAxNDAlOwogICAgZm9udC1zaXplOiAxMDAlOwp9CgouZWJvb2sgewogICAgY29sb3I6ICM4ODg7CiAgICBmb250LXN0eWxlOiBpdGFsaWM7CiAgICBmb250LXNpemU6IDc1JTsKICAgIHRleHQtYWxpZ246IHJpZ2h0Owp9CgoubHYtMSB7CiAgICBmb250LXNpemU6IDE1MCU7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIGxpbmUtaGVpZ2h0OiAxNDAlOwogICAgdGV4dC1pbmRlbnQ6IDIwcHQ7CiAgICBtYXJnaW4tbGVmdDogMGVtOwp9CgoubHYtMiB7CiAgICBsaW5lLWhlaWdodDogMTIwJTsKICAgIHRleHQtaW5kZW50OiAxMHB0OwogICAgZm9udC1zaXplOiA3NSU7CiAgICBtYXJnaW4tbGVmdDogMmVtOwp9CgphIHsKICAgIGNvbG9yOiAjNjY2NjMzOwp9CgouZHJvcGNhcCB7CiAgICBmb250LXNpemU6IDE1MCU7CiAgICBmb250LXdlaWdodDogYm9sZDsKfQ==
+    </string>
+    <string id="trash">
+        <item src="KFthLXpdKVxuKFtBLVpdKQ==" to="JDEgJDI=" tip="WHXhu5FuZyBkw7JuZyBsaW5oIHRpbmg=" replace="0"/>
+        <item src="" to="MzQ=" tip="ZGtqZw==" replace="1"/>
+    </string>
+</resources>
