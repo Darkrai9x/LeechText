@@ -75,12 +75,13 @@ public class Config {
 
     private String fixName(String name) {
         if (name.length() == 0) return name;
-        name = name.replaceAll("Chương \\d+\\s*[:-]\\s*(Chương \\d+.*?$)", "$1");
-        name = name.replaceAll("^Hồi (\\d+)", "Chương $1");
-        name = name.replaceAll("(\\d+) [Cc]h..ng", "Chương $1");
-        name = name.replaceAll("\\s+", " ");
-        name = name.replaceAll("(Chương \\d+)\\s*[;:-]+\\s*", "$1: ");
-        name = name.replaceAll("([Cc]hương \\d+(\\.\\d+)*)(\\s*[;:-]\\s*)", "$1: ");
+        name = name.replaceAll("Chương \\d+\\s*[:-]\\s*(Chương \\d+.*?$)", "$1")
+                .replaceAll("^Hồi (\\d+)", "Chương $1")
+                .replaceAll("(\\d+) [Cc]h..ng", "Chương $1")
+                .replaceAll("\\s+", " ")
+                .replaceAll("Chương (\\d+)\\s*[-\\+]\\s*(\\d+)", "Chương $1+$2")
+                .replaceAll("(Chương \\d+)\\s*[;:-]+\\s*", "$1: ")
+                .replaceAll("(Chương \\d+\\+\\d+)\\s*[;:-]+\\s*", "$1: ");
         return name;
     }
 

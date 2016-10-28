@@ -112,7 +112,7 @@ public class MainUI extends JFrame {
         setting.setBounds(390, 25, 390, 530);
         panelHeader.setBounds(0, 0, 390, 55);
         contentPane.add(setting);
-
+        new UpdateUI().isHaveUpdate();
     }
 
     private void actionExit() {
@@ -221,7 +221,6 @@ public class MainUI extends JFrame {
         labelLogo.setBounds(55, 0, 100, 55);
 
         okButton = new CircleButton("", 25f);
-        okButton.setBackground(new Color(63, 81, 181));
         okButton.setForeground(Color.WHITE);
         okButton.addActionListener(mouse);
         panelHeader.add(okButton);
@@ -233,7 +232,9 @@ public class MainUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == panelUpdate) {
-                    new UpdateUI().setVisible(true);
+                    UpdateUI updateUI = new UpdateUI();
+                    updateUI.checkUpdteUi();
+                    updateUI.setVisible(true);
                 }
                 if (e.getSource() == panelSetting) {
                     Animation.go(home, setting);
@@ -248,7 +249,7 @@ public class MainUI extends JFrame {
             }
         };
         menu = new DropShadowPopupMenu();
-      //  menu.setBorderPainted(true);
+        //  menu.setBorderPainted(true);
         menu.setOpaque(true);
         panelSetting = new MenuItem("Cài đặt");
         panelSetting.addActionListener(actionListener);
@@ -261,7 +262,7 @@ public class MainUI extends JFrame {
         menu.add(panelUpdate);
         contentPane.add(menu);
         menu.setBorder(new LineBorder(ColorConstants.THEME_COLOR.brighter()));
-        menu.setSize(new Dimension(80, 90));
+      //  menu.setSize(new Dimension(80, 90));
 
     }
 

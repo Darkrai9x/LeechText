@@ -1,6 +1,6 @@
 package dark.leech.text.gui;
 
-import dark.leech.text.gui.components.MDialog;
+import dark.leech.text.action.History;
 import dark.leech.text.gui.components.MScrollBar;
 import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.AddListener;
@@ -14,7 +14,7 @@ import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
-public class HomeUI extends JPanel implements RemoveListener, DropTargetListener, AddListener {
+public class HomeUI extends JPanel implements AddListener, RemoveListener, DropTargetListener{
     private JPanel download;
     private JScrollPane ScrollPane;
 
@@ -75,6 +75,7 @@ public class HomeUI extends JPanel implements RemoveListener, DropTargetListener
                     List<File> files = (List) transferable.getTransferData(flavor);
                     for (File file : files) {
                         String path = file.getPath();
+                        new AddDialog(new History().load(path)).setVisible(true);
                     }
                 }
             } catch (Exception e) {
@@ -107,10 +108,6 @@ public class HomeUI extends JPanel implements RemoveListener, DropTargetListener
     public void addDownload(Properties properties) {
         actionAdd(properties);
     }
-}
-
-class ConfirmAdd extends MDialog {
-
 }
 
 

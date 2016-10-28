@@ -32,7 +32,7 @@ public class MPanel extends JPanel {
             public void run() {
                 radius = 2 * Math.sqrt(Math.pow(getWidth(), 2) + Math.pow(getHeight() - 4, 2));
                 p = getMousePosition();
-                final int ad = (p.x < getWidth()/2) ? 1: -1;
+                final int ad = (p.x < getWidth() / 2) ? 1 : -1;
                 w = 0;
                 h = 0;
                 x = -w / 2 + p.x;
@@ -72,9 +72,10 @@ public class MPanel extends JPanel {
         RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
         g2.setRenderingHints(rh);
+
         g2.setColor(new Color(0, 0, 0, 30));
         g2.fillOval(x, y, w, h);
+
     }
 }

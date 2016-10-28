@@ -1,6 +1,7 @@
 package dark.leech.text.gui;
 
 import dark.leech.text.action.Download;
+import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
 import dark.leech.text.enums.State;
@@ -154,14 +155,14 @@ public class DownloadUI extends MPanel implements DownloadListener {
         load.setBounds(65, 70, 305, 4);
         // ---- labelName ----
         labelName.setFont(FontConstants.textBold);
-        labelName.setForeground(new Color(103, 103, 103));
+        labelName.setForeground(ColorConstants.THEME_COLOR);
         add(labelName);
         labelName.setBounds(65, 5, 230, 30);
 
         // ---- labelStatus ----
         labelStatus.setText("Đang tải...");
         labelStatus.setFont(FontConstants.textNomal);
-        labelStatus.setForeground(new Color(103, 103, 103));
+        labelStatus.setForeground(ColorConstants.THEME_COLOR);
         labelStatus.setHorizontalAlignment(SwingConstants.LEFT);
         add(labelStatus);
         labelStatus.setBounds(65, 40, 95, labelStatus.getPreferredSize().height);
@@ -169,20 +170,20 @@ public class DownloadUI extends MPanel implements DownloadListener {
         // ---- labelPercent ----
         labelPercent.setFont(FontConstants.textNomal);
         labelPercent.setHorizontalAlignment(SwingConstants.RIGHT);
-        labelPercent.setForeground(new Color(103, 103, 103));
+        labelPercent.setForeground(ColorConstants.THEME_COLOR);
         add(labelPercent);
         labelPercent.setBounds(330, 40, 40, 30);
 
         // ---- labelProgress ----
         labelProgress.setHorizontalAlignment(SwingConstants.RIGHT);
         labelProgress.setFont(FontConstants.textNomal);
-        labelProgress.setForeground(new Color(103, 103, 103));
+        labelProgress.setForeground(ColorConstants.THEME_COLOR);
         add(labelProgress);
         labelProgress.setBounds(200, 40, 90, 30);
 
         // ---- labelPR ----
         labelPR = new CircleButton("\ue034", 20f);
-        labelPR.setForeground(new Color(103, 103, 103));
+        labelPR.setForeground(ColorConstants.THEME_COLOR);
         labelPR.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -198,7 +199,7 @@ public class DownloadUI extends MPanel implements DownloadListener {
 
         // ---- labelInfo ----
         labelInfo = new CircleButton("", 20f);
-        labelInfo.setForeground(new Color(103, 103, 103));
+        labelInfo.setForeground(ColorConstants.THEME_COLOR);
         labelInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -211,7 +212,7 @@ public class DownloadUI extends MPanel implements DownloadListener {
         labelInfo.setVisible(false);
         // ---- labelDelete ----
         labelDelete = new CircleButton("\ue5cd", 20f);
-        labelDelete.setForeground(new Color(103, 103, 103));
+        labelDelete.setForeground(ColorConstants.THEME_COLOR);
         labelDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

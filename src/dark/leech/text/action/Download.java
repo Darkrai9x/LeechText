@@ -1,6 +1,5 @@
 package dark.leech.text.action;
 
-import dark.leech.text.constant.SettingConstants;
 import dark.leech.text.enums.State;
 import dark.leech.text.getter.Chap;
 import dark.leech.text.getter.Page;
@@ -11,7 +10,7 @@ import dark.leech.text.listeners.DownloadListener;
 
 import java.util.ArrayList;
 
-import static dark.leech.text.constant.SettingConstants.*;
+import static dark.leech.text.constant.SettingConstants.MAX_CONN;
 
 public class Download {
     private Properties properties;
@@ -136,6 +135,7 @@ public class Download {
             for (int i = 0; i < downloaded; i++)
                 if (!chapList.get(i).isCompleted()) doDownload(i);
         state = State.COMPLETED;
+        new History().save(properties);
         downloadListener.updateDownload(downloaded, state);
     }
 }

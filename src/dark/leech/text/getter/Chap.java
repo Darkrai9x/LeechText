@@ -104,6 +104,8 @@ public class Chap {
             case "truyenvl.net":
             case "www.truyenvl.net":
                 return TVL();
+            case "wikidich.com":
+                return WKD();
             default:
                 if (url.indexOf("bachngocsach.com/reader") != -1)
                     return BNS();
@@ -253,7 +255,10 @@ public class Chap {
         return Jsoup.parse(Conn.getHtml(url)).select("div.chapter-content").html();
     }
 
-
+//wikidich.com
+    private String WKD(){
+        return Jsoup.parse(Conn.getHtml(url)).select("div#bookContentBody").html();
+    }
     private String Optimize(String src) {
         src = src.replaceAll(" +", " ");
         src = src.replaceAll("<br>|<br/>|<br />|<p>|</p>", "\n")

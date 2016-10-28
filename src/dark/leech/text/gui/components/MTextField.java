@@ -32,7 +32,7 @@ public class MTextField extends JPanel {
         setLayout(null);
         setBackground(new Color(0, 0, 0, 0));
         textField = new JTextField();
-        //  textField.setBackground(new Color(0, 0, 0, 0));
+      //    textField.setBackground(new Color(0, 0, 0, 0));
         label = new JLabel();
         textField.setBorder(null);
         textField.setFont(FontConstants.textNomal);

@@ -54,6 +54,7 @@ public class Page {
     private void BLU() {
         Elements el = Jsoup.parse(html).select("blockquote");
         for (Element e : el) {
+
             String[] sp = e.html().split("SpoilerTarget bbCodeSpoilerText");
             if (sp.length == 1) continue;
             Chapter chapter = new Chapter();
@@ -61,18 +62,20 @@ public class Page {
             String text = e.select("div.SpoilerTarget.bbCodeSpoilerText").last().html();
             text = Optimize(text);
             chapter.setId(id);
-            if (text.length() < 1000) {
-                if (text.split("<img ").length > 0) {
-                    chapter.setImgChap(true);
+            if (e.select("input.VNXF_PayNRead.button.credits_charge") == null) {
+                if (text.length() < 1000) {
+                    if (text.split("<img ").length > 0) {
+                        chapter.setImgChap(true);
+                        new FileAction().string2file(text, saveDir + Constants.l + "raw" + Constants.l + Integer.toString(chapter.getId()) + ".txt");
+                    } else {
+                        chapter.setError(true);
+                    }
+                } else
                     new FileAction().string2file(text, saveDir + Constants.l + "raw" + Constants.l + Integer.toString(chapter.getId()) + ".txt");
-                } else {
-                    chapter.setError(true);
-                }
-            } else
-                new FileAction().string2file(text, saveDir + Constants.l + "raw" + Constants.l + Integer.toString(chapter.getId()) + ".txt");
-            chapter.setGet(true);
-            chapter.setUrl(url);
-            chapter.setCompleted(true);
+                chapter.setGet(true);
+                chapter.setUrl(url);
+                chapter.setCompleted(true);
+            } else chapter.setError(true);
             chapList.add(chapter);
             id++;
         }

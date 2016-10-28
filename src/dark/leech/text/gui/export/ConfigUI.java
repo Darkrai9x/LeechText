@@ -5,13 +5,12 @@ import dark.leech.text.action.History;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MProgressBar;
-import dark.leech.text.gui.components.MScrollBar;
-import dark.leech.text.gui.components.MTable;
+import dark.leech.text.gui.components.*;
+import dark.leech.text.gui.components.MenuItem;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
 import dark.leech.text.item.Chapter;
+import dark.leech.text.item.FileAction;
 import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.BlurListener;
 import dark.leech.text.listeners.ChangeListener;
@@ -19,10 +18,13 @@ import dark.leech.text.listeners.TableListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +42,7 @@ public class ConfigUI extends MDialog implements BlurListener, ChangeListener {
     private BasicButton buttonError;
     private BasicButton buttonImg;
     private BasicButton buttonList;
-    private Properties properties;
+    protected Properties properties;
     private ArrayList<Chapter> chapList;
     private Config config;
     private ArrayList<Chapter> nameList;
@@ -192,7 +194,7 @@ public class ConfigUI extends MDialog implements BlurListener, ChangeListener {
     }
 
     private void editName() {
-        ListUI listName = new ListUI(nameList, "Tên chương không hợp lệ");
+        ListUI listName = new ListUI(nameList, "Tên chương không hợp lệ", properties.getSavePath());
         listName.addBlurListener(this);
         listName.setAction(0);
         listName.setVisible(true);
@@ -206,14 +208,14 @@ public class ConfigUI extends MDialog implements BlurListener, ChangeListener {
     }
 
     private void editError() {
-        ListUI listError = new ListUI(errorList, "Chương lỗi");
+        ListUI listError = new ListUI(errorList, "Chương lỗi", properties.getSavePath());
         listError.addBlurListener(this);
         listError.setAction(2);
         listError.setVisible(true);
     }
 
     private void Optimize() {
-        ListUI list = new ListUI(chapList, "Danh sách chương");
+        ListUI list = new ListUI(chapList, "Danh sách chương", properties.getSavePath());
         list.addBlurListener(this);
         list.setAction(3);
         list.setVisible(true);
@@ -239,6 +241,7 @@ class ListUI extends MDialog implements TableListener {
     private ArrayList<Chapter> chapList;
     private MTable tableList;
     private DefaultTableModel tableModel;
+    private DropShadowPopupMenu popup;
     private String name;
     private String[] nameButton = new String[]{"Auto Fix", "Tải ảnh", "", "Optimize"};
     private BasicButton button3;
@@ -288,6 +291,7 @@ class ListUI extends MDialog implements TableListener {
         BasicButton buttonOk = new BasicButton();
         button3 = new BasicButton();
         progressBar = new MProgressBar();
+        popup = new DropShadowPopupMenu();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -365,6 +369,30 @@ class ListUI extends MDialog implements TableListener {
         contentPane.add(progressBar);
         progressBar.setBounds(10, 385, 160, 35);
         progressBar.setVisible(false);
+        MenuItem menuItemEdit = new MenuItem("Sửa");
+        menuItemEdit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doEdit();
+            }
+        });
+        popup.add(menuItemEdit);
+        popup.setBorder(new LineBorder(ColorConstants.THEME_COLOR.brighter()));
+        tableList.addMouseListener(new MouseAdapter() {
+            private void showIfPopupTrigger(MouseEvent mouseEvent) {
+                if (mouseEvent.isPopupTrigger())
+                    popup.show(mouseEvent.getComponent(),
+                            mouseEvent.getX(), mouseEvent.getY());
+            }
+
+            public void mousePressed(MouseEvent mouseEvent) {
+                showIfPopupTrigger(mouseEvent);
+            }
+
+            public void mouseReleased(MouseEvent mouseEvent) {
+                showIfPopupTrigger(mouseEvent);
+            }
+        });
     }
 
     private void doAction() {
@@ -379,6 +407,17 @@ class ListUI extends MDialog implements TableListener {
             }
         }).start();
 
+    }
+
+    private void doEdit() {
+        int row = tableList.getSelectedRow();
+        Chapter chapter = chapList.get(row);
+        Edit edit = new Edit(chapter);
+        edit.addBlurListener(this);
+        edit.showGui();
+        edit.setVisible(true);
+        tableList.setValueAt(chapter.getPartName(), row, 1);
+        tableList.setValueAt(chapter.getChapName(), row, 2);
     }
 
     public void setAction(int action) {
@@ -411,6 +450,124 @@ class ListUI extends MDialog implements TableListener {
         Config config = new Config(chapList);
         config.addTableListener(this);
         config.Optimize();
+    }
+
+    private class Edit extends MDialog {
+        private JPanel title;
+        private MTextField tfPart;
+        private MTextField tfChap;
+        private JScrollPane scrollPane1;
+        private JTextArea taText;
+        private JLabel lbPart;
+        private JLabel lbChap;
+        private BasicButton buttonOk;
+        private BasicButton buttonCancel;
+        private Chapter chapter;
+
+        public Edit(Chapter chapter) {
+            this.chapter = chapter;
+        }
+
+        public void showGui() {
+            setSize(310, 400);
+            title = new JPanel();
+            tfPart = new MTextField(80, 55, 220, 30);
+            tfChap = new MTextField(80, 95, 220, 30);
+            scrollPane1 = new JScrollPane();
+            taText = new JTextArea();
+            lbPart = new JLabel();
+            lbChap = new JLabel();
+            buttonOk = new BasicButton();
+            buttonCancel = new BasicButton();
+
+            //======== this ========
+            Container contentPane = getContentPane();
+            contentPane.setLayout(null);
+
+            {
+                title.setBackground(ColorConstants.THEME_COLOR);
+                title.setLayout(null);
+                //---- labelTitle ----
+                JLabel labelTitle = new JLabel();
+                labelTitle.setText(chapter.getChapName());
+                labelTitle.setFont(FontConstants.titleNomal);
+                labelTitle.setForeground(Color.WHITE);
+                title.add(labelTitle);
+                labelTitle.setBounds(15, 0, 250, 45);
+
+                //---- buttonClose ----
+                CloseButton buttonClose = new CloseButton();
+                buttonClose.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        close();
+                    }
+                });
+                title.add(buttonClose);
+                buttonClose.setBound(280, 10, 25, 25);
+
+            }
+            contentPane.add(title);
+            title.setBounds(0, 0, 310, 45);
+            contentPane.add(tfPart);
+            tfPart.setText(chapter.getPartName());
+            contentPane.add(tfChap);
+            tfChap.setText(chapter.getChapName());
+
+            //======== scrollPane1 ========
+            {
+                scrollPane1.setViewportView(taText);
+                JScrollBar sb = scrollPane1.getVerticalScrollBar();
+                sb.setUI(new MScrollBar());
+                sb.setBackground(Color.WHITE);
+                sb.setPreferredSize(new Dimension(10, 0));
+            }
+            taText.setLineWrap(true);
+            taText.setWrapStyleWord(true);
+            taText.setFont(FontConstants.codeFont(12f));
+            taText.setForeground(ColorConstants.THEME_COLOR);
+            taText.setText(new FileAction().file2string(path + Constants.l + "raw" + Constants.l + Integer.toString(chapter.getId()) + ".txt"));
+            contentPane.add(scrollPane1);
+            scrollPane1.setBounds(10, 135, 290, 220);
+
+            //---- lbPart ----
+            lbPart.setText("Quy\u1ec3n");
+            contentPane.add(lbPart);
+            lbPart.setBounds(5, 55, 70, 30);
+
+            //---- lbChap ----
+            lbChap.setText("Ch\u01b0\u01a1ng");
+            contentPane.add(lbChap);
+            lbChap.setBounds(5, 95, 70, 30);
+            buttonOk.setText("OK");
+            contentPane.add(buttonOk);
+            buttonOk.setBound(125, 360, 75, 30);
+            buttonOk.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    doClick();
+                }
+            });
+            buttonCancel.setText("HỦY");
+            contentPane.add(buttonCancel);
+            buttonCancel.setBound(225, 360, 75, 30);
+            buttonCancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    close();
+                }
+            });
+            setCenter();
+            display();
+        }
+
+        private void doClick() {
+            chapter.setPartName(tfPart.getText());
+            chapter.setChapName(tfChap.getText());
+            new FileAction().string2file(taText.getText(), path + Constants.l + "raw" + Constants.l + Integer.toString(chapter.getId()) + ".txt");
+            close();
+        }
+
     }
 
     @Override

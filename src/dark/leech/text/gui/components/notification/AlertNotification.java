@@ -51,7 +51,7 @@ public class AlertNotification extends JDialog {
             }
         });
         panel.add(labelClose);
-        labelClose.setBound(290, 5, 25, 25);
+        labelClose.setBounds(290, 5, 25, 25);
 
         //---- labelTitle ----
         labelTitle.setText("Có lỗi xảy ra!");

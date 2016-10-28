@@ -1,11 +1,9 @@
 package dark.leech.text.action;
 
 import dark.leech.text.constant.Constants;
-import dark.leech.text.gui.components.MDialog;
 import dark.leech.text.item.Chapter;
 import dark.leech.text.item.FileAction;
 import dark.leech.text.item.Properties;
-import dark.leech.text.listeners.BlurListener;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,13 +22,14 @@ public class History extends FileAction {
         if (!(new File(path).exists())) return null;
         Document doc = Jsoup.parse(file2string(path));
         Properties properties = new Properties();
-        properties.setName(doc.select("string[id=name]").text());
-        properties.setAuthor(doc.select("string[id=author]").text());
-        properties.setUrl(doc.select("string[id=url]").text());
-        properties.setCover(doc.select("string[id=cover]").text(), "");
-        properties.setSavePath(doc.select("string[id=path]").text());
+        properties.setName(doc.select("string#name").text());
+        properties.setAuthor(doc.select("string#author").text());
+        properties.setUrl(doc.select("string#url").text());
+        properties.setCover(doc.select("string#cover").text(), "");
+        properties.setSize(Integer.parseInt(doc.select("string#size").text()));
+        properties.setSavePath(doc.select("string#path").text());
 
-        Elements el = doc.select("list > chapter");
+        Elements el = doc.select("list chapter");
         ArrayList<Chapter> list = new ArrayList<Chapter>();
         for (Element e : el)
             list.add(new Chapter(e.select("url").text(), Integer.parseInt(e.attr("id")), e.select("part").text(), e.select("name").text(),
@@ -43,11 +42,11 @@ public class History extends FileAction {
         this.newProperties = newProperties;
         oldProperties = load(newProperties.getSavePath() + Constants.l + "properties.xml");
         if (oldProperties == null) return false;
-        if (oldProperties.getChapList().size() < newProperties.getChapList().size()) return true;
+        if (oldProperties.getSize() < newProperties.getSize()) return true;
         else return false;
     }
 
-    private Properties getProperties() {
+    public Properties getProperties() {
         return newProperties;
     }
 
@@ -74,6 +73,7 @@ public class History extends FileAction {
         add2file(genItem("name", properties.getName(), "  "), file);
         add2file(genItem("author", properties.getAuthor(), "  "), file);
         add2file(genItem("cover", properties.getCover(), "  "), file);
+        add2file(genItem("size", Integer.toString(properties.getSize()), "  "), file);
         add2file(genItem("path", properties.getSavePath(), "  "), file);
 
         // danh sách chương
@@ -103,14 +103,4 @@ public class History extends FileAction {
     }
 }
 
-class LoadConfirm extends MDialog {
-    private BlurListener blurListener;
 
-    public LoadConfirm(String path) {
-
-    }
-
-    public void addBlurListener(BlurListener blurListener) {
-        this.blurListener = blurListener;
-    }
-}

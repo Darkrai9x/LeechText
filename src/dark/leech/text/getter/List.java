@@ -41,7 +41,7 @@ public class List extends Syntax {
         return pageList;
     }
 
-    private void get() throws Exception{
+    private void get() throws Exception {
         switch (search(url, "://(.*?)/", 1)) {
             case "truyenyy.com":
                 TYY();
@@ -84,6 +84,9 @@ public class List extends Syntax {
             case "truyenvl.net":
             case "www.truyenvl.net":
                 TVL();
+                break;
+            case "wikidich.com":
+                WKD();
                 break;
             default:
                 if (url.indexOf("bachngocsach.com/reader") != -1)
@@ -360,7 +363,7 @@ public class List extends Syntax {
             el = Jsoup.parse(html).select("div.chap-list div.ip5 a");
             for (Element e : el) {
                 String linkChap = e.attr("href");
-                linkChap = (linkChap.startsWith("http") ? linkChap : ("http://tuchangioi.net/" + linkChap));
+                linkChap = (linkChap.startsWith("http") ? linkChap : ("http://tuchangioi.net" + linkChap));
                 chapList.add(new Chapter(linkChap, fixName(e.text())));
             }
         }
@@ -376,9 +379,20 @@ public class List extends Syntax {
             Elements el = Jsoup.parse(html).select("div#list-chapter div.row ul li");
             for (Element e : el) {
                 String linkChap = e.select("a").attr("href");
-                linkChap = (linkChap.startsWith("http") ? linkChap : ("http://truyenvl.net/" + linkChap));
+                linkChap = (linkChap.startsWith("http") ? linkChap : ("http://truyenvl.net" + linkChap));
                 chapList.add(new Chapter(linkChap, fixName(e.select("a").text())));
             }
+        }
+    }
+
+    //wikidich.com
+    private void WKD() {
+        String html = Conn.getHtml(url);
+        Elements el = Jsoup.parse(html).select("div.row ul li a");
+        for (Element e : el) {
+            String linkChap = e.select("a").attr("href");
+            linkChap = (linkChap.startsWith("http") ? linkChap : ("http://wikidich.com" + linkChap));
+            chapList.add(new Chapter(linkChap, fixName(e.select("a").text())));
         }
     }
 
@@ -409,4 +423,5 @@ public class List extends Syntax {
         for (int i = 1; i <= totalPage; i++)
             pageList.add(new Pager(url + "&page=" + Integer.toString(i)));
     }
+
 }

@@ -48,7 +48,12 @@ public class AddURL extends MDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 url = textField.getText();
-                checkURL();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkURL();
+                    }
+                }).start();
             }
         });
 
@@ -96,7 +101,7 @@ public class AddURL extends MDialog {
 
             String[] list = new String[]{"truyenyy.com", "truyenfull.vn", "isach.info", "banlong.us", "webtruyen.com",
                     "goctruyen.com", "hixx.info", "truyencv.com", "bachngocsach.com", "truyencuatui.net",
-                    "www.5book.vn", "sstruyen.com", "santruyen.com", "tuchangioi.net", "tangthuvien.vn", "truyenvl.net"};
+                    "www.5book.vn", "sstruyen.com", "santruyen.com", "tuchangioi.net", "tangthuvien.vn", "truyenvl.net", "wikidich.com"};
             for (int j = 0; j < list.length; j++)
                 if (url.toLowerCase().indexOf(list[j]) != -1) {
                     err = false;

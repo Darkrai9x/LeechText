@@ -1,6 +1,6 @@
 package dark.leech.text.action;
 
-import dark.leech.text.constant.ColorConstants;
+
 import dark.leech.text.item.Base64;
 import dark.leech.text.item.FileAction;
 import dark.leech.text.item.Trash;

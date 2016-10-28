@@ -26,7 +26,7 @@ import java.net.URL;
  * Created by Long on 9/16/2016.
  */
 public class UpdateUI extends MDialog {
-    private final String oldVersion = "3.1.2";
+    private final String oldVersion = "3.2.2";
     private MProgressBar downloadProgress;
     private BasicButton update;
     private BasicButton cancel;
@@ -36,19 +36,10 @@ public class UpdateUI extends MDialog {
     private String url;
     private String newVersion;
     private int downloaded = 0;
+    private boolean haveUpdate;
     private int size = -1;
 
     public UpdateUI() {
-        setSize(300, 200);
-        setCenter();
-        display();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gui();
-                checkUpdate();
-            }
-        }).start();
 
     }
 
@@ -140,7 +131,37 @@ public class UpdateUI extends MDialog {
         cancel.setVisible(false);
     }
 
-    private boolean checkUpdate() {
+    public void isHaveUpdate() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                setSize(300, 200);
+                gui();
+                checkUpdate();
+                if (haveUpdate) {
+                    setCenter();
+                    display();
+                    setVisible(true);
+                }
+            }
+        }).start();
+
+    }
+
+    public void checkUpdteUi() {
+        setSize(300, 200);
+        setCenter();
+        display();
+        gui();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                checkUpdate();
+            }
+        }).start();
+    }
+
+    public boolean checkUpdate() {
         Connect connect = new Connect();
         String urlUpdate = (new StringBuilder("aHR0cDovL3NvZnR2aC53YXBr").append("YS5tb2JpL3NpdGVfNzIueGh0bWw=")).toString();
         String html = connect.getHtml(Base64.decode(urlUpdate));
@@ -157,6 +178,7 @@ public class UpdateUI extends MDialog {
             }
             labelLoad.setIcon(new ImageIcon(getClass().getResource("/dark/leech/res/img/info.png")));
             labelText.setText("Có phiên bản mới: " + newVersion);
+            haveUpdate = true;
             update.setVisible(true);
             cancel.setVisible(true);
             return true;

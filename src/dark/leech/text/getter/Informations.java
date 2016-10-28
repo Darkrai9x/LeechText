@@ -81,6 +81,9 @@ public class Informations {
             case "www.truyenvl.net":
                 TVL();
                 return;
+            case "wikidich.com":
+                WKD();
+                return;
             default:
                 break;
         }
@@ -214,7 +217,14 @@ public class Informations {
         properties.setAuthor(doc.select("div.info div a").first().text());
         properties.setCover(doc.select("div.book img").attr("src"), "http://truyenvl.net");
     }
+//wikidich.com
+    private void WKD(){
+        Elements doc = Jsoup.parse(html).select("div.book-info");
+        properties.setName(doc.select("div.cover-info h2").text());
+        properties.setAuthor(regex(doc.html(), "/tac-gia/.*?\">(.*?)</a>", 1));
+        properties.setCover(doc.select("div.cover-wrapper img").attr("src"), "http://wikidich.com");
 
+    }
     //banlong.us, tangthuvien, bacngocsach, 4vn
     private void FORUM() {
         String title = Jsoup.parse(html).select("title").text();

@@ -58,6 +58,29 @@ public class AddDialog extends MDialog {
         }).start();
     }
 
+    public AddDialog(Properties properties) {
+        this.properties = properties;
+        setSize(300, 260);
+        setCenter();
+        display();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                gui();
+                tfName.setTextFieldEnabled(true);
+                tfName.setText(properties.getName());
+                tfAuthor.setTextFieldEnabled(true);
+                tfAuthor.setText(properties.getAuthor());
+                showChap.setVisible(true);
+                tfChap.setTextFieldEnabled(true);
+                tfChap.setText("1-" + Integer.toString(properties.getSize()));
+                showChap.setVisible(true);
+                ok.setEnabled(true);
+                Wait.stopWait();
+            }
+        }).start();
+    }
+
     private void gui() {
         labelName = new JLabel();
         labelAuthor = new JLabel();

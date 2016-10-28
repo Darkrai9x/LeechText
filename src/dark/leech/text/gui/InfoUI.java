@@ -4,15 +4,18 @@ import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
 import dark.leech.text.gui.components.MDialog;
+import dark.leech.text.gui.components.MPanel;
 import dark.leech.text.gui.components.MTextField;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.button.CloseButton;
+import dark.leech.text.gui.components.button.SelectButton;
 import dark.leech.text.gui.export.ConfigUI;
 import dark.leech.text.gui.export.ExportEbook;
 import dark.leech.text.gui.export.ExportText;
 import dark.leech.text.item.FileAction;
 import dark.leech.text.item.Properties;
+import dark.leech.text.item.Trash;
 import dark.leech.text.listeners.BlurListener;
 
 import javax.imageio.ImageIO;
@@ -196,6 +199,8 @@ public class InfoUI extends MDialog implements BlurListener {
     }
 
     private void doConfig() {
+        properties.setName(textFieldName.getText());
+        properties.setAuthor(textFieldAuthor.getText());
         ConfigUI configUI = new ConfigUI(properties);
         configUI.addBlurListener(this);
         setBlur(true);
@@ -203,6 +208,8 @@ public class InfoUI extends MDialog implements BlurListener {
     }
 
     private void exportText() {
+        properties.setName(textFieldName.getText());
+        properties.setAuthor(textFieldAuthor.getText());
         ExportText export = new ExportText(properties);
         export.addBlurListener(this);
         setBlur(true);
@@ -210,6 +217,8 @@ public class InfoUI extends MDialog implements BlurListener {
     }
 
     private void exportEbook() {
+        properties.setName(textFieldName.getText());
+        properties.setAuthor(textFieldAuthor.getText());
         ExportEbook export = new ExportEbook(properties);
         export.addBlurListener(this);
         setBlur(true);
@@ -244,4 +253,60 @@ public class InfoUI extends MDialog implements BlurListener {
         getGlassPane().setVisible(b);
     }
 }
+class TrashItem extends MPanel {
+    private JLabel labelName;
+    private CircleButton buttonEdit;
+    private SelectButton btSelect;
+    private Trash trash;
+    private BlurListener blurListener;
 
+    public TrashItem(Trash trash) {
+        this.trash = trash;
+        gui();
+    }
+
+    private void gui() {
+        setBackground(Color.white);
+        setLayout(null);
+        labelName = new JLabel();
+        btSelect = new SelectButton();
+
+        labelName.setText(trash.getTip());
+        labelName.setFont(FontConstants.textNomal);
+        add(labelName);
+        labelName.setBounds(10, 5, 180, 30);
+
+        buttonEdit = new CircleButton("\ue254");
+        buttonEdit.setForeground(ColorConstants.THEME_COLOR);
+        buttonEdit.setToolTipText("Sửa");
+
+        buttonEdit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        add(buttonEdit);
+        buttonEdit.setBound(220, 5, 30, 30);
+
+        btSelect.setSelected(trash.isReplace());
+        add(btSelect);
+        btSelect.setBound(250, 5, 30, 30);
+        btSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btSelect.setSelected(!btSelect.isSelected());
+            }
+        });
+
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                btSelect.setSelected(!btSelect.isSelected());
+            }
+        });
+        //setBorder(new DropShadowBorder(new Color(63, 81, 181), 3, 0.4f, 15, true, true, true, true));
+        setPreferredSize(new Dimension(300, 40));
+    }
+}

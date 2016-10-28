@@ -2,9 +2,13 @@ package dark.leech.text.gui.components.setting;
 
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.*;
+import dark.leech.text.gui.components.MDialog;
+import dark.leech.text.gui.components.MPanel;
+import dark.leech.text.gui.components.MScrollBar;
+import dark.leech.text.gui.components.MTextField;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CircleButton;
+import dark.leech.text.gui.components.button.SelectButton;
 import dark.leech.text.item.Trash;
 import dark.leech.text.listeners.BlurListener;
 import dark.leech.text.listeners.RemoveListener;
@@ -104,7 +108,6 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
     }
 
     private void gui() {
-
         Container co = getContentPane();
         co.setBackground(Color.WHITE);
         co.setLayout(null);
@@ -230,17 +233,10 @@ class TrashItem extends MPanel {
     private JLabel labelName;
     private CircleButton buttonEdit;
     private CircleButton buttonDelete;
-    private MLabelCheckBox labelSelect;
+    private SelectButton btSelect;
     private Trash trash;
     private RemoveListener removeListener;
     private BlurListener blurListener;
-    private MouseAdapter mo = new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-            labelSelect.setSelected(!labelSelect.isSelected());
-        }
-    };
 
     public TrashItem(Trash trash) {
         this.trash = trash;
@@ -251,7 +247,7 @@ class TrashItem extends MPanel {
         setBackground(Color.white);
         setLayout(null);
         labelName = new JLabel();
-        labelSelect = new MLabelCheckBox();
+        btSelect = new SelectButton();
 
         labelName.setText(trash.getTip());
         labelName.setFont(FontConstants.textNomal);
@@ -271,9 +267,15 @@ class TrashItem extends MPanel {
         add(buttonEdit);
         buttonEdit.setBound(220, 5, 30, 30);
 
-        labelSelect.setSelected(trash.isReplace());
-        add(labelSelect);
-        labelSelect.setBounds(250, 5, 30, 30);
+        btSelect.setSelected(trash.isReplace());
+        add(btSelect);
+        btSelect.setBound(250, 5, 30, 30);
+        btSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btSelect.setSelected(!btSelect.isSelected());
+            }
+        });
 
         buttonDelete = new CircleButton("");
         buttonDelete.setForeground(ColorConstants.THEME_COLOR);
@@ -287,7 +289,12 @@ class TrashItem extends MPanel {
         add(buttonDelete);
         buttonDelete.setBound(280, 5, 30, 30);
 
-        addMouseListener(mo);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                btSelect.setSelected(!btSelect.isSelected());
+            }
+        });
         //setBorder(new DropShadowBorder(new Color(63, 81, 181), 3, 0.4f, 15, true, true, true, true));
         setPreferredSize(new Dimension(300, 40));
     }
@@ -301,7 +308,7 @@ class TrashItem extends MPanel {
     }
 
     public Trash getTrash() {
-        trash.setReplace(labelSelect.isSelected());
+        trash.setReplace(btSelect.isSelected());
         return trash;
     }
 

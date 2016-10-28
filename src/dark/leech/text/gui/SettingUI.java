@@ -61,9 +61,8 @@ public class SettingUI extends JPanel {
     }
 
     private void gui() {
+        setBackground(Color.WHITE);
         body = new JPanel(new GridBagLayout());
-        body.setForeground(new Color(41, 155, 205));
-        body.setBackground(Color.white);
         body.setBackground(Color.white);
         GridBagConstraints gi = new GridBagConstraints();
         gi.gridwidth = GridBagConstraints.REMAINDER;
@@ -81,7 +80,7 @@ public class SettingUI extends JPanel {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         add(scrollPane);
-        scrollPane.setBounds(0, 55, 390, 430);
+        scrollPane.setBounds(0, 55, 390, 440);
         //
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -154,14 +153,6 @@ public class SettingUI extends JPanel {
         return panel;
     }
 
-    private String toString(int i) {
-        return Integer.toString(i);
-    }
-
-    private int toInt(String s) {
-        return Integer.parseInt(s);
-    }
-
     private void updateStatus() {
         maxConn.setText(toString(SettingConstants.MAX_CONN));
         reConn.setText(toString(SettingConstants.RECONN));
@@ -211,6 +202,19 @@ public class SettingUI extends JPanel {
         io.string2file(o, "setting.xml");
         new Settings().doLoad();
         new Notification("Đã lưu cài đặt!").setVisible(true);
+    }
+
+    private void validateTF() {
+
+    }
+
+    private String toString(int i) {
+        return Integer.toString(i);
+    }
+
+    private int toInt(String s) {
+
+        return Integer.parseInt(s);
     }
 
     private String getItem(String type, String id, String text) {
