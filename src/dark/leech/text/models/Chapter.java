@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 
 public class Chapter {
 

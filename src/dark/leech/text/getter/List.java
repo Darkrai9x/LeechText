@@ -1,9 +1,9 @@
 package dark.leech.text.getter;
 
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.Connect;
-import dark.leech.text.item.Pager;
-import dark.leech.text.item.Syntax;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.Connect;
+import dark.leech.text.models.Pager;
+import dark.leech.text.models.Syntax;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

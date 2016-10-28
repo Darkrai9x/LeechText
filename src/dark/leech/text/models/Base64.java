@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 
 import java.io.UnsupportedEncodingException;
 

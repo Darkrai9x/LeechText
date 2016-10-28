@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 
 import dark.leech.text.constant.SettingConstants;
 import org.jsoup.Jsoup;

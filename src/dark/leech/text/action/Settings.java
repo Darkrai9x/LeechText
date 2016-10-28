@@ -1,9 +1,9 @@
 package dark.leech.text.action;
 
 
-import dark.leech.text.item.Base64;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Trash;
+import dark.leech.text.models.Base64;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Trash;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,7 +65,7 @@ public class Settings {
         CALIBRE = Base64.decode(text.select("string#calibrePath").text());
         KINDLEGEN = Base64.decode(text.select("string#kindlegenPath").text());
         ArrayList<Trash> trash = new ArrayList<Trash>();
-        Elements el = text.select("string#trash item");
+        Elements el = text.select("string#trash models");
         for (Element e : el)
             trash.add(new Trash(Base64.decode(e.attr("src")), Base64.decode(e.attr("to")), Base64.decode(e.attr("tip")),
                     !e.attr("replace").equals("0")));

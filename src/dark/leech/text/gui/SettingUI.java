@@ -8,9 +8,9 @@ import dark.leech.text.gui.components.MScrollBar;
 import dark.leech.text.gui.components.Notification;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.setting.*;
-import dark.leech.text.item.Base64;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Trash;
+import dark.leech.text.models.Base64;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Trash;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import javax.swing.*;
@@ -193,7 +193,7 @@ public class SettingUI extends JPanel {
         o += "	<string id=\"trash\">\n";
         ArrayList<Trash> tr = trash.getTrash();
         for (Trash t : tr)
-            o += "		<item src=\"" + Base64.encode(t.getSrc()) + "\" to=\""
+            o += "		<models src=\"" + Base64.encode(t.getSrc()) + "\" to=\""
                     + Base64.encode(t.getTo()) + "\" tip=\"" + Base64.encode(t.getTip())
                     + "\" replace=\"" + (t.isReplace() ? "1" : "0") + "\" />\n";
         o += "	</string>\n";

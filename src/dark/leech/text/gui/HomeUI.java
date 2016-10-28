@@ -2,9 +2,9 @@ package dark.leech.text.gui;
 
 import dark.leech.text.action.History;
 import dark.leech.text.gui.components.MScrollBar;
-import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.AddListener;
 import dark.leech.text.listeners.RemoveListener;
+import dark.leech.text.models.Properties;
 
 import javax.swing.*;
 import java.awt.*;

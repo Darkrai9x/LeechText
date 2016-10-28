@@ -10,10 +10,10 @@ import dark.leech.text.gui.components.MPanel;
 import dark.leech.text.gui.components.MProgressBar;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.notification.BasicNotification;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.DownloadListener;
 import dark.leech.text.listeners.RemoveListener;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

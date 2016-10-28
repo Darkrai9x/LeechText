@@ -11,10 +11,10 @@ import dark.leech.text.gui.components.MSelectBox;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
 import dark.leech.text.gui.components.notification.BasicNotification;
-import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.BlurListener;
 import dark.leech.text.listeners.ChangeListener;
 import dark.leech.text.listeners.ProgressListener;
+import dark.leech.text.models.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

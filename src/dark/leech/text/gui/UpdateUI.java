@@ -6,8 +6,8 @@ import dark.leech.text.gui.components.MDialog;
 import dark.leech.text.gui.components.MProgressBar;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
-import dark.leech.text.item.Base64;
-import dark.leech.text.item.Connect;
+import dark.leech.text.models.Base64;
+import dark.leech.text.models.Connect;
 import org.jsoup.Jsoup;
 
 import javax.swing.*;

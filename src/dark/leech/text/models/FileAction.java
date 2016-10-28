@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 
 import dark.leech.text.action.Log;
 import dark.leech.text.constant.Constants;

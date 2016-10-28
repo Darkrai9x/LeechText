@@ -7,8 +7,8 @@ package dark.leech.text.gui.components;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
 import dark.leech.text.gui.components.button.BasicButton;
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.Pager;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.Pager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -9,9 +9,9 @@ import dark.leech.text.gui.components.MTextField;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.button.SelectButton;
-import dark.leech.text.item.Trash;
 import dark.leech.text.listeners.BlurListener;
 import dark.leech.text.listeners.RemoveListener;
+import dark.leech.text.models.Trash;
 
 import javax.swing.*;
 import java.awt.*;

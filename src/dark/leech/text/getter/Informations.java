@@ -1,7 +1,7 @@
 package dark.leech.text.getter;
 
-import dark.leech.text.item.Connect;
-import dark.leech.text.item.Properties;
+import dark.leech.text.models.Connect;
+import dark.leech.text.models.Properties;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -206,7 +206,7 @@ public class Informations {
     private void TCG() {
         Elements doc = Jsoup.parse(html).select("div.book_info");
         properties.setName(doc.select("h1").text());
-        properties.setAuthor(regex(doc.select("div.item-list").html(), "T.c gi.:\\s+(.*?)<", 1));
+        properties.setAuthor(regex(doc.select("div.models-list").html(), "T.c gi.:\\s+(.*?)<", 1));
 
     }
 

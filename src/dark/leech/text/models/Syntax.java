@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 /**
  * Code by Darkrai on 8/21/2016.
  */

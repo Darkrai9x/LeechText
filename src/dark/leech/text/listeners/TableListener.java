@@ -1,6 +1,6 @@
 package dark.leech.text.listeners;
 
-import dark.leech.text.item.Chapter;
+import dark.leech.text.models.Chapter;
 
 /**
  * Created by Long on 9/23/2016.

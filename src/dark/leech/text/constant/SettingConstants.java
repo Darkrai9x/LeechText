@@ -1,6 +1,6 @@
 package dark.leech.text.constant;
 
-import dark.leech.text.item.Trash;
+import dark.leech.text.models.Trash;
 
 import java.awt.*;
 import java.util.ArrayList;

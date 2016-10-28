@@ -5,18 +5,17 @@ import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.SettingConstants;
 import dark.leech.text.constant.TypeConstants;
 import dark.leech.text.gui.components.notification.AlertNotification;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Properties;
-import dark.leech.text.item.Syntax;
-import dark.leech.text.item.ZipEngine;
 import dark.leech.text.listeners.ProgressListener;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Properties;
+import dark.leech.text.models.Syntax;
+import dark.leech.text.models.ZipEngine;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.zip.Deflater;
 
 public class Ebook {
     private FileAction fileAction;

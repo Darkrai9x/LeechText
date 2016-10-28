@@ -1,9 +1,9 @@
 package dark.leech.text.action;
 
 import dark.leech.text.constant.Constants;
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Properties;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Properties;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

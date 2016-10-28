@@ -2,9 +2,9 @@ package dark.leech.text.getter;
 
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.SettingConstants;
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.Connect;
-import dark.leech.text.item.FileAction;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.Connect;
+import dark.leech.text.models.FileAction;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;

@@ -13,10 +13,10 @@ import dark.leech.text.gui.components.button.SelectButton;
 import dark.leech.text.gui.export.ConfigUI;
 import dark.leech.text.gui.export.ExportEbook;
 import dark.leech.text.gui.export.ExportText;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Properties;
-import dark.leech.text.item.Trash;
 import dark.leech.text.listeners.BlurListener;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Properties;
+import dark.leech.text.models.Trash;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -253,14 +253,14 @@ public class InfoUI extends MDialog implements BlurListener {
         getGlassPane().setVisible(b);
     }
 }
-class TrashItem extends MPanel {
+class GioiThieu extends MPanel {
     private JLabel labelName;
     private CircleButton buttonEdit;
     private SelectButton btSelect;
     private Trash trash;
     private BlurListener blurListener;
 
-    public TrashItem(Trash trash) {
+    public GioiThieu(Trash trash) {
         this.trash = trash;
         gui();
     }

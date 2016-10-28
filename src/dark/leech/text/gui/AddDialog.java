@@ -12,8 +12,8 @@ import dark.leech.text.gui.components.MDialog;
 import dark.leech.text.gui.components.MListDialog;
 import dark.leech.text.gui.components.MTextField;
 import dark.leech.text.gui.components.button.BasicButton;
-import dark.leech.text.item.*;
 import dark.leech.text.listeners.AddListener;
+import dark.leech.text.models.*;
 
 import javax.swing.*;
 import java.awt.*;

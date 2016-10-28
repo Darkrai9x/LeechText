@@ -9,12 +9,12 @@ import dark.leech.text.gui.components.*;
 import dark.leech.text.gui.components.MenuItem;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.BlurListener;
 import dark.leech.text.listeners.ChangeListener;
 import dark.leech.text.listeners.TableListener;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Properties;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

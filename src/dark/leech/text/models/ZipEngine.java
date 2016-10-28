@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 
 import org.zeroturnaround.zip.FileSource;
 import org.zeroturnaround.zip.ZipEntrySource;
@@ -6,7 +6,6 @@ import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.zip.Deflater;
 
 /**
  * Created by Long on 10/1/2016.

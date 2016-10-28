@@ -2,9 +2,9 @@ package dark.leech.text.action.export;
 
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.SettingConstants;
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.FileAction;
-import dark.leech.text.item.Properties;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.FileAction;
+import dark.leech.text.models.Properties;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -146,7 +146,7 @@ public class TableOfContent {
                     + "\">\n" + "      <navLabel>\n" + "        <text>" + namePart + "</text>\n"
                     + "      </navLabel>\n" + "      <content src=\"Text/Q" + Integer.toString(i + 1) + ".html\"/>\n";
             toc.append(s);
-            content.append("\t" + "<item id=\"Q" + Integer.toString(i + 1) + "\" href=\"Text/Q" + Integer.toString(i + 1) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
+            content.append("\t" + "<models id=\"Q" + Integer.toString(i + 1) + "\" href=\"Text/Q" + Integer.toString(i + 1) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
             namePartList.add(namePart);
             id++;
             if (i == part.size() - 1)
@@ -166,7 +166,7 @@ public class TableOfContent {
                     + tab + "  </navLabel>\n" + tab + "  <content src=\"Text/" + Integer.toString(i) + ".html\"/>\n"
                     + tab + "</navPoint>\n";
             pa.append("<div class=\"toc-lv1\"><a href=\"../Text/" + Integer.toString(chapList.get(i).getId()) + ".html\">" + chapList.get(i).getChapName() + "</a></div>\n");
-            content.append("\t" + "<item id=\"C" + Integer.toString(i) + "\" href=\"Text/" + Integer.toString(i) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
+            content.append("\t" + "<models id=\"C" + Integer.toString(i) + "\" href=\"Text/" + Integer.toString(i) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
             toc.append(s);
             id++;
         }
@@ -225,11 +225,11 @@ public class TableOfContent {
         String[] files = file.list();
         for (String fn : files) {
             if (fn.endsWith(".png"))
-                img.append("<item id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/png\"/>\n");
+                img.append("<models id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/png\"/>\n");
             if (fn.endsWith(".jpg") || fn.endsWith(".jpeg"))
-                img.append("<item id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/jpeg\"/>\n");
+                img.append("<models id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/jpeg\"/>\n");
             if (fn.endsWith(".gif"))
-                img.append("<item id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/gif\"/>\n");
+                img.append("<models id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/gif\"/>\n");
         }
         return new String(img);
     }

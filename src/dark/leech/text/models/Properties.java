@@ -1,4 +1,4 @@
-package dark.leech.text.item;
+package dark.leech.text.models;
 /**
  * Code by Darkrai on 8/21/2016.
  */
@@ -15,7 +15,15 @@ public class Properties {
     private boolean forum; //Trang get có phải forum hay không
     private int size; //Số chương
     private String savePath; //Thư mục lưu
+    private  String gioiThieu;
 
+    public String getGioiThieu() {
+        return gioiThieu;
+    }
+
+    public void setGioiThieu(String gioiThieu) {
+        this.gioiThieu = gioiThieu;
+    }
 
     public String getSavePath() {
         return savePath;

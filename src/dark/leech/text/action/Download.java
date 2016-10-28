@@ -3,10 +3,10 @@ package dark.leech.text.action;
 import dark.leech.text.enums.State;
 import dark.leech.text.getter.Chap;
 import dark.leech.text.getter.Page;
-import dark.leech.text.item.Chapter;
-import dark.leech.text.item.Pager;
-import dark.leech.text.item.Properties;
 import dark.leech.text.listeners.DownloadListener;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.Pager;
+import dark.leech.text.models.Properties;
 
 import java.util.ArrayList;
 

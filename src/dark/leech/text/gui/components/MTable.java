@@ -1,7 +1,7 @@
 package dark.leech.text.gui.components;
 
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.item.Chapter;
+import dark.leech.text.models.Chapter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
