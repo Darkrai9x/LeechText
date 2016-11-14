@@ -2,6 +2,7 @@ package dark.leech.text.getter;
 
 import dark.leech.text.models.Connect;
 import dark.leech.text.models.Properties;
+import dark.leech.text.models.Syntax;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -114,6 +115,7 @@ public class Informations {
         properties.setName(doc.select("h3.title").text());
         properties.setCover(doc.select("div.book img").attr("src"), "http://truyenfull.vn");
         properties.setAuthor(doc.select("div.info div a").first().text()); // Tác giả
+        properties.setGioiThieu(Optimize(doc.select("div.desc-text.desc-text-full").html()));
     }
 
     // truyencuatui.net
@@ -122,7 +124,7 @@ public class Informations {
         properties.setName(doc.select("h1.title").text());
         properties.setAuthor(doc.select("[itemprop=author]").text().replace("Tác giả:", ""));
         properties.setCover(doc.select("img.img-responsive.img-rounded").attr("src"), "http://truyencuatui.net");
-        System.out.println(properties.getCover());
+        properties.setGioiThieu(Optimize(doc.select("div.contentt").html()));
     }
 
     // 5book.vn
@@ -131,14 +133,16 @@ public class Informations {
         properties.setName(doc.select("h1[itemprop=name]").text());
         properties.setAuthor(doc.select("div.tacgia a").first().text());
         properties.setCover(doc.select("img[itemprop=image]").attr("src"), "http://www.5book.vn");
+        properties.setGioiThieu(Optimize(doc.select("article#gioithieu div div").html()));
     }
 
     // goctruyen.com
     private void GTC() {
         Document doc = Jsoup.parse(html);
-        properties.setName(doc.select("h1.title a").first().text());
-        properties.setAuthor(doc.select("div.author p strong").first().text());
-        properties.setCover(doc.select("img.thumb").attr("src"), "http://goctruyen.com");
+        properties.setName(doc.select("h1 a").first().text());
+        properties.setAuthor(doc.select("h2[itemprop=author] span").first().text());
+        properties.setCover(doc.select("img[itemprop=image]").attr("src"), "http://goctruyen.com");
+        properties.setGioiThieu(Optimize(doc.select("div#summary").html()));
     }
 
     // webtruyen.com
@@ -147,6 +151,7 @@ public class Informations {
         properties.setName(doc.select("h1 > a").text().trim());
         properties.setAuthor(doc.select("ul.w3-ul").first().select("a").first().text().trim());
         properties.setCover(doc.select("div.w3-col.s4.m12.l12.detail-thumbnail img").attr("src"), "http://webtruyen.com");
+        properties.setGioiThieu(Optimize(doc.select("article").html()));
     }
 
     // hixx.info
@@ -155,6 +160,7 @@ public class Informations {
         properties.setName(doc.select("div.title h1").text());
         properties.setAuthor(doc.select("div.truyen_info div.author a").first().text());
         properties.setCover(doc.select("div.image img").attr("src"), "http://hixx.info");
+        properties.setGioiThieu(Optimize(doc.select("div.desc").html()));
     }
 
     // santruyen.com
@@ -168,6 +174,7 @@ public class Informations {
                 properties.setAuthor(e.text().replaceAll("[Tt]ác [Gg]iả:", "").trim());
         }
         properties.setCover(doc.select("div.detail-thumb img").attr("src"), "http://santruyen.com");
+        properties.setGioiThieu(Optimize(doc.select("div.desc-story").html()));
     }
 
     // sstruyen.com
@@ -176,6 +183,7 @@ public class Informations {
         properties.setName(doc.select("h1.title").text());
         properties.setAuthor(doc.select("div.truyeninfo div ul li div.cp2").first().text());
         properties.setCover(doc.select("img[itemprop=image]").attr("src"), "http://sstruyen.com");
+        properties.setGioiThieu(Optimize(doc.select("div.story_description").html()));
     }
 
     // isach.info
@@ -192,6 +200,7 @@ public class Informations {
         properties.setAuthor(regex(html, "<strong>T.c gi.:</strong>(.*?)</p>", 1).replaceAll("<a.*?>|</a>", "").trim());
         properties.setCover(Jsoup.parse(html).select("img.poster.img-responsive").attr("src"),
                 "http://truyencv.com");
+        properties.setGioiThieu(Optimize(Jsoup.parse(html).select("div.desc").html()));
     }
 
     // bachngocsach/reader
@@ -200,6 +209,7 @@ public class Informations {
         properties.setName(doc.select("h1#truyen-title").text());
         properties.setAuthor(doc.select("div#tacgia a").text());
         properties.setCover(doc.select("div#anhbia img").attr("src"), "http://bachngocsach.com");
+        properties.setGioiThieu(Optimize(doc.select("div#gioithieu").html()));
     }
 
     //tuchangioi
@@ -207,6 +217,7 @@ public class Informations {
         Elements doc = Jsoup.parse(html).select("div.book_info");
         properties.setName(doc.select("h1").text());
         properties.setAuthor(regex(doc.select("div.models-list").html(), "T.c gi.:\\s+(.*?)<", 1));
+        properties.setGioiThieu(Optimize(doc.select("div.description").html()));
 
     }
 
@@ -216,15 +227,18 @@ public class Informations {
         properties.setName(doc.select("h3.title").text());
         properties.setAuthor(doc.select("div.info div a").first().text());
         properties.setCover(doc.select("div.book img").attr("src"), "http://truyenvl.net");
+        properties.setGioiThieu(Optimize(doc.select("div.desc-text").html()));
     }
-//wikidich.com
-    private void WKD(){
+
+    //wikidich.com
+    private void WKD() {
         Elements doc = Jsoup.parse(html).select("div.book-info");
         properties.setName(doc.select("div.cover-info h2").text());
         properties.setAuthor(regex(doc.html(), "/tac-gia/.*?\">(.*?)</a>", 1));
         properties.setCover(doc.select("div.cover-wrapper img").attr("src"), "http://wikidich.com");
-
+        properties.setGioiThieu(Optimize(doc.select("div.book-desc").html().replaceAll("<a.*?</a>","")));
     }
+
     //banlong.us, tangthuvien, bacngocsach, 4vn
     private void FORUM() {
         String title = Jsoup.parse(html).select("title").text();
@@ -239,6 +253,18 @@ public class Informations {
             return m.group(group);
         else
             return "";
+    }
+    private String Optimize(String src) {
+        src = new Syntax().covertString(src);
+        src = src.replaceAll("\\s+", " ");
+        src = src.replaceAll("(</{0,1}div>|</{0,1}p>|<br.*?>|</br>)", "\n");
+        src = src.replaceAll("<.*?>|<span.*?>|</span>|&nbsp;", "");
+        src = src.replaceAll(" +[\n\r]", "\n");
+        src = src.replaceAll("[\n\r]( +)", "\n");
+        src = src.replaceAll("[\n\r]+", "\n");
+        src = src.replaceAll("^\\s+|\\s+$", "");
+        src = "<p>"+src.replace("\n", "</p>\n<p>")+"</p>";
+        return src;
     }
 
 }

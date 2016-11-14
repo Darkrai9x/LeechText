@@ -3,6 +3,7 @@ package dark.leech.text.gui;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
+import dark.leech.text.gui.components.EditDialog;
 import dark.leech.text.gui.components.MDialog;
 import dark.leech.text.gui.components.MPanel;
 import dark.leech.text.gui.components.MTextField;
@@ -16,7 +17,7 @@ import dark.leech.text.gui.export.ExportText;
 import dark.leech.text.listeners.BlurListener;
 import dark.leech.text.models.FileAction;
 import dark.leech.text.models.Properties;
-import dark.leech.text.models.Trash;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,6 +47,7 @@ public class InfoUI extends MDialog implements BlurListener {
     private JLabel labelAuthor;
     private MTextField textFieldAuthor;
     private JLabel labelStatus;
+    private GioiThieu gioiThieu;
 
     private Properties properties;
 
@@ -74,6 +76,7 @@ public class InfoUI extends MDialog implements BlurListener {
         labelName = new JLabel();
         labelAuthor = new JLabel();
         labelStatus = new JLabel();
+        gioiThieu = new GioiThieu(properties);
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -184,7 +187,10 @@ public class InfoUI extends MDialog implements BlurListener {
         textFieldAuthor = new MTextField(115, 135, 220, 30);
         textFieldAuthor.setText(properties.getAuthor());
         contentPane.add(textFieldAuthor);
-
+        //----GioiThieu----
+        contentPane.add(gioiThieu);
+        gioiThieu.addBlurListener(this);
+        gioiThieu.setBounds(115, 170, 220, 30);
 
         //---- labelStatus ----
         labelStatus.setFont(FontConstants.textNomal);
@@ -253,15 +259,16 @@ public class InfoUI extends MDialog implements BlurListener {
         getGlassPane().setVisible(b);
     }
 }
+
 class GioiThieu extends MPanel {
     private JLabel labelName;
     private CircleButton buttonEdit;
     private SelectButton btSelect;
-    private Trash trash;
+    private Properties properties;
     private BlurListener blurListener;
 
-    public GioiThieu(Trash trash) {
-        this.trash = trash;
+    public GioiThieu(Properties properties) {
+        this.properties = properties;
         gui();
     }
 
@@ -271,10 +278,10 @@ class GioiThieu extends MPanel {
         labelName = new JLabel();
         btSelect = new SelectButton();
 
-        labelName.setText(trash.getTip());
+        labelName.setText("Thêm trang giới thiệu");
         labelName.setFont(FontConstants.textNomal);
         add(labelName);
-        labelName.setBounds(10, 5, 180, 30);
+        labelName.setBounds(0, 0, 150, 30);
 
         buttonEdit = new CircleButton("\ue254");
         buttonEdit.setForeground(ColorConstants.THEME_COLOR);
@@ -283,19 +290,19 @@ class GioiThieu extends MPanel {
         buttonEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                doEdit();
             }
         });
         add(buttonEdit);
-        buttonEdit.setBound(220, 5, 30, 30);
-
-        btSelect.setSelected(trash.isReplace());
+        buttonEdit.setBound(160, 0, 30, 30);
+        buttonEdit.setVisible(false);
+        btSelect.setSelected(false);
         add(btSelect);
-        btSelect.setBound(250, 5, 30, 30);
+        btSelect.setBound(190, 0, 30, 30);
         btSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                btSelect.setSelected(!btSelect.isSelected());
+                doSelect();
             }
         });
 
@@ -303,10 +310,32 @@ class GioiThieu extends MPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                btSelect.setSelected(!btSelect.isSelected());
+                doSelect();
             }
         });
         //setBorder(new DropShadowBorder(new Color(63, 81, 181), 3, 0.4f, 15, true, true, true, true));
         setPreferredSize(new Dimension(300, 40));
+    }
+
+    private void doSelect() {
+        btSelect.setSelected(!btSelect.isSelected());
+        buttonEdit.setVisible(btSelect.isSelected());
+        properties.setAddGt(btSelect.isSelected());
+        if (properties.isAddGt())
+            if (!new File(properties.getGioiThieu(), properties.getSavePath() + Constants.l + "raw" + Constants.l + "gioithieu.txt").exists())
+                new FileAction().string2file(properties.getGioiThieu(), properties.getSavePath() + Constants.l + "raw" + Constants.l + "gioithieu.txt");
+    }
+
+    private void doEdit() {
+        EditDialog editDialog = new EditDialog("Giới thiệu", properties.getGioiThieu(), SyntaxConstants.SYNTAX_STYLE_HTML);
+        editDialog.addBlurListener(blurListener);
+        editDialog.setVisible(true);
+        properties.setGioiThieu(editDialog.getText());
+        if (properties.isAddGt())
+            new FileAction().string2file(properties.getGioiThieu(), properties.getSavePath() + Constants.l + "raw" + Constants.l + "gioithieu.txt");
+    }
+
+    public void addBlurListener(BlurListener blurListener) {
+        this.blurListener = blurListener;
     }
 }

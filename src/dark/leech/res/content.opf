@@ -10,13 +10,11 @@
 	<meta content="2.0" name="Ebook Builder"/>
   </metadata>
   <manifest>
-     <item id="mucluc" href="Text/mucluc.html" media-type="application/xhtml+xml"/>
 [MANIFEST]    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
     <item id="stylesheet.css" href="stylesheet.css" media-type="text/css"/>
     <item id="cover" href="cover.jpg" media-type="image/jpeg"/>
 [IMAGE]  </manifest>
   <spine toc="ncx">
-  	<itemref idref="mucluc"/>
 [NCX]</spine>
   <guide>
   </guide>

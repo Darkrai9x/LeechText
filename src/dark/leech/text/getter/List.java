@@ -190,15 +190,14 @@ public class List extends Syntax {
     private void GTC() {
         String html = Conn.getHtml(url);
         int total_page = Integer.parseInt(Jsoup.parse(html).select("input#hdlpage").attr("value"));
-        for (int i = 2; i <= total_page; i++) {
+        for (int i = 1; i <= total_page; i++) {
             html = Conn.getHtml(url + "/" + Integer.toString(i));
-            Elements el = Jsoup.parse(html).select("table").first().select("tbody tr");
-            for (int j = 1; j < el.size(); j++) {
-                String nameChap = el.get(j).select("td a").text();
-                nameChap = (nameChap.length() == 0) ? "" : (": " + nameChap);
-                nameChap = nameChap.replaceAll("Chương (\\d+)", "");
-                chapList.add(new Chapter(el.get(j).select("td a").attr("href"), fixName(
-                        el.get(j).select("td.text-left").text().replace("C.", "Chương") + nameChap)));
+            System.out.println(html);
+            Elements el = Jsoup.parse(html).select("div.w3-row.list-chapter-content").last().select("ul li a");
+            for (Element e:el) {
+                String linkChap = e.attr("href");
+                linkChap = (linkChap.startsWith("http") ? linkChap : ("http://goctruyen.com/" + linkChap));
+                chapList.add(new Chapter(e.text(), linkChap));
 
             }
         }

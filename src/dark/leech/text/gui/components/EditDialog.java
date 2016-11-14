@@ -37,7 +37,6 @@ public class EditDialog extends MDialog {
         }).start();
         setCenter();
         display();
-        setVisible(true);
     }
 
 

@@ -124,6 +124,16 @@ public class TableOfContent {
         id = 1;
         chapList = properties.getChapList();
         muclucHtml.append("\n<h4>Mục lục</h4>\n");
+        if (properties.isAddGt()) {
+            muclucHtml.append("<div class=\"toc-lv1\"><a href=\"../Text/gioithieu.html\">Giới Thiệu</a></div>\n");
+            toc.append("    <navPoint id=\"toc-gioithieu\" playorder=\"" + Integer.toString(id)
+                    + "\">\n" + "      <navLabel>\n" + "        <text>Giới Thiệu</text>\n"
+                    + "      </navLabel>\n" + "      <content src=\"Text/gioithieu.html\"/>\n</navPoint>\n"
+            );
+            content.append("\t" + "<item id=\"gioithieu\" href=\"Text/gioithieu.html\" media-type=\"application/xhtml+xml\"/>\n");
+            id++;
+        }
+        content.append("\t" + "<item id=\"mucluc\" href=\"Text/mucluc.html\" media-type=\"application/xhtml+xml\"/>\n");
         //Không chia quyển
         if (!autoSplit) {
             makePart(0, chapList.size(), "\t");
@@ -146,7 +156,7 @@ public class TableOfContent {
                     + "\">\n" + "      <navLabel>\n" + "        <text>" + namePart + "</text>\n"
                     + "      </navLabel>\n" + "      <content src=\"Text/Q" + Integer.toString(i + 1) + ".html\"/>\n";
             toc.append(s);
-            content.append("\t" + "<models id=\"Q" + Integer.toString(i + 1) + "\" href=\"Text/Q" + Integer.toString(i + 1) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
+            content.append("\t" + "<item id=\"Q" + Integer.toString(i + 1) + "\" href=\"Text/Q" + Integer.toString(i + 1) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
             namePartList.add(namePart);
             id++;
             if (i == part.size() - 1)
@@ -166,7 +176,7 @@ public class TableOfContent {
                     + tab + "  </navLabel>\n" + tab + "  <content src=\"Text/" + Integer.toString(i) + ".html\"/>\n"
                     + tab + "</navPoint>\n";
             pa.append("<div class=\"toc-lv1\"><a href=\"../Text/" + Integer.toString(chapList.get(i).getId()) + ".html\">" + chapList.get(i).getChapName() + "</a></div>\n");
-            content.append("\t" + "<models id=\"C" + Integer.toString(i) + "\" href=\"Text/" + Integer.toString(i) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
+            content.append("\t" + "<item id=\"C" + Integer.toString(i) + "\" href=\"Text/" + Integer.toString(i) + ".html\" media-type=\"application/xhtml+xml\"/>\n");
             toc.append(s);
             id++;
         }
@@ -225,11 +235,11 @@ public class TableOfContent {
         String[] files = file.list();
         for (String fn : files) {
             if (fn.endsWith(".png"))
-                img.append("<models id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/png\"/>\n");
+                img.append("<item id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/png\"/>\n");
             if (fn.endsWith(".jpg") || fn.endsWith(".jpeg"))
-                img.append("<models id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/jpeg\"/>\n");
+                img.append("<item id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/jpeg\"/>\n");
             if (fn.endsWith(".gif"))
-                img.append("<models id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/gif\"/>\n");
+                img.append("<item id=\"" + fn + "\" href=\"Images/" + fn + "\" media-type=\"image/gif\"/>\n");
         }
         return new String(img);
     }

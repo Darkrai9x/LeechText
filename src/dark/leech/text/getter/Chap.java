@@ -36,6 +36,7 @@ public class Chap {
         this.url = chapter.getUrl();
         this.saveDir = saveDir;
         this.id = chapter.getId();
+
     }
 
     // web
@@ -135,7 +136,8 @@ public class Chap {
     // TruyenCuaTui
     private String TCT() {
         return Jsoup.parse(Conn.getHtml(url)).select("div.content.chapter-content").html()
-                .replaceAll("(?s)<div class.*</div>|<!--.*?-->", "");
+                .replaceAll("<span.*?>|</span>", "")
+                .replaceAll("(?s)<a.*</a>|<!--.*?-->|<div.*</div>", "");
     }
 
     // goctruyen
@@ -255,10 +257,11 @@ public class Chap {
         return Jsoup.parse(Conn.getHtml(url)).select("div.chapter-content").html();
     }
 
-//wikidich.com
-    private String WKD(){
+    //wikidich.com
+    private String WKD() {
         return Jsoup.parse(Conn.getHtml(url)).select("div#bookContentBody").html();
     }
+
     private String Optimize(String src) {
         src = src.replaceAll(" +", " ");
         src = src.replaceAll("<br>|<br/>|<br />|<p>|</p>", "\n")

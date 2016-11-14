@@ -26,7 +26,7 @@ import java.net.URL;
  * Created by Long on 9/16/2016.
  */
 public class UpdateUI extends MDialog {
-    private final String oldVersion = "3.2.2";
+    private final String oldVersion = "3.2.3";
     private MProgressBar downloadProgress;
     private BasicButton update;
     private BasicButton cancel;
@@ -169,7 +169,7 @@ public class UpdateUI extends MDialog {
         if (newVersion == null || newVersion.length() == 0) {
             labelLoad.setIcon(new ImageIcon(getClass().getResource("/dark/leech/res/img/error.png")));
             labelText.setText("Có lỗi khi kiểm tra...");
-        } else if (!newVersion.equals(oldVersion)) {
+        } else if (Integer.parseInt(newVersion.replace(".", "")) > Integer.parseInt(oldVersion.replace(".", ""))) {
             this.url = Jsoup.parse(html).select("div.url").text();
             if (url.length() == 0) {
                 labelLoad.setIcon(new ImageIcon(getClass().getResource("/dark/leech/res/img/error.png")));

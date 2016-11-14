@@ -27,6 +27,7 @@ public class SettingUI extends JPanel {
     private ItemConn reConn;
     private ItemConn timeConn;
     private ItemConn delayConn;
+    private ItemConn userAgent;
     // style
     private ItemStyle htmlStyle;
     private ItemStyle txtStyle;
@@ -91,6 +92,7 @@ public class SettingUI extends JPanel {
         reConn = new ItemConn("Số kết nối lại khi bị lỗi", "3");
         timeConn = new ItemConn("Thời gian kết nối tối đa", "10000");
         delayConn = new ItemConn("Thời gian chờ giữa các kết nối", "100");
+        userAgent = new ItemConn("User Agent", "");
 
         htmlStyle = new ItemStyle("Tùy chỉnh HTML", "Tùy chỉnh cấu trúc HTML khi lưu", false);
         htmlStyle.setStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
@@ -118,6 +120,7 @@ public class SettingUI extends JPanel {
         body.add(htmlStyle, gbc, 0);
         body.add(dropStyle, gbc, 0);
         body.add(Label("Cấu trúc lưu"), gbc, 0);
+        body.add(userAgent, gbc, 0);
         body.add(delayConn, gbc, 0);
         body.add(reConn, gbc, 0);
         body.add(timeConn, gbc, 0);
@@ -158,6 +161,7 @@ public class SettingUI extends JPanel {
         reConn.setText(toString(SettingConstants.RECONN));
         timeConn.setText(toString(SettingConstants.TIMEOUT));
         delayConn.setText(toString(SettingConstants.DELAY));
+        userAgent.setText(SettingConstants.USER_AGENT);
         //
         htmlStyle.setSelected(SettingConstants.isHTML);
         htmlStyle.setText(SettingConstants.HTML);
@@ -182,6 +186,7 @@ public class SettingUI extends JPanel {
         o += getItem("integer", "reConn", reConn.getText());
         o += getItem("integer", "timeout", timeConn.getText());
         o += getItem("integer", "delay", delayConn.getText());
+        o += getItem("string", "userAgent", Base64.encode(userAgent.getText()));
         o += getItem("string", "drop", dropStyle.isSelected(), Base64.encode(dropStyle.getText()));
         o += getItem("string", "html", htmlStyle.isSelected(), Base64.encode(htmlStyle.getText()));
         o += getItem("string", "txt", txtStyle.isSelected(), Base64.encode(txtStyle.getText()));
@@ -193,7 +198,7 @@ public class SettingUI extends JPanel {
         o += "	<string id=\"trash\">\n";
         ArrayList<Trash> tr = trash.getTrash();
         for (Trash t : tr)
-            o += "		<models src=\"" + Base64.encode(t.getSrc()) + "\" to=\""
+            o += "		<item src=\"" + Base64.encode(t.getSrc()) + "\" to=\""
                     + Base64.encode(t.getTo()) + "\" tip=\"" + Base64.encode(t.getTip())
                     + "\" replace=\"" + (t.isReplace() ? "1" : "0") + "\" />\n";
         o += "	</string>\n";

@@ -89,7 +89,7 @@ public class Page {
     private void TTV() {
         Elements el = Jsoup.parse(html).select("li.postbit.postbitim.postcontainer.old");
         for (Element e : el) {
-            String[] sp = e.html().split("<input.*?value=\"\\s+(.iet.hrase|vp|VP)\\s+\"");
+            String[] sp = e.html().split("<input.*?value=\"\\s+(.iet.hrase|[vV][pP])\\s+\"");
             if (sp.length == 1)
                 sp = e.html().split("<input.*?button");
             for (int j = 0; j < sp.length - 1; j++) {

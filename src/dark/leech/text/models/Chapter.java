@@ -10,6 +10,16 @@ public class Chapter {
     private boolean error; // Lỗi
     private boolean imgChap;
     private int id; // ID chương
+    private String ID;
+
+    public String getID() {
+        if (ID == null) ID = Integer.toString(getId());
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public Chapter() {
         this("");

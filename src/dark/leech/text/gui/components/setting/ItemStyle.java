@@ -107,6 +107,7 @@ public class ItemStyle extends MPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EditDialog edit = new EditDialog(name, text, style);
+                edit.setVisible(true);
                 text = edit.getText();
             }
         });

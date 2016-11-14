@@ -16,6 +16,15 @@ public class Properties {
     private int size; //Số chương
     private String savePath; //Thư mục lưu
     private  String gioiThieu;
+    private boolean addGt;
+
+    public boolean isAddGt() {
+        return addGt;
+    }
+
+    public void setAddGt(boolean addGt) {
+        this.addGt = addGt;
+    }
 
     public String getGioiThieu() {
         return gioiThieu;

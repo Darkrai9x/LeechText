@@ -44,6 +44,7 @@ public class Text extends Syntax {
         ArrayList<Chapter> chapList = properties.getChapList();
         StringBuffer gop = new StringBuffer();
         //Tạo file gộp tach == 1
+
         if (tach == 1) {
 
             if (type == TypeConstants.HTML) {
@@ -53,13 +54,35 @@ public class Text extends Syntax {
                 gop.append(head);
             }
         }
+        if (properties.isAddGt()) {
+            Chapter gt = new Chapter();
+            gt.setChapName("Giới Thiệu");
+            gt.setID("gioithieu");
+            gt.setGet(true);
+            String text = "";
+            try {
+                text = chapterReplace(gt, false);
+            } catch (Exception e) {
+            }
+            if (tach == 0) {
+                String savePath = properties.getSavePath() + Constants.l + "data" + Constants.l + "Text" + Constants.l + gt.getID() + duoi;
+                fileAction.string2file(text, savePath);
+            } else {
+                if (type == TypeConstants.HTML)
+                    text = text.replaceAll("(?s).*?<body.*?>(.*?)</body>.*", "$1");
+                else text += "\n\n";
+                gop.append(text);
+            }
+        }
         //Tạo mục lục
         if (makeToc && type == TypeConstants.HTML) {
             String toc = "\n<h4>Mục lục</h4>\n";
             if (tach == 0) {
+                if (properties.isAddGt())
+                    toc += "<div class=\"toc-lv2\"><a href=\"../Text/gioithieu.html\">Giới Thiệu</a></div>\n";
                 for (Chapter ch : chapList)
                     if (ch.isGet())
-                        toc += "<div class=\"toc-lv1\"><a href=\"../Text/" + Integer.toString(ch.getId()) + ".html\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
+                        toc += "<div class=\"toc-lv2\"><a href=\"../Text/" + Integer.toString(ch.getId()) + ".html\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
                 String head = syntax;
                 head = head.replaceAll("<title>.*?</title>", "<title>" + properties.getName() + "</title>");
                 head = head.replaceAll("(?s)(.*?<body.*?>).*", "$1");
@@ -67,14 +90,18 @@ public class Text extends Syntax {
                 fileAction.string2file(toc, properties.getSavePath() + Constants.l + "data" + Constants.l + "Text" + Constants.l + "mucluc.html");
 
             } else {
-                for (Chapter ch : chapList)
+                if (properties.isAddGt())
+                    toc += "<div class=\"toc-lv2\"><a href=\"#toc-gioithieu\">Giới Thiệu</a></div>\n";
+                for (Chapter ch : chapList) {
                     if (ch.isGet())
-                        toc += "<div class=\"toc-lv1\"><a href=\"#toc-" + Integer.toString(ch.getId()) + "\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
+                        toc += "<div class=\"toc-lv2\"><a href=\"#toc-" + Integer.toString(ch.getId()) + "\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
+                }
                 gop.append(toc);
             }
         }
         //Thay thế text
         int value = 0;
+
         for (Chapter ch : chapList) {
             if (ch.isGet() && ch.isCompleted()) {
                 String text = "";
@@ -114,7 +141,11 @@ public class Text extends Syntax {
     }
 
     private String chapterReplace(Chapter chapter) throws Exception {
-        String nd = fileAction.file2string(properties.getSavePath() + Constants.l + "raw" + Constants.l + chapter.getId() + ".txt");
+        return chapterReplace(chapter, true);
+    }
+
+    private String chapterReplace(Chapter chapter, boolean pp) throws Exception {
+        String nd = fileAction.file2string(properties.getSavePath() + Constants.l + "raw" + Constants.l + chapter.getID() + ".txt");
         nd = clearText(nd);
         String text = syntax;
         //
@@ -122,13 +153,15 @@ public class Text extends Syntax {
         text = replaceString(text, properties.getAuthor(), "\\[2\\]", "AUTHOR");
         text = replaceString(text, chapter.getPartName(), "\\[3\\]", "NAME_PART");
         text = replaceString(text, chapter.getChapName(), "\\[4\\]", "NAME_CHAP");
-        text = text.replace("[ID]", Integer.toString(chapter.getId()));
+        text = text.replace("[ID]", chapter.getID());
         //replace paragraph
         String firstTag = search(syntax, "\\[5\\](.*)\\[PARAGRAPH\\](.*)\\[5\\]", 1);
         String lastTag = search(syntax, "\\[5\\](.*)\\[PARAGRAPH\\](.*)\\[5\\]", 2);
         nd = replaceDrop(nd);
-        nd = nd.replace("\n", lastTag + "\n" + firstTag);
-        nd = firstTag + nd + lastTag;
+        if (pp) {
+            nd = nd.replace("\n", lastTag + "\n" + firstTag);
+            nd = firstTag + nd + lastTag;
+        }
         text = text.replace(search(text, "(\\[5\\].*\\[PARAGRAPH\\].*\\[5\\])", 1), nd);
 
         return text;

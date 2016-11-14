@@ -38,6 +38,7 @@ public class Settings {
         load(new FileAction().stream2string("/dark/leech/res/setting.xml"), true);
         WORKPATH = System.getProperty("user.dir");
         THEME_COLOR = new Color(38, 50, 56);
+        USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36";
     }
 
     private void load(String content, boolean g) {
@@ -46,6 +47,8 @@ public class Settings {
         RECONN = Integer.parseInt(text.select("integer#reConn").text());
         DELAY = Integer.parseInt(text.select("integer#delay").text());
         TIMEOUT = Integer.parseInt(text.select("integer#timeout").text());
+        if (Base64.decode(text.select("string#userAgent").text()).length() > 0)
+            USER_AGENT = Base64.decode(text.select("string#userAgent").text());
 
         //
         isCSS = !text.select("string#css").attr("value").equals("0");
@@ -65,7 +68,7 @@ public class Settings {
         CALIBRE = Base64.decode(text.select("string#calibrePath").text());
         KINDLEGEN = Base64.decode(text.select("string#kindlegenPath").text());
         ArrayList<Trash> trash = new ArrayList<Trash>();
-        Elements el = text.select("string#trash models");
+        Elements el = text.select("string#trash item");
         for (Element e : el)
             trash.add(new Trash(Base64.decode(e.attr("src")), Base64.decode(e.attr("to")), Base64.decode(e.attr("tip")),
                     !e.attr("replace").equals("0")));

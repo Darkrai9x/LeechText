@@ -15,6 +15,7 @@ public class SettingConstants {
     public static int TIMEOUT;
     public static int RECONN;
     public static int DELAY;
+    public static String USER_AGENT;
 
     //Style
     public static boolean isDROP;

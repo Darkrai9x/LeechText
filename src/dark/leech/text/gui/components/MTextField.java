@@ -72,11 +72,7 @@ public class MTextField extends JPanel {
                 false
         );
 
-        // Add a close button that hides the balloon tip, rather than permanently close it
-        //  balloonTip.setCloseButton(BalloonTip.getDefaultCloseButton(), true);
-
         TimingUtils.showTimedBalloon(balloonTip, 3000);
-        // label.setBackground(Color.RED);
     }
 
     public String getText() {
