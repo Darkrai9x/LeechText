@@ -68,7 +68,7 @@ public class AlertNotification extends JDialog {
             }
         });
         panel.add(buttonOk);
-        buttonOk.setBound(10, 110, 280, 35);
+        buttonOk.setBounds(10, 110, 280, 35);
 
         //---- text ----
         textPane.setText(text);

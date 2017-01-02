@@ -2,10 +2,11 @@ package dark.leech.text.gui.components.setting;
 
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MPanel;
-import dark.leech.text.gui.components.MScrollBar;
-import dark.leech.text.gui.components.MTextField;
+import dark.leech.text.constant.StringConstants;
+import dark.leech.text.gui.components.Dialog;
+import dark.leech.text.gui.components.Panel;
+import dark.leech.text.gui.components.ScrollPane;
+import dark.leech.text.gui.components.TextField;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.button.SelectButton;
@@ -21,7 +22,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class TrashPane extends MPanel {
+public class TrashPane extends Panel {
 
     private static final long serialVersionUID = 1L;
     private ArrayList<Trash> trash;
@@ -56,7 +57,7 @@ public class TrashPane extends MPanel {
             }
         });
         add(buttonEdit);
-        buttonEdit.setBound(335, 15, 30, 30);
+        buttonEdit.setBounds(335, 15, 30, 30);
         //  setBorder(new DropShadowBorder(new Color(63, 81, 181), 3, 0.4f, 15, true, true, true, true));
         setBackground(Color.white);
         setPreferredSize(new Dimension(370, 60));
@@ -79,7 +80,7 @@ public class TrashPane extends MPanel {
 
 }
 
-class TrashUI extends MDialog implements RemoveListener, BlurListener {
+class TrashUI extends Dialog implements RemoveListener, BlurListener {
     public int numTrash = 0;
     private ArrayList<Trash> trash;
     private BasicButton add;
@@ -98,16 +99,15 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                gui();
-                setCenter();
-                display();
                 load();
             }
         });
-        setVisible(true);
+        onCreate();
     }
 
-    private void gui() {
+    @Override
+    protected void onCreate() {
+        super.onCreate();
         Container co = getContentPane();
         co.setBackground(Color.WHITE);
         co.setLayout(null);
@@ -131,11 +131,7 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
         gi.gridwidth = GridBagConstraints.REMAINDER;
         gi.weightx = 1;
         gi.weighty = 1;
-        JScrollPane scrollPane = new JScrollPane(body);
-        JScrollBar sb = scrollPane.getVerticalScrollBar();
-        sb.setUI(new MScrollBar());
-        sb.setBackground(Color.WHITE);
-        sb.setPreferredSize(new Dimension(10, 0));
+        ScrollPane scrollPane = new ScrollPane(body);
 
         JPanel demo = new JPanel();
         demo.setBackground(Color.WHITE);
@@ -153,18 +149,18 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
             }
         });
         co.add(add);
-        add.setBound(10, 320, 100, 30);
+        add.setBounds(10, 320, 100, 30);
 
         ok.setText("OK");
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 done = true;
-                close();
+                hide();
             }
         });
         co.add(ok);
-        ok.setBound(170, 320, 70, 30);
+        ok.setBounds(170, 320, 70, 30);
 
         cancel.setText("HỦY");
         cancel.addActionListener(new ActionListener() {
@@ -174,7 +170,7 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
             }
         });
         co.add(cancel);
-        cancel.setBound(250, 320, 70, 30);
+        cancel.setBounds(250, 320, 70, 30);
         gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
@@ -195,7 +191,7 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
 
     private void addItem() {
         TrashItemDialog trashItemDialog = new TrashItemDialog();
-        trashItemDialog.addBlurListener(this);
+        trashItemDialog.setBlurListener(this);
         trashItemDialog.setVisible(true);
         if (trashItemDialog.isDone())
             addItem(trashItemDialog.getTrash());
@@ -229,7 +225,7 @@ class TrashUI extends MDialog implements RemoveListener, BlurListener {
     }
 }
 
-class TrashItem extends MPanel {
+class TrashItem extends Panel {
     private JLabel labelName;
     private CircleButton buttonEdit;
     private CircleButton buttonDelete;
@@ -254,7 +250,7 @@ class TrashItem extends MPanel {
         add(labelName);
         labelName.setBounds(10, 5, 180, 30);
 
-        buttonEdit = new CircleButton("\ue254");
+        buttonEdit = new CircleButton(StringConstants.EDIT);
         buttonEdit.setForeground(ColorConstants.THEME_COLOR);
         buttonEdit.setToolTipText("Sửa");
 
@@ -265,11 +261,11 @@ class TrashItem extends MPanel {
             }
         });
         add(buttonEdit);
-        buttonEdit.setBound(220, 5, 30, 30);
+        buttonEdit.setBounds(220, 5, 30, 30);
 
         btSelect.setSelected(trash.isReplace());
         add(btSelect);
-        btSelect.setBound(250, 5, 30, 30);
+        btSelect.setBounds(250, 5, 30, 30);
         btSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -277,7 +273,7 @@ class TrashItem extends MPanel {
             }
         });
 
-        buttonDelete = new CircleButton("");
+        buttonDelete = new CircleButton(StringConstants.DELETE);
         buttonDelete.setForeground(ColorConstants.THEME_COLOR);
         buttonDelete.setToolTipText("Xóa");
         buttonDelete.addActionListener(new ActionListener() {
@@ -287,7 +283,7 @@ class TrashItem extends MPanel {
             }
         });
         add(buttonDelete);
-        buttonDelete.setBound(280, 5, 30, 30);
+        buttonDelete.setBounds(280, 5, 30, 30);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -318,7 +314,7 @@ class TrashItem extends MPanel {
 
     private void doEdit() {
         TrashItemDialog trashItemDialog = new TrashItemDialog(trash);
-        trashItemDialog.addBlurListener(blurListener);
+        trashItemDialog.setBlurListener(blurListener);
         trashItemDialog.setVisible(true);
         if (trashItemDialog.isDone()) {
             this.trash = trashItemDialog.getTrash();
@@ -330,10 +326,10 @@ class TrashItem extends MPanel {
 
 }
 
-class TrashItemDialog extends MDialog {
-    private MTextField textSrc;
-    private MTextField textTo;
-    private MTextField textTip;
+class TrashItemDialog extends Dialog {
+    private TextField textSrc;
+    private TextField textTo;
+    private TextField textTip;
     private BasicButton ok;
     private BasicButton cancel;
     private Trash trash;
@@ -349,10 +345,8 @@ class TrashItemDialog extends MDialog {
             @Override
             public void run() {
                 gui();
-                setCenter();
-                display();
+                show();
                 setTrash(trash);
-                repaint();
             }
         });
     }
@@ -364,9 +358,9 @@ class TrashItemDialog extends MDialog {
         JLabel labelSrc = new JLabel();
         JLabel labelTo = new JLabel();
         JLabel labelTip = new JLabel();
-        textSrc = new MTextField(10, 35, 280, 37);
-        textTo = new MTextField(10, 100, 280, 37);
-        textTip = new MTextField(10, 160, 280, 37);
+        textSrc = new TextField(10, 35, 280, 37);
+        textTo = new TextField(10, 100, 280, 37);
+        textTip = new TextField(10, 160, 280, 37);
         ok = new BasicButton();
         cancel = new BasicButton();
         done = false;
@@ -394,7 +388,7 @@ class TrashItemDialog extends MDialog {
             }
         });
         co.add(ok);
-        ok.setBound(105, 210, 90, 30);
+        ok.setBounds(105, 210, 90, 30);
         cancel.setText("HỦY");
         cancel.addActionListener(new ActionListener() {
             @Override
@@ -403,7 +397,7 @@ class TrashItemDialog extends MDialog {
             }
         });
         co.add(cancel);
-        cancel.setBound(200, 210, 90, 30);
+        cancel.setBounds(200, 210, 90, 30);
     }
 
     public Trash getTrash() {

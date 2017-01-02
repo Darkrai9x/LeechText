@@ -2,8 +2,8 @@ package dark.leech.text.gui;
 
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MProgressBar;
+import dark.leech.text.gui.components.Dialog;
+import dark.leech.text.gui.components.ProgressBar;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
 import dark.leech.text.models.Base64;
@@ -25,9 +25,9 @@ import java.net.URL;
 /**
  * Created by Long on 9/16/2016.
  */
-public class UpdateUI extends MDialog {
+public class UpdateUI extends Dialog {
     private final String oldVersion = "3.2.3";
-    private MProgressBar downloadProgress;
+    private ProgressBar downloadProgress;
     private BasicButton update;
     private BasicButton cancel;
     private JLabel labelLoad;
@@ -40,10 +40,12 @@ public class UpdateUI extends MDialog {
     private int size = -1;
 
     public UpdateUI() {
-
+        onCreate();
     }
 
-    private void gui() {
+    @Override
+    protected void onCreate() {
+        super.onCreate();
         JPanel panelTitle = new JPanel();
         CloseButton buttonClose = new CloseButton();
         JLabel labelTitle = new JLabel();
@@ -53,10 +55,7 @@ public class UpdateUI extends MDialog {
         update = new BasicButton();
         cancel = new BasicButton();
         labelStatus = new JLabel();
-        downloadProgress = new MProgressBar();
-
-        Container container = getContentPane();
-        container.setBackground(Color.white);
+        downloadProgress = new ProgressBar();
 
         panelTitle.setBackground(ColorConstants.THEME_COLOR);
         panelTitle.setLayout(null);
@@ -76,7 +75,7 @@ public class UpdateUI extends MDialog {
             }
         });
         panelTitle.add(buttonClose);
-        buttonClose.setBound(270, 10, 25, 25);
+        buttonClose.setBounds(270, 10, 25, 25);
         container.add(panelTitle);
         panelTitle.setBounds(0, 0, 300, 45);
 
@@ -104,7 +103,7 @@ public class UpdateUI extends MDialog {
         downloadProgress.setVisible(false);
         update.setText("CẬP NHẬT");
         container.add(update);
-        update.setBound(70, 155, 80, 35);
+        update.setBounds(70, 155, 80, 35);
         update.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -127,32 +126,25 @@ public class UpdateUI extends MDialog {
             }
         });
         container.add(cancel);
-        cancel.setBound(170, 155, 80, 35);
+        cancel.setBounds(170, 155, 80, 35);
         cancel.setVisible(false);
+        this.setSize(300, 200);
     }
 
     public void isHaveUpdate() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                setSize(300, 200);
-                gui();
                 checkUpdate();
                 if (haveUpdate) {
-                    setCenter();
-                    display();
-                    setVisible(true);
+                    open();
                 }
             }
         }).start();
 
     }
 
-    public void checkUpdteUi() {
-        setSize(300, 200);
-        setCenter();
-        display();
-        gui();
+    public void checkUpdateUi() {
         new Thread(new Runnable() {
             @Override
             public void run() {

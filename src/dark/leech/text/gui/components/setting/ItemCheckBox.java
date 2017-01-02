@@ -2,14 +2,14 @@ package dark.leech.text.gui.components.setting;
 
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MPanel;
+import dark.leech.text.gui.components.Panel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ItemCheckBox extends MPanel {
+public class ItemCheckBox extends Panel {
     private JLabel labelName;
     private JLabel labelSelected;
     private boolean selected;

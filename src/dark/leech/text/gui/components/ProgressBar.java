@@ -8,10 +8,10 @@ import java.awt.*;
 /**
  * Created by Long on 9/9/2016.
  */
-public class MProgressBar extends JPanel {
+public class ProgressBar extends JPanel {
     private int percent = 0;
 
-    public MProgressBar() {
+    public ProgressBar() {
         setBackground(Color.WHITE);
     }
 

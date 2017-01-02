@@ -12,15 +12,15 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class MTextField extends JPanel {
+public class TextField extends JPanel {
     private JLabel label;
     private JTextField textField;
 
-    public MTextField() {
+    public TextField() {
         gui();
     }
 
-    public MTextField(int x, int y, int w, int h) {
+    public TextField(int x, int y, int w, int h) {
         gui();
         setBounds(x, y, w, h);
         textField.setBounds(0, 0, w, h - 3);

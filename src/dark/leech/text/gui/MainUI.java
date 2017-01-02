@@ -3,8 +3,9 @@ package dark.leech.text.gui;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
+import dark.leech.text.constant.StringConstants;
 import dark.leech.text.gui.components.Animation;
-import dark.leech.text.gui.components.DropShadowPopupMenu;
+import dark.leech.text.gui.components.PopupMenu;
 import dark.leech.text.gui.components.MenuItem;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.button.CloseButton;
@@ -121,11 +122,10 @@ public class MainUI extends JFrame {
 
     private void actionAdd() {
         AddURL addURL = new AddURL();
-        addURL.setVisible(true);
+        addURL.open();
         if (addURL.isOk()) {
             AddDialog addDialog = new AddDialog(addURL.getUrl());
-            addDialog.addAddListener(home);
-            addDialog.setVisible(true);
+            addDialog.open();
         }
     }
 
@@ -139,7 +139,7 @@ public class MainUI extends JFrame {
         exit = new CloseButton();
         exit.addActionListener(mouse);
         headerBar.add(exit);
-        exit.setBound(360, 0, 25, 25);
+        exit.setBounds(360, 0, 25, 25);
         // ---- status ----
         status = new JLabel();
         status.setForeground(Color.white);
@@ -178,11 +178,11 @@ public class MainUI extends JFrame {
         mainHeader.setBackground(ColorConstants.THEME_COLOR);
         mainHeader.setLayout(null);
 
-        addButton = new CircleButton("", 25f);
+        addButton = new CircleButton(StringConstants.ADD,25f);
         addButton.setForeground(Color.WHITE);
         addButton.addActionListener(mouse);
         mainHeader.add(addButton);
-        addButton.setBound(305, 5, 45, 45);
+        addButton.setBounds(305, 5, 45, 45);
         // ---- logo ----
         JLabel logo;
         logo = new JLabel();
@@ -193,11 +193,11 @@ public class MainUI extends JFrame {
         mainHeader.add(logo);
         logo.setBounds(20, 0, logo.getPreferredSize().width, 55);
 
-        menuButton = new CircleButton("", 25f);
+        menuButton = new CircleButton(StringConstants.MORE, 25f);
         menuButton.setForeground(Color.WHITE);
         menuButton.addActionListener(mouse);
         mainHeader.add(menuButton);
-        menuButton.setBound(355, 5, 30, 45);
+        menuButton.setBounds(355, 5, 30, 45);
 
     }
 
@@ -210,7 +210,7 @@ public class MainUI extends JFrame {
         backButton.addActionListener(mouse);
         backButton.setForeground(Color.WHITE);
         panelHeader.add(backButton);
-        backButton.setBound(5, 5, 45, 45);
+        backButton.setBounds(5, 5, 45, 45);
         // ---- logo ----
         labelLogo = new JLabel();
         labelLogo.setText("Cài đặt");
@@ -224,7 +224,7 @@ public class MainUI extends JFrame {
         okButton.setForeground(Color.WHITE);
         okButton.addActionListener(mouse);
         panelHeader.add(okButton);
-        okButton.setBound(335, 5, 45, 45);
+        okButton.setBounds(335, 5, 45, 45);
     }
 
     private void createPopupMenu() {
@@ -233,8 +233,8 @@ public class MainUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == panelUpdate) {
                     UpdateUI updateUI = new UpdateUI();
-                    updateUI.checkUpdteUi();
-                    updateUI.setVisible(true);
+                    updateUI.checkUpdateUi();
+                    updateUI.open();
                 }
                 if (e.getSource() == panelSetting) {
                     Animation.go(home, setting);
@@ -248,7 +248,7 @@ public class MainUI extends JFrame {
                 }
             }
         };
-        menu = new DropShadowPopupMenu();
+        menu = new PopupMenu();
         //  menu.setBorderPainted(true);
         menu.setOpaque(true);
         panelSetting = new MenuItem("Cài đặt");

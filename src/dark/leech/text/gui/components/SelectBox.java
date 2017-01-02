@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class MSelectBox extends MPanel {
+public class SelectBox extends Panel {
     private int selectIndex;
     private String[] list;
     private JLabel labelName;
@@ -18,7 +18,7 @@ public class MSelectBox extends MPanel {
     private ChangeListener changeListener;
 
 
-    public MSelectBox(String name, String[] list, int selectIndex) {
+    public SelectBox(String name, String[] list, int selectIndex) {
         setLayout(new BorderLayout());
         this.selectIndex = selectIndex;
         this.list = list;
@@ -63,11 +63,9 @@ public class MSelectBox extends MPanel {
     }
 
     private void doClick() {
-        MDialogChooser dc = new MDialogChooser(list, selectIndex);
-        dc.addBlurListener(blurListener);
-        dc.setCenter();
-        dc.display();
-        dc.setVisible(true);
+        DialogChooser dc = new DialogChooser(list, selectIndex);
+        dc.setBlurListener(blurListener);
+        dc.show();
         selectIndex = dc.getSelectIndex();
         labelName.setText(list[selectIndex]);
         if (changeListener != null)
@@ -83,8 +81,8 @@ public class MSelectBox extends MPanel {
     }
 }
 
-class MDialogChooser extends MDialog {
-    private ArrayList<MChooserItem> listItem;
+class DialogChooser extends Dialog {
+    private ArrayList<ChooserItem> listItem;
     private int selectIndex;
     private MouseAdapter mo = new MouseAdapter() {
         @Override
@@ -92,22 +90,22 @@ class MDialogChooser extends MDialog {
             for (int i = 0; i < listItem.size(); i++)
                 if (arg0.getSource() == listItem.get(i))
                     selectIndex = i;
-            close();
+            hide();
 
         }
     };
 
-    public MDialogChooser(String[] list, int selectIndex) {
+    public DialogChooser(String[] list, int selectIndex) {
         this.selectIndex = selectIndex;
         Container contentPane = getContentPane();
         contentPane.setLayout(new GridBagLayout());
         contentPane.setBackground(Color.WHITE);
-        listItem = new ArrayList<MChooserItem>();
+        listItem = new ArrayList<ChooserItem>();
         JPanel body = new JPanel();
         body.setBackground(Color.WHITE);
         body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
         for (int i = 0; i < list.length; i++) {
-            MChooserItem ch = new MChooserItem(list[i]);
+            ChooserItem ch = new ChooserItem(list[i]);
             ch.addMouseListener(mo);
             listItem.add(ch);
             body.add(ch);
@@ -123,12 +121,12 @@ class MDialogChooser extends MDialog {
     }
 }
 
-class MChooserItem extends JPanel {
+class ChooserItem extends JPanel {
     private JLabel labelName;
     private JLabel labelSelect;
     private boolean selected;
 
-    public MChooserItem(String name) {
+    public ChooserItem(String name) {
         setLayout(null);
         setOpaque(true);
         setBackground(Color.white);

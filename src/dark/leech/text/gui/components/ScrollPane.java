@@ -3,10 +3,33 @@ package dark.leech.text.gui.components;
 import dark.leech.text.constant.ColorConstants;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
-public class MScrollBar extends BasicScrollBarUI {
+
+public class ScrollPane extends JScrollPane {
+    public ScrollPane(Component view) {
+        super(view);
+        JScrollBar sb = getVerticalScrollBar();
+        sb.setUI(new iScrollBar());
+        sb.setBackground(Color.WHITE);
+        sb.setPreferredSize(new Dimension(10, 0));
+        setBorder(new LineBorder(ColorConstants.THEME_COLOR));
+        getVerticalScrollBar().setUnitIncrement(20);
+    }
+
+    public ScrollPane() {
+        JScrollBar sb = getVerticalScrollBar();
+        sb.setUI(new iScrollBar());
+        sb.setBackground(Color.WHITE);
+        sb.setPreferredSize(new Dimension(10, 0));
+        setBorder(new LineBorder(ColorConstants.THEME_COLOR));
+        getVerticalScrollBar().setUnitIncrement(20);
+    }
+}
+
+class iScrollBar extends BasicScrollBarUI {
     private static final int SCROLL_BAR_ALPHA_ROLLOVER = 150;
     private static final int SCROLL_BAR_ALPHA = 100;
     private static final int THUMB_BORDER_SIZE = 2;
@@ -33,6 +56,7 @@ public class MScrollBar extends BasicScrollBarUI {
 
         int height = orientation == JScrollBar.VERTICAL ? thumbBounds.height - (THUMB_BORDER_SIZE * 2) : THUMB_SIZE;
         height = Math.max(height, THUMB_SIZE);
+
 
         Graphics2D graphics2D = (Graphics2D) g.create();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

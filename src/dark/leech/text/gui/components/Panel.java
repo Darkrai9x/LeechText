@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MPanel extends JPanel {
+public class Panel extends JPanel {
     private int x;
     private int y;
     private int w;
@@ -14,7 +14,7 @@ public class MPanel extends JPanel {
     private Point p;
     private double radius;
 
-    public MPanel() {
+    public Panel() {
         setLayout(null);
         setBackground(Color.WHITE);
         x = y = w = h = 0;

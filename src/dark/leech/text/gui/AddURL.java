@@ -1,8 +1,8 @@
 package dark.leech.text.gui;
 
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MTextField;
+import dark.leech.text.gui.components.Dialog;
+import dark.leech.text.gui.components.TextField;
 import dark.leech.text.gui.components.button.BasicButton;
 
 import javax.swing.*;
@@ -12,35 +12,26 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddURL extends MDialog {
+public class AddURL extends Dialog {
 
     private BasicButton ok;
     private BasicButton cancel;
-    private MTextField textField;
+    private TextField textField;
     private JLabel label1;
     private boolean add;
     private String url;
 
     public AddURL() {
-        setSize(255, 120);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gui();
-
-            }
-        }).start();
-        setCenter();
-        display();
+       onCreate();
     }
 
-    private void gui() {
+    @Override
+    protected void onCreate() {
+        super.onCreate();
         ok = new BasicButton();
         cancel = new BasicButton();
-        textField = new MTextField(15, 25, 220, 37);
+        textField = new TextField(15, 25, 220, 37);
         label1 = new JLabel();
-        Container dialog2ContentPane = getContentPane();
-        dialog2ContentPane.setLayout(null);
 
         // ---- button1 ----
         ok.setText("OK");
@@ -57,8 +48,8 @@ public class AddURL extends MDialog {
             }
         });
 
-        dialog2ContentPane.add(ok);
-        ok.setBound(15, 70, 110, 35);
+        container.add(ok);
+        ok.setBounds(15, 70, 110, 35);
 
         // ---- button2 ----
         cancel.setText("HỦY");
@@ -68,21 +59,20 @@ public class AddURL extends MDialog {
                 close();
             }
         });
-        dialog2ContentPane.add(cancel);
-        cancel.setBound(125, 70, 110, 35);
+        container.add(cancel);
+        cancel.setBounds(125, 70, 110, 35);
 
         textField.setText(getClipboard());
         textField.setFont(FontConstants.textNomal);
-        dialog2ContentPane.add(textField);
+        container.add(textField);
 
         // ---- label1 ----
         label1.setText("Nhập URL");
         label1.setFont(FontConstants.textBold);
-        dialog2ContentPane.add(label1);
+        container.add(label1);
         label1.setBounds(15, 0, 110, 25);
-
-        dialog2ContentPane.setBackground(Color.WHITE);
-
+        container.setBackground(Color.WHITE);
+        setSize(255, 120);
     }
 
     public boolean isOk() {

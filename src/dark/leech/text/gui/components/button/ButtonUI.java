@@ -9,25 +9,23 @@ import java.awt.*;
 /**
  * Created by Long on 9/30/2016.
  */
-class StyledButtonUI extends BasicButtonUI {
-    private Dimension size;
+class ButtonUI extends BasicButtonUI {
     private boolean round;
     private Color rolloverBackground;
     private Color pressedBackground;
     private Color defaultBackground;
+    private Dimension size;
 
-    public StyledButtonUI() {
+    public ButtonUI() {
+        this(false);
+    }
+
+    public ButtonUI(boolean round) {
         Color bc = ColorConstants.BUTTON_CLICK;
         rolloverBackground = new Color(bc.getRed(), bc.getGreen(), bc.getBlue());
         pressedBackground = new Color(bc.getRed(), bc.getGreen(), bc.getBlue(), 100);
         defaultBackground = new Color(0, 0, 0, 0);
-        round = false;
-    }
-
-    public StyledButtonUI(Dimension size, boolean round) {
-        this();
         this.round = round;
-        this.size = size;
     }
 
     public void setRound(boolean round) {
@@ -51,8 +49,8 @@ class StyledButtonUI extends BasicButtonUI {
     public void installUI(JComponent c) {
         super.installUI(c);
         AbstractButton button = (AbstractButton) c;
-        if (size == null) size = c.getSize();
-        button.setSize(size);
+        size = c.getSize();
+//        button.setSize(size);
         button.setOpaque(false);
         button.setBorder(null);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));

@@ -1,8 +1,8 @@
 package dark.leech.text.gui.components.setting;
 
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MPanel;
+import dark.leech.text.gui.components.Dialog;
+import dark.leech.text.gui.components.Panel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Long on 10/7/2016.
  */
-public class Theme extends MPanel {
+public class Theme extends Panel {
     private Color color;
     private JPanel colorPn;
 
@@ -65,7 +65,7 @@ public class Theme extends MPanel {
     }
 }
 
-class ChooserColor extends MDialog {
+class ChooserColor extends Dialog {
     private final Color DARK_THEME = new Color(38, 50, 56);
     private final Color RED_THEME = new Color(244, 67, 54);
     private final Color INDIGO_THEME = new Color(63, 81, 181);
@@ -90,8 +90,6 @@ class ChooserColor extends MDialog {
         add(new ColorPane(GREEN_THEME));
         add(new ColorPane(BROWN_THEME));
         setSize(160, 160);
-        setCenter();
-        display();
     }
 
 
@@ -113,7 +111,7 @@ class ChooserColor extends MDialog {
 
         private void choose() {
             color = getBackground();
-            close();
+            hide();
         }
     }
 }

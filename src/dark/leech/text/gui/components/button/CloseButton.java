@@ -2,6 +2,7 @@ package dark.leech.text.gui.components.button;
 
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
+import dark.leech.text.constant.StringConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,16 +12,16 @@ import java.awt.*;
  */
 public class CloseButton extends JButton {
     public CloseButton() {
-        setText("");
+        setText(StringConstants.CLOSE);
         setForeground(Color.WHITE);
         setFont(FontConstants.iconNomal);
         setHorizontalAlignment(SwingConstants.CENTER);
         setVerticalAlignment(SwingConstants.CENTER);
     }
 
-    public void setBound(int x, int y, int w, int h) {
-        setBounds(x, y, w, h);
-        StyledButtonUI styledButton = new StyledButtonUI(new Dimension(w, h), true);
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        ButtonUI styledButton = new ButtonUI(true);
         Color bc = ColorConstants.BUTTON_CLICK;
         Color rolloverBackground = new Color(bc.getRed(), bc.getGreen(), bc.getBlue(), 200);
         styledButton.setRolloverBackground(rolloverBackground);

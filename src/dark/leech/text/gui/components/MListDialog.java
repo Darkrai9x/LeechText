@@ -19,10 +19,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class MListDialog extends MDialog {
+public class MListDialog extends Dialog {
 
-    private JScrollPane scrollPane1;
-    private MTable MTable;
+    private ScrollPane scrollPane1;
+    private Table MTable;
     private BasicButton buttonCancel;
     private BasicButton buttonOk;
     private BasicButton buttonSelect;
@@ -39,15 +39,9 @@ public class MListDialog extends MDialog {
         this.parseList = parseList;
         this.forum = forum;
         setSize(350, 520);
-        setCenter();
-        display();
         setModal(true);
-        Thread t = new Thread() {
-            public void run() {
-                ui();
-            }
-        };
-        t.start();
+        ui();
+
     }
 
     public MListDialog(ArrayList<Chapter> chapList, String parseList) {
@@ -55,18 +49,12 @@ public class MListDialog extends MDialog {
         this.chapList = chapList;
         forum = false;
         setSize(350, 520);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ui();
-                setCenter();
-                display();
-            }
-        });
+        ui();
+
     }
 
     private void ui() {
-        scrollPane1 = new JScrollPane();
+        scrollPane1 = new ScrollPane();
         buttonCancel = new BasicButton();
         buttonOk = new BasicButton();
         buttonSelect = new BasicButton();
@@ -93,7 +81,7 @@ public class MListDialog extends MDialog {
                 data[i][1] = chapList.get(i).getChapName();
             }
         }
-        MTable = new MTable();
+        MTable = new Table();
         doUpdatedata(parseList, data);
         MTable.setModel(new DefaultTableModel(data, columnNames) {
             Class<?>[] columnTypes = new Class<?>[]{Boolean.class, String.class};
@@ -109,11 +97,6 @@ public class MListDialog extends MDialog {
         MTable.setFont(FontConstants.textThin);
         MTable.setTableHeader(null);
         scrollPane1.setViewportView(MTable);
-        JScrollBar sc = scrollPane1.getVerticalScrollBar();
-        sc.setUI(new MScrollBar());
-        sc.setPreferredSize(new Dimension(10, 0));
-        sc.setBackground(Color.WHITE);
-        scrollPane1.setBorder(new EmptyBorder(1, 1, 1, 1));
         scrollPane1.getVerticalScrollBar().setUnitIncrement(20);
         contentPane.add(scrollPane1);
         scrollPane1.setBounds(0, 50, 348, 420);
@@ -123,11 +106,11 @@ public class MListDialog extends MDialog {
         buttonCancel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                close();
+                hide();
             }
         });
         contentPane.add(buttonCancel);
-        buttonCancel.setBound(275, 475, 65, 30);
+        buttonCancel.setBounds(275, 475, 65, 30);
 
         //---- buttonOk ----
         buttonOk.setText("OK");
@@ -138,7 +121,7 @@ public class MListDialog extends MDialog {
                 okClick();
             }
         });
-        buttonOk.setBound(210, 475, 60, 30);
+        buttonOk.setBounds(210, 475, 60, 30);
 
         //---- buttonSelect ----
         buttonSelect.setText("BỎ CHỌN");
@@ -149,7 +132,7 @@ public class MListDialog extends MDialog {
                 doSelect();
             }
         });
-        buttonSelect.setBound(5, 475, 100, 30);
+        buttonSelect.setBounds(5, 475, 100, 30);
 
         //---- labelTitle ----
         labelTitle.setText("   Danh sách chương");
@@ -178,7 +161,7 @@ public class MListDialog extends MDialog {
             return;
         }
         doParseList(c);
-        close();
+        hide();
     }
 
     private void doSelect() {

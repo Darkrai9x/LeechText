@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Long on 10/28/2016.
  */
-public class EditDialog extends MDialog {
+public class EditDialog extends Dialog {
     private BasicButton ok;
     private BasicButton cancel;
     private RSyntaxTextArea edit;
@@ -27,29 +27,17 @@ public class EditDialog extends MDialog {
         this.title = title;
         this.text = text;
         this.type = type;
-        setSize(360, 410);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gui();
-                repaint();
-            }
-        }).start();
-        setCenter();
-        display();
+        onCreate();
     }
-
-
-    private void gui() {
+    @Override
+    protected void onCreate() {
+        super.onCreate();
         JPanel panelTitle = new JPanel();
         JLabel labelTitle = new JLabel();
         CloseButton buttonClose = new CloseButton();
         ok = new BasicButton();
         cancel = new BasicButton();
 
-        Container container = getContentPane();
-        container.setBackground(Color.white);
-        container.setLayout(null);
         panelTitle.setBackground(ColorConstants.THEME_COLOR);
         panelTitle.setLayout(null);
         //---- labelTitle ----
@@ -63,17 +51,17 @@ public class EditDialog extends MDialog {
         buttonClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clickClose();
+                close();
             }
         });
         panelTitle.add(buttonClose);
-        buttonClose.setBound(325, 10, 25, 25);
+        buttonClose.setBounds(325, 10, 25, 25);
         container.add(panelTitle);
         panelTitle.setBounds(0, 0, 360, 45);
 
         ok.setText("OK");
         container.add(ok);
-        ok.setBound(180, 365, 70, 30);
+        ok.setBounds(180, 365, 70, 30);
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,11 +70,11 @@ public class EditDialog extends MDialog {
         });
         cancel.setText("HỦY");
         container.add(cancel);
-        cancel.setBound(270, 365, 70, 30);
+        cancel.setBounds(270, 365, 70, 30);
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clickClose();
+                close();
             }
         });
 
@@ -100,17 +88,15 @@ public class EditDialog extends MDialog {
         edit.setCodeFoldingEnabled(true);
         edit.setFont(FontConstants.codeFont(12f));
 
-        JScrollPane scrollPane = new JScrollPane();
+        ScrollPane scrollPane = new ScrollPane();
         scrollPane.setViewportView(edit);
-        scrollPane.setBorder(null);
-
-        JScrollBar sb = scrollPane.getVerticalScrollBar();
-        sb.setUI(new MScrollBar());
-        sb.setBackground(Color.WHITE);
-        sb.setPreferredSize(new Dimension(10, 0));
         container.add(scrollPane);
         scrollPane.setBounds(10, 45, 348, 310);
+        this.setSize(360, 410);
     }
+
+
+
 
     public String getText() {
         return text;
@@ -122,9 +108,6 @@ public class EditDialog extends MDialog {
         close();
     }
 
-    private void clickClose() {
-        close();
-    }
 
 
 }

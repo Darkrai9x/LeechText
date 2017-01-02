@@ -4,7 +4,7 @@ import dark.leech.text.action.Settings;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
 import dark.leech.text.constant.SettingConstants;
-import dark.leech.text.gui.components.MScrollBar;
+import dark.leech.text.gui.components.ScrollPane;
 import dark.leech.text.gui.components.Notification;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.setting.*;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class SettingUI extends JPanel {
     private JPanel body;
-    private JScrollPane scrollPane;
+    private ScrollPane scrollPane;
     // connection
     private ItemConn maxConn;
     private ItemConn reConn;
@@ -69,11 +69,7 @@ public class SettingUI extends JPanel {
         gi.gridwidth = GridBagConstraints.REMAINDER;
         gi.weightx = 1;
         gi.weighty = 1;
-        scrollPane = new JScrollPane(body);
-        JScrollBar sb = scrollPane.getVerticalScrollBar();
-        sb.setUI(new MScrollBar());
-        sb.setBackground(Color.WHITE);
-        sb.setPreferredSize(new Dimension(10, 0));
+        scrollPane = new ScrollPane(body);
 
         JPanel demo = new JPanel();
         demo.setBackground(Color.WHITE);
@@ -139,14 +135,14 @@ public class SettingUI extends JPanel {
             }
         });
         add(defaultButton);
-        defaultButton.setBound(0, 495, 390, 35);
+        defaultButton.setBounds(0, 495, 390, 35);
         // repaint();
     }
 
     private JPanel Label(String name) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel(name);
-        label.setForeground(ColorConstants.THEME_COLOR);
+        label.setForeground(ColorConstants.THEME_COLOR.darker());
         label.setFont(FontConstants.titleNomal);
         panel.add(label);
         label.setBounds(10, 0, 200, 30);

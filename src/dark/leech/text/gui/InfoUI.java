@@ -3,10 +3,10 @@ package dark.leech.text.gui;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
+import dark.leech.text.gui.components.Dialog;
 import dark.leech.text.gui.components.EditDialog;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MPanel;
-import dark.leech.text.gui.components.MTextField;
+import dark.leech.text.gui.components.Panel;
+import dark.leech.text.gui.components.TextField;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.button.CloseButton;
@@ -32,7 +32,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class InfoUI extends MDialog implements BlurListener {
+public class InfoUI extends Dialog implements BlurListener {
     private JPanel title;
     private JLabel labelTitle;
     private CloseButton buttonClose;
@@ -43,9 +43,9 @@ public class InfoUI extends MDialog implements BlurListener {
     private BasicButton buttonText;
     private BasicButton buttonExport;
     private JLabel labelName;
-    private MTextField textFieldName;
+    private TextField textFieldName;
     private JLabel labelAuthor;
-    private MTextField textFieldAuthor;
+    private TextField textFieldAuthor;
     private JLabel labelStatus;
     private GioiThieu gioiThieu;
 
@@ -53,18 +53,12 @@ public class InfoUI extends MDialog implements BlurListener {
 
     public InfoUI(Properties properties) {
         this.properties = properties;
-        setSize(340, 265);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gui();
-            }
-        }).start();
-        setCenter();
-        display();
+        onCreate();
     }
 
-    private void gui() {
+    @Override
+    protected void onCreate() {
+        super.onCreate();
         title = new JPanel();
         labelTitle = new JLabel();
         buttonClose = new CloseButton();
@@ -78,9 +72,6 @@ public class InfoUI extends MDialog implements BlurListener {
         labelStatus = new JLabel();
         gioiThieu = new GioiThieu(properties);
 
-        //======== this ========
-        Container contentPane = getContentPane();
-        contentPane.setLayout(null);
 
         title.setBackground(ColorConstants.THEME_COLOR);
         title.setLayout(null);
@@ -95,13 +86,13 @@ public class InfoUI extends MDialog implements BlurListener {
         buttonClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                close();
+                hide();
             }
         });
         title.add(buttonClose);
-        buttonClose.setBound(310, 10, 25, 25);
+        buttonClose.setBounds(310, 10, 25, 25);
 
-        contentPane.add(title);
+        container.add(title);
         title.setBounds(0, 0, 340, 45);
 
         panelCover.setLayout(null);
@@ -126,14 +117,14 @@ public class InfoUI extends MDialog implements BlurListener {
             }
         });
         panelCover.add(labelEdit);
-        labelEdit.setBound(70, 120, 30, 30);
+        labelEdit.setBounds(70, 120, 30, 30);
 
         //---- labelCover ----
         panelCover.add(labelCover);
         labelCover.setBounds(0, 0, 100, 150);
 
 
-        contentPane.add(panelCover);
+        container.add(panelCover);
         panelCover.setBounds(5, 50, 100, 150);
 
         //---- buttonConfig ----
@@ -144,8 +135,8 @@ public class InfoUI extends MDialog implements BlurListener {
                 doConfig();
             }
         });
-        contentPane.add(buttonConfig);
-        buttonConfig.setBound(10, 215, 100, 35);
+        container.add(buttonConfig);
+        buttonConfig.setBounds(10, 215, 100, 35);
 
         //---- buttonText ----
         buttonText.setText("Xuất Text");
@@ -155,8 +146,8 @@ public class InfoUI extends MDialog implements BlurListener {
                 exportText();
             }
         });
-        contentPane.add(buttonText);
-        buttonText.setBound(115, 215, 100, 35);
+        container.add(buttonText);
+        buttonText.setBounds(115, 215, 100, 35);
 
         //---- buttonExport ----
         buttonExport.setText("Xuất Ebook");
@@ -166,49 +157,49 @@ public class InfoUI extends MDialog implements BlurListener {
                 exportEbook();
             }
         });
-        contentPane.add(buttonExport);
-        buttonExport.setBound(225, 215, 100, 35);
+        container.add(buttonExport);
+        buttonExport.setBounds(225, 215, 100, 35);
 
         //---- labelName ----
         labelName.setText("Tên truyện");
         labelName.setFont(FontConstants.textNomal);
-        contentPane.add(labelName);
+        container.add(labelName);
         labelName.setBounds(115, 50, 220, 20);
-        textFieldName = new MTextField(115, 75, 220, 30);
+        textFieldName = new TextField(115, 75, 220, 30);
         textFieldName.setText(properties.getName());
-        contentPane.add(textFieldName);
+        container.add(textFieldName);
 
 
         //---- labelAuthor ----
         labelAuthor.setText("Tác giả");
         labelAuthor.setFont(FontConstants.textNomal);
-        contentPane.add(labelAuthor);
+        container.add(labelAuthor);
         labelAuthor.setBounds(115, 110, 220, 20);
-        textFieldAuthor = new MTextField(115, 135, 220, 30);
+        textFieldAuthor = new TextField(115, 135, 220, 30);
         textFieldAuthor.setText(properties.getAuthor());
-        contentPane.add(textFieldAuthor);
+        container.add(textFieldAuthor);
         //----GioiThieu----
-        contentPane.add(gioiThieu);
+        container.add(gioiThieu);
         gioiThieu.addBlurListener(this);
         gioiThieu.setBounds(115, 170, 220, 30);
 
         //---- labelStatus ----
         labelStatus.setFont(FontConstants.textNomal);
-        contentPane.add(labelStatus);
+        container.add(labelStatus);
         labelStatus.setBounds(115, 170, 220, 30);
         try {
             if (new File(properties.getSavePath() + Constants.l + "data" + Constants.l + "cover.jpg").exists())
                 setCover(new FileInputStream(properties.getSavePath() + Constants.l + "data" + Constants.l + "cover.jpg"));
         } catch (FileNotFoundException e) {
         }
-
+        this.setSize(340, 265);
     }
 
     private void doConfig() {
         properties.setName(textFieldName.getText());
         properties.setAuthor(textFieldAuthor.getText());
         ConfigUI configUI = new ConfigUI(properties);
-        configUI.addBlurListener(this);
+        configUI.setBlurListener(this);
         setBlur(true);
         configUI.setVisible(true);
     }
@@ -217,7 +208,7 @@ public class InfoUI extends MDialog implements BlurListener {
         properties.setName(textFieldName.getText());
         properties.setAuthor(textFieldAuthor.getText());
         ExportText export = new ExportText(properties);
-        export.addBlurListener(this);
+        export.setBlurListener(this);
         setBlur(true);
         export.setVisible(true);
     }
@@ -226,7 +217,7 @@ public class InfoUI extends MDialog implements BlurListener {
         properties.setName(textFieldName.getText());
         properties.setAuthor(textFieldAuthor.getText());
         ExportEbook export = new ExportEbook(properties);
-        export.addBlurListener(this);
+        export.setBlurListener(this);
         setBlur(true);
         export.setVisible(true);
     }
@@ -260,7 +251,7 @@ public class InfoUI extends MDialog implements BlurListener {
     }
 }
 
-class GioiThieu extends MPanel {
+class GioiThieu extends Panel {
     private JLabel labelName;
     private CircleButton buttonEdit;
     private SelectButton btSelect;
@@ -294,11 +285,11 @@ class GioiThieu extends MPanel {
             }
         });
         add(buttonEdit);
-        buttonEdit.setBound(160, 0, 30, 30);
+        buttonEdit.setBounds(160, 0, 30, 30);
         buttonEdit.setVisible(false);
         btSelect.setSelected(false);
         add(btSelect);
-        btSelect.setBound(190, 0, 30, 30);
+        btSelect.setBounds(190, 0, 30, 30);
         btSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -328,7 +319,7 @@ class GioiThieu extends MPanel {
 
     private void doEdit() {
         EditDialog editDialog = new EditDialog("Giới thiệu", properties.getGioiThieu(), SyntaxConstants.SYNTAX_STYLE_HTML);
-        editDialog.addBlurListener(blurListener);
+        editDialog.setBlurListener(blurListener);
         editDialog.setVisible(true);
         properties.setGioiThieu(editDialog.getText());
         if (properties.isAddGt())

@@ -1,7 +1,7 @@
 package dark.leech.text.gui;
 
 import dark.leech.text.action.History;
-import dark.leech.text.gui.components.MScrollBar;
+import dark.leech.text.gui.components.ScrollPane;
 import dark.leech.text.listeners.AddListener;
 import dark.leech.text.listeners.RemoveListener;
 import dark.leech.text.models.Properties;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class HomeUI extends JPanel implements AddListener, RemoveListener, DropTargetListener{
     private JPanel download;
-    private JScrollPane ScrollPane;
+    private JScrollPane scrollPane;
 
     public HomeUI() {
         initComponents();
@@ -30,19 +30,14 @@ public class HomeUI extends JPanel implements AddListener, RemoveListener, DropT
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        ScrollPane = new JScrollPane(download);
-        ScrollPane.setBackground(Color.WHITE);
-        JScrollBar sb = ScrollPane.getVerticalScrollBar();
-        sb.setUI(new MScrollBar());
-        sb.setPreferredSize(new Dimension(10, 0));
+        scrollPane = new JScrollPane(download);
 
         JPanel demo = new JPanel();
         demo.setBackground(Color.WHITE);
         download.add(demo, gbc);
 
-        ScrollPane.setBorder(null);
-        add(ScrollPane);
-        ScrollPane.setBounds(0, 55, 390, 475);
+        add(scrollPane);
+        scrollPane.setBounds(0, 55, 390, 475);
         new DropTarget(this, this);
     }
 

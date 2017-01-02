@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by Long on 9/23/2016.
  */
-public class DropShadowPopupMenu extends JPopupMenu {
+public class PopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
     private transient BufferedImage shadow;
     private Border border;
@@ -62,7 +62,7 @@ public class DropShadowPopupMenu extends JPopupMenu {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Window pop = SwingUtilities.getWindowAncestor(DropShadowPopupMenu.this);
+                Window pop = SwingUtilities.getWindowAncestor(PopupMenu.this);
                 if (pop instanceof JWindow) {
                     pop.setBackground(new Color(0x0, true)); //JDK 1.7.0
                 }

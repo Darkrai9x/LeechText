@@ -25,11 +25,11 @@ public class CircleButton extends JButton {
         setVerticalAlignment(SwingConstants.CENTER);
     }
 
-    public void setBound(int x, int y, int w, int h) {
-        setBounds(x, y, w, h);
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
         Color bc = ColorConstants.BUTTON_CLICK;
         Color background = new Color(bc.getRed(), bc.getGreen(), bc.getBlue(), 100);
-        StyledButtonUI styledButton = new StyledButtonUI(new Dimension(w, h), true);
+        ButtonUI styledButton = new ButtonUI(true);
         styledButton.setRolloverBackground(background);
         setUI(styledButton);
     }

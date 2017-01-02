@@ -8,31 +8,30 @@ import dark.leech.text.constant.SettingConstants;
 import dark.leech.text.getter.Informations;
 import dark.leech.text.getter.List;
 import dark.leech.text.gui.components.CircleWait;
-import dark.leech.text.gui.components.MDialog;
+import dark.leech.text.gui.components.Dialog;
 import dark.leech.text.gui.components.MListDialog;
-import dark.leech.text.gui.components.MTextField;
+import dark.leech.text.gui.components.TextField;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.listeners.AddListener;
 import dark.leech.text.models.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class AddDialog extends MDialog {
+public class AddDialog extends Dialog {
 
     private JLabel labelName;
     private JLabel labelAuthor;
     private JLabel labelChap;
-    private MTextField tfName;
-    private MTextField tfAuthor;
-    private MTextField tfChap;
+    private TextField tfName;
+    private TextField tfAuthor;
+    private TextField tfChap;
     private BasicButton showChap;
     private BasicButton ok;
     private BasicButton cancel;
-    private CircleWait Wait;
+    private CircleWait circleWait;
     private String url;
     private Informations informations;
     private Properties properties;
@@ -40,16 +39,7 @@ public class AddDialog extends MDialog {
 
     public AddDialog(String url) {
         this.url = url;
-        setSize(300, 260);
-        setCenter();
-        display();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gui();
-                repaint();
-            }
-        }).start();
+        onCreate();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -58,44 +48,39 @@ public class AddDialog extends MDialog {
         }).start();
     }
 
+
     public AddDialog(Properties properties) {
         this.properties = properties;
-        setSize(300, 260);
-        setCenter();
-        display();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                gui();
-                tfName.setTextFieldEnabled(true);
-                tfName.setText(properties.getName());
-                tfAuthor.setTextFieldEnabled(true);
-                tfAuthor.setText(properties.getAuthor());
-                showChap.setVisible(true);
-                tfChap.setTextFieldEnabled(true);
-                tfChap.setText("1-" + Integer.toString(properties.getSize()));
-                showChap.setVisible(true);
-                ok.setEnabled(true);
-                Wait.stopWait();
-            }
-        }).start();
+        onCreate();
+
+        tfName.setTextFieldEnabled(true);
+        tfName.setText(properties.getName());
+        tfAuthor.setTextFieldEnabled(true);
+        tfAuthor.setText(properties.getAuthor());
+        showChap.setVisible(true);
+        tfChap.setTextFieldEnabled(true);
+        tfChap.setText("1-" + Integer.toString(properties.getSize()));
+        showChap.setVisible(true);
+        ok.setEnabled(true);
+        circleWait.stopWait();
+
     }
 
-    private void gui() {
+    @Override
+    protected void onCreate() {
+        super.onCreate();
         labelName = new JLabel();
         labelAuthor = new JLabel();
         labelChap = new JLabel();
-        tfName = new MTextField(10, 35, 280, 37);
-        tfAuthor = new MTextField(10, 100, 280, 37);
-        tfChap = new MTextField(10, 165, 200, 37);
-        Container ContentPane = getContentPane();
-        ContentPane.setLayout(null);
-        Wait = new CircleWait(getPreferredSize());
-        JLayer<JPanel> layer = Wait.getJlayer();
+        tfName = new TextField(10, 35, 280, 37);
+        tfAuthor = new TextField(10, 100, 280, 37);
+        tfChap = new TextField(10, 165, 200, 37);
+        circleWait = new CircleWait(getPreferredSize());
+        JLayer<JPanel> layer = circleWait.getJlayer();
         add(layer);
         layer.setBounds(0, 0, 300, 260);
 
-        Wait.startWait();
+        circleWait.startWait();
         // ---- button1 ----
         ok = new BasicButton();
         ok.setText("OK");
@@ -105,9 +90,9 @@ public class AddDialog extends MDialog {
                 actionAdd();
             }
         });
-        ContentPane.add(ok);
+        container.add(ok);
         ok.setEnabled(false);
-        ok.setBound(10, 210, 110, 35);
+        ok.setBounds(10, 210, 110, 35);
 
         // ---- button2 ----
         cancel = new BasicButton();
@@ -118,32 +103,32 @@ public class AddDialog extends MDialog {
                 close();
             }
         });
-        ContentPane.add(cancel);
-        cancel.setBound(180, 210, 110, 35);
+        container.add(cancel);
+        cancel.setBounds(180, 210, 110, 35);
 
         labelName.setText("Tên truyện");
         labelName.setFont(FontConstants.textNomal);
-        ContentPane.add(labelName);
+        container.add(labelName);
         labelName.setBounds(10, 10, 280, 25);
         tfName.setTextFieldEnabled(false);
-        ContentPane.add(tfName);
+        container.add(tfName);
 
         labelAuthor.setText("Tác giả");
         labelAuthor.setFont(FontConstants.textNomal);
-        ContentPane.add(labelAuthor);
+        container.add(labelAuthor);
         labelAuthor.setBounds(10, 75, 280, 25);
         tfAuthor.setTextFieldEnabled(false);
-        ContentPane.add(tfAuthor);
+        container.add(tfAuthor);
 
         labelChap.setText("Danh sách chương");
         labelChap.setFont(FontConstants.textNomal);
-        ContentPane.add(labelChap);
+        container.add(labelChap);
         labelChap.setBounds(10, 140, 280, 25);
         tfChap.setTextFieldEnabled(false);
-        ContentPane.add(tfChap);
+        container.add(tfChap);
         showChap = new BasicButton();
         showChap.setText("Xem DS");
-        showChap.setBound(220, 165, 70, 37);
+        showChap.setBounds(220, 165, 70, 37);
         showChap.setVisible(false);
         showChap.addActionListener(new ActionListener() {
             @Override
@@ -151,8 +136,8 @@ public class AddDialog extends MDialog {
                 actionShow();
             }
         });
-        ContentPane.add(showChap);
-        ContentPane.setBackground(Color.WHITE);
+        container.add(showChap);
+        this.setSize(300, 260);
     }
 
     public Properties getProperties() {
@@ -178,7 +163,7 @@ public class AddDialog extends MDialog {
         tfChap.setText("1-" + Integer.toString(properties.getSize()));
         showChap.setVisible(true);
         ok.setEnabled(true);
-        Wait.stopWait();
+        circleWait.stopWait();
     }
 
     private void actionAdd() {
@@ -212,7 +197,7 @@ public class AddDialog extends MDialog {
             list = new MListDialog(properties.getPageList(), tfChap.getText(), true);
         else
             list = new MListDialog(properties.getChapList(), tfChap.getText());
-        list.addBlurListener(this);
+        list.setBlurListener(this);
         list.setVisible(true);
         tfChap.setText(list.getParseList());
     }

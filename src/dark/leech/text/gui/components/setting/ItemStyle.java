@@ -2,8 +2,9 @@ package dark.leech.text.gui.components.setting;
 
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.FontConstants;
+import dark.leech.text.constant.StringConstants;
 import dark.leech.text.gui.components.EditDialog;
-import dark.leech.text.gui.components.MPanel;
+import dark.leech.text.gui.components.Panel;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.button.SelectButton;
 
@@ -14,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ItemStyle extends MPanel {
+public class ItemStyle extends Panel {
     private JLabel labelTitle;
     private JLabel labelInfo;
     private SelectButton btSelect;
@@ -98,23 +99,23 @@ public class ItemStyle extends MPanel {
                 setSelected(!selected);
             }
         });
-        btSelect.setBound(335, 15, 30, 30);
+        btSelect.setBounds(335, 15, 30, 30);
 
         // ---- labelEdit ----
-        Edit = new CircleButton("\ue254");
+        Edit = new CircleButton(StringConstants.EDIT);
         Edit.setForeground(ColorConstants.THEME_COLOR);
         Edit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EditDialog edit = new EditDialog(name, text, style);
-                edit.setVisible(true);
+                edit.open();
                 text = edit.getText();
             }
         });
         Edit.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(Edit);
-        Edit.setBound(300, 15, 30, 30);
-        addMouseListener(new MouseAdapter() {
+        Edit.setBounds(300, 15, 30, 30);
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 setSelected(!selected);

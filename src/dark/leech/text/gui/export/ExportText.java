@@ -4,10 +4,10 @@ import dark.leech.text.action.export.Text;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
-import dark.leech.text.gui.components.MCheckBox;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MProgressBar;
-import dark.leech.text.gui.components.MSelectBox;
+import dark.leech.text.gui.components.CheckBox;
+import dark.leech.text.gui.components.Dialog;
+import dark.leech.text.gui.components.ProgressBar;
+import dark.leech.text.gui.components.SelectBox;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
 import dark.leech.text.gui.components.notification.BasicNotification;
@@ -28,29 +28,25 @@ import java.io.IOException;
 /**
  * Created by Long on 9/10/2016.
  */
-public class ExportText extends MDialog implements BlurListener, ProgressListener, ChangeListener {
+public class ExportText extends Dialog implements BlurListener, ProgressListener, ChangeListener {
     private JPanel title;
     private JLabel labelTitle;
     private CloseButton buttonClose;
-    private MSelectBox panelType;
-    private MSelectBox panelType2;
-    private MCheckBox checkBoxToc;
+    private SelectBox panelType;
+    private SelectBox panelType2;
+    private CheckBox checkBoxToc;
     private BasicButton buttonOk;
-    private MProgressBar progressBar;
+    private ProgressBar progressBar;
     private Properties properties;
 
     public ExportText(Properties properties) {
         this.properties = properties;
         setSize(245, 255);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+
                 gui();
 
-            }
-        }).start();
-        setCenter();
-        display();
+
+
     }
 
     private void gui() {
@@ -58,7 +54,7 @@ public class ExportText extends MDialog implements BlurListener, ProgressListene
         labelTitle = new JLabel();
         buttonClose = new CloseButton();
         buttonOk = new BasicButton();
-        progressBar = new MProgressBar();
+        progressBar = new ProgressBar();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -78,17 +74,17 @@ public class ExportText extends MDialog implements BlurListener, ProgressListene
         buttonClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                close();
+                hide();
             }
         });
         title.add(buttonClose);
-        buttonClose.setBound(215, 10, 25, 25);
+        buttonClose.setBounds(215, 10, 25, 25);
 
         contentPane.add(title);
         title.setBounds(0, 0, 245, 45);
 
         //---- panelType ----
-        panelType = new MSelectBox("Định dạng xuất", new String[]{"HTML", "TXT"}, 0);
+        panelType = new SelectBox("Định dạng xuất", new String[]{"HTML", "TXT"}, 0);
         panelType.addChangeListener(this);
         panelType.addBlurListener(this);
         contentPane.add(panelType);
@@ -96,12 +92,12 @@ public class ExportText extends MDialog implements BlurListener, ProgressListene
 
 
         //---- panelType2 ----
-        panelType2 = new MSelectBox("Kiểu xuất", new String[]{"Tách", "Gộp"}, 0);
+        panelType2 = new SelectBox("Kiểu xuất", new String[]{"Tách", "Gộp"}, 0);
         panelType2.addBlurListener(this);
         contentPane.add(panelType2);
         panelType2.setBounds(15, 95, 200, 30);
 
-        checkBoxToc = new MCheckBox("Đính kèm mục lục");
+        checkBoxToc = new CheckBox("Đính kèm mục lục");
         contentPane.add(checkBoxToc);
         checkBoxToc.setBounds(15, 130, 200, 30);
         checkBoxToc.setVisible(panelType.getSelectIndex() == 0 ? true : false);
@@ -119,7 +115,7 @@ public class ExportText extends MDialog implements BlurListener, ProgressListene
             }
         });
         contentPane.add(buttonOk);
-        buttonOk.setBound(15, 210, 210, 35);
+        buttonOk.setBounds(15, 210, 210, 35);
         progressBar.setPercent(0);
         contentPane.add(progressBar);
         progressBar.setBounds(15, 210, 210, 35);
@@ -155,7 +151,7 @@ public class ExportText extends MDialog implements BlurListener, ProgressListene
     public void setProgress(int value, String string) {
         progressBar.setPercent(value);
         if (value == 100)
-            close();
+            hide();
     }
 
     @Override

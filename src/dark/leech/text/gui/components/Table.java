@@ -12,9 +12,9 @@ import java.util.ArrayList;
 /**
  * Created by Long on 9/10/2016.
  */
-public class MTable extends JTable {
+public class Table extends JTable {
 
-    public MTable(ArrayList<Chapter> chapter) {
+    public Table(ArrayList<Chapter> chapter) {
         this();
         Object[][] data = new Object[chapter.size()][4];
         for (int i = 0; i < chapter.size(); i++) {
@@ -50,7 +50,7 @@ public class MTable extends JTable {
         }
     }
 
-    public MTable() {
+    public Table() {
         setTableHeader(null);
         setShowGrid(false);
         setRowHeight(25);

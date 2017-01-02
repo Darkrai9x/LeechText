@@ -10,11 +10,11 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Long on 9/10/2016.
  */
-public class MCheckBox extends MPanel {
+public class CheckBox extends Panel {
     private String name;
     private MLabelCheckBox checkbox;
 
-    public MCheckBox(String name) {
+    public CheckBox(String name) {
         this.name = name;
         gui();
     }

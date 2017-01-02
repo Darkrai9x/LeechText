@@ -5,10 +5,10 @@ import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
 import dark.leech.text.constant.TypeConstants;
-import dark.leech.text.gui.components.MCheckBox;
-import dark.leech.text.gui.components.MDialog;
-import dark.leech.text.gui.components.MProgressBar;
-import dark.leech.text.gui.components.MSelectBox;
+import dark.leech.text.gui.components.CheckBox;
+import dark.leech.text.gui.components.Dialog;
+import dark.leech.text.gui.components.ProgressBar;
+import dark.leech.text.gui.components.SelectBox;
 import dark.leech.text.gui.components.button.BasicButton;
 import dark.leech.text.gui.components.button.CloseButton;
 import dark.leech.text.gui.components.notification.BasicNotification;
@@ -29,32 +29,28 @@ import java.io.IOException;
 /**
  * Created by Long on 9/10/2016.
  */
-public class ExportEbook extends MDialog implements BlurListener, ProgressListener {
+public class ExportEbook extends Dialog implements BlurListener, ProgressListener {
 
     private JPanel title;
     private JLabel labelTitle;
     private CloseButton buttonClose;
-    private MSelectBox panelTool;
-    private MSelectBox panelType;
-    private MSelectBox panelComp;
-    private MCheckBox cbSplit;
-    private MCheckBox cbInclude;
+    private SelectBox panelTool;
+    private SelectBox panelType;
+    private SelectBox panelComp;
+    private CheckBox cbSplit;
+    private CheckBox cbInclude;
     private BasicButton buttonOk;
-    private MProgressBar progressBar;
+    private ProgressBar progressBar;
     private JLabel labelProgress;
     private Properties properties;
 
     public ExportEbook(Properties properties) {
         this.properties = properties;
         setSize(245, 300);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+
                 gui();
-            }
-        }).start();
-        setCenter();
-        display();
+
+
     }
 
     private void gui() {
@@ -62,7 +58,7 @@ public class ExportEbook extends MDialog implements BlurListener, ProgressListen
         labelTitle = new JLabel();
         buttonClose = new CloseButton();
         buttonOk = new BasicButton();
-        progressBar = new MProgressBar();
+        progressBar = new ProgressBar();
         labelProgress = new JLabel();
 
         //======== this ========
@@ -84,11 +80,11 @@ public class ExportEbook extends MDialog implements BlurListener, ProgressListen
             buttonClose.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    close();
+                    hide();
                 }
             });
             title.add(buttonClose);
-            buttonClose.setBound(215, 10, 25, 25);
+            buttonClose.setBounds(215, 10, 25, 25);
 
         }
         contentPane.add(title);
@@ -96,7 +92,7 @@ public class ExportEbook extends MDialog implements BlurListener, ProgressListen
 
         //---- panelType2 ----
 
-        panelTool = new MSelectBox("Công cụ", new String[]{"Mặc định", "Calibre"}, 0);
+        panelTool = new SelectBox("Công cụ", new String[]{"Mặc định", "Calibre"}, 0);
         panelTool.addChangeListener(new ChangeListener() {
             @Override
             public void doChanger() {
@@ -108,7 +104,7 @@ public class ExportEbook extends MDialog implements BlurListener, ProgressListen
         panelTool.setBounds(10, 90, 215, 30);
 
         //---- panelType ----
-        panelType = new MSelectBox("Định dạng xuất", new String[]{"EPUB", "MOBI", "AZW3", "PDF"}, 0);
+        panelType = new SelectBox("Định dạng xuất", new String[]{"EPUB", "MOBI", "AZW3", "PDF"}, 0);
         panelType.addChangeListener(new ChangeListener() {
             @Override
             public void doChanger() {
@@ -122,18 +118,18 @@ public class ExportEbook extends MDialog implements BlurListener, ProgressListen
 
 
         //---- panelType3 ----
-        panelComp = new MSelectBox("Mức nén", new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"}, 8);
+        panelComp = new SelectBox("Mức nén", new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"}, 8);
         panelComp.addBlurListener(this);
         contentPane.add(panelComp);
         panelComp.setBounds(10, 125, 215, 30);
 
         //---- checkBox1 ----
-        cbSplit = new MCheckBox("Tự động chia quyển");
+        cbSplit = new CheckBox("Tự động chia quyển");
         contentPane.add(cbSplit);
         cbSplit.setBounds(10, 160, 215, 30);
 
         //
-        cbInclude = new MCheckBox("Chèn chương ảnh");
+        cbInclude = new CheckBox("Chèn chương ảnh");
         contentPane.add(cbInclude);
         cbInclude.setBounds(10, 195, 215, 30);
 //
@@ -151,7 +147,7 @@ public class ExportEbook extends MDialog implements BlurListener, ProgressListen
             }
         });
         contentPane.add(buttonOk);
-        buttonOk.setBound(15, 250, 210, 35);
+        buttonOk.setBounds(15, 250, 210, 35);
         contentPane.add(progressBar);
         progressBar.setBounds(15, 250, 210, 35);
         progressBar.setVisible(false);

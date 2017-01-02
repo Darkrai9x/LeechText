@@ -4,10 +4,11 @@ import dark.leech.text.action.Download;
 import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
+import dark.leech.text.constant.StringConstants;
 import dark.leech.text.enums.State;
 import dark.leech.text.gui.components.CircleWait;
-import dark.leech.text.gui.components.MPanel;
-import dark.leech.text.gui.components.MProgressBar;
+import dark.leech.text.gui.components.Panel;
+import dark.leech.text.gui.components.ProgressBar;
 import dark.leech.text.gui.components.button.CircleButton;
 import dark.leech.text.gui.components.notification.BasicNotification;
 import dark.leech.text.listeners.DownloadListener;
@@ -25,8 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class DownloadUI extends MPanel implements DownloadListener {
-    private MProgressBar load;
+public class DownloadUI extends Panel implements DownloadListener {
+    private ProgressBar load;
     private JLabel labelName;
     private JLabel labelStatus;
     private JLabel labelPercent;
@@ -136,7 +137,7 @@ public class DownloadUI extends MPanel implements DownloadListener {
 
     private void gui() {
         panelCover = new JLabel();
-        load = new MProgressBar();
+        load = new ProgressBar();
         labelName = new JLabel();
         labelStatus = new JLabel();
         labelPercent = new JLabel();
@@ -195,10 +196,10 @@ public class DownloadUI extends MPanel implements DownloadListener {
             }
         });
         add(labelPR);
-        labelPR.setBound(310, 5, 30, 30);
+        labelPR.setBounds(310, 5, 30, 30);
 
         // ---- labelInfo ----
-        labelInfo = new CircleButton("", 20f);
+        labelInfo = new CircleButton(StringConstants.ADD, 20f);
         labelInfo.setForeground(ColorConstants.THEME_COLOR);
         labelInfo.addActionListener(new ActionListener() {
             @Override
@@ -208,10 +209,10 @@ public class DownloadUI extends MPanel implements DownloadListener {
             }
         });
         add(labelInfo);
-        labelInfo.setBound(310, 5, 30, 30);
+        labelInfo.setBounds(310, 5, 30, 30);
         labelInfo.setVisible(false);
         // ---- labelDelete ----
-        labelDelete = new CircleButton("\ue5cd", 20f);
+        labelDelete = new CircleButton(StringConstants.DELETE, 20f);
         labelDelete.setForeground(ColorConstants.THEME_COLOR);
         labelDelete.addActionListener(new ActionListener() {
             @Override
@@ -220,7 +221,7 @@ public class DownloadUI extends MPanel implements DownloadListener {
             }
         });
         add(labelDelete);
-        labelDelete.setBound(345, 5, 30, 30);
+        labelDelete.setBounds(345, 5, 30, 30);
         setPreferredSize(new Dimension(375, 90));
     }
 

@@ -8,7 +8,8 @@ import java.awt.*;
 
 public class App {
 
-    public static MainUI M;
+    public static MainUI mainFrame;
+    private static int blurCount;
 
     static {
         Constants.l = "/";
@@ -26,10 +27,10 @@ public class App {
                 } catch (Exception ex) {
                 }
                 new Settings().doLoad();
-                M = new MainUI();
-                M.flyIn();
-                M.setVisible(true);
-                Constants.LOCATION = new Point(M.getLocation().x, M.getLocation().y + 20);
+                mainFrame = new MainUI();
+                mainFrame.flyIn();
+                mainFrame.setVisible(true);
+                Constants.LOCATION = new Point(mainFrame.getLocation().x, mainFrame.getLocation().y + 20);
             }
         });
 
@@ -37,7 +38,9 @@ public class App {
     }
 
     public static void blur(boolean bl) {
-        M.getRootPane().getGlassPane().setVisible(bl);
+        if (blurCount == 0 || blurCount == 1)
+            mainFrame.getRootPane().getGlassPane().setVisible(bl);
+        blurCount += bl ? 1 : -1;
     }
 
 

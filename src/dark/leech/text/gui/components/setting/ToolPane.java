@@ -4,7 +4,7 @@ import dark.leech.text.constant.ColorConstants;
 import dark.leech.text.constant.Constants;
 import dark.leech.text.constant.FontConstants;
 import dark.leech.text.gui.App;
-import dark.leech.text.gui.components.MPanel;
+import dark.leech.text.gui.components.Panel;
 import dark.leech.text.gui.components.button.CircleButton;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 /**
  * Code by Darkrai on 8/23/2016.
  */
-public class ToolPane extends MPanel {
+public class ToolPane extends Panel {
     private JLabel labelPath;
     private boolean selectDirectory = false;
 
@@ -40,7 +40,7 @@ public class ToolPane extends MPanel {
         buttonEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FileDialog f = new FileDialog(App.M, "Chọn đường dẫn", type);
+                FileDialog f = new FileDialog(App.mainFrame, "Chọn đường dẫn", type);
                 if (type == FileDialog.SAVE)
                     f.setFile("LeechText");
                 f.setModal(true);
@@ -52,7 +52,7 @@ public class ToolPane extends MPanel {
             }
         });
         add(buttonEdit);
-        buttonEdit.setBound(335, 15, 30, 30);
+        buttonEdit.setBounds(335, 15, 30, 30);
         setBackground(Color.white);
         setPreferredSize(new Dimension(370, 60));
         setLayout(null);
