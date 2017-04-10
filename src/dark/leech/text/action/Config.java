@@ -1,9 +1,8 @@
 package dark.leech.text.action;
 
-import dark.leech.text.constant.Constants;
 import dark.leech.text.listeners.TableListener;
 import dark.leech.text.models.Chapter;
-import dark.leech.text.models.FileAction;
+import dark.leech.text.util.FileUtils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -34,7 +33,7 @@ public class Config {
     public ArrayList<Chapter> checkImg() {
         ArrayList<Chapter> imgList = new ArrayList<Chapter>();
         for (int i = 0; i < chapList.size(); i++) {
-            if (chapList.get(i).isImgChap())
+            if (chapList.get(i).isImageChapter())
                 imgList.add(chapList.get(i));
         }
         return imgList;
@@ -50,7 +49,7 @@ public class Config {
         return nameList;
     }
 
-    private void splitPartName(Chapter chapter) {
+    private void splitPartName(Chapter chapter) throws Exception {
         if (chapter.getPartName().length() > 1) return;
         String regex = "((Quy.n |Q.|Q)\\d+\\s*[:-](.*?)*)\\s*(([Cc]h..ng|Hồi)\\s+\\d+)";
         if (findMatchs(chapter.getChapName(), "(Quy.n |Q\\.|Q)\\d+([\\+\\.-]\\d+|)") == 1) {
@@ -65,27 +64,31 @@ public class Config {
 
     public void autoFixName() {
         for (int i = 0; i < chapList.size(); i++) {
-            Chapter chapter = new Chapter(chapList.get(i).getUrl(), chapList.get(i).getId(), chapList.get(i).getPartName(), chapList.get(i).getChapName());
-            splitPartName(chapter);
-            chapter.setChapName(fixName(chapter.getChapName()));
-            chapter.setPartName(fixName(chapter.getPartName()));
-            tableListener.updateData(i, chapter);
+            try {
+                Chapter chapter = new Chapter(chapList.get(i).getUrl(), chapList.get(i).getId(), chapList.get(i).getPartName(), chapList.get(i).getChapName());
+                splitPartName(chapter);
+                chapter.setChapName(fixName(chapter.getChapName()));
+                chapter.setPartName(fixName(chapter.getPartName()));
+                tableListener.updateData(i, chapter);
+            } catch (Exception e) {
+            }
         }
     }
 
     private String fixName(String name) {
+        if (name == null) return "";
         if (name.length() == 0) return name;
         name = name.replaceAll("Chương \\d+\\s*[:-]\\s*(Chương \\d+.*?$)", "$1")
-                .replaceAll("^Hồi (\\d+)", "Chương $1")
+                .replaceAll("^([hH]ồi|[đĐ]ệ) (\\d+)", "Chương $1")
                 .replaceAll("(\\d+) [Cc]h..ng", "Chương $1")
                 .replaceAll("\\s+", " ")
-                .replaceAll("Chương (\\d+)\\s*[-\\+]\\s*(\\d+)", "Chương $1+$2")
+                .replaceAll("Chương (\\d+)\\s*[-\\+:]\\s*(\\d+)", "Chương $1+$2")
                 .replaceAll("(Chương \\d+)\\s*[;:-]+\\s*", "$1: ")
                 .replaceAll("(Chương \\d+\\+\\d+)\\s*[;:-]+\\s*", "$1: ");
         return name;
     }
 
-    private String UpperFirst(String name) {
+    private String upperFirst(String name) {
         name = name.toLowerCase();
         char[] ch = name.toCharArray();
         ch[0] = Character.toUpperCase(ch[0]);
@@ -98,30 +101,35 @@ public class Config {
 
     public void Optimize() {
         for (int i = 0; i < chapList.size(); i++) {
-            Chapter chapter = new Chapter(chapList.get(i).getUrl(), chapList.get(i).getId(), chapList.get(i).getPartName(), chapList.get(i).getChapName());
-            chapter.setChapName(Optimize(chapter.getChapName()));
-            chapter.setPartName(Optimize(chapter.getPartName()));
-            tableListener.updateData(i, chapter);
+            try {
+                Chapter chapter = new Chapter(chapList.get(i).getUrl(), chapList.get(i).getId(), chapList.get(i).getPartName(), chapList.get(i).getChapName());
+                chapter.setChapName(Optimize(chapter.getChapName()));
+                chapter.setPartName(Optimize(chapter.getPartName()));
+                tableListener.updateData(i, chapter);
+            } catch (Exception e) {
+            }
         }
     }
 
     private String Optimize(String name) {
         if (name.length() == 0) return name;
-        name = UpperFirst(name);
+        name = upperFirst(name);
         name = fixName(name);
         return name;
     }
 
     public void downloadImg() {
         for (int i = 0; i < chapList.size(); i++) {
-            downloadImg(chapList.get(i));
-            tableListener.updateData(i, chapList.get(i));
+            try {
+                downloadImg(chapList.get(i));
+                tableListener.updateData(i, chapList.get(i));
+            } catch (Exception e) {
+            }
         }
     }
 
     private void downloadImg(Chapter chapter) {
-        FileAction fa = new FileAction();
-        String text = fa.file2string(path + Constants.l + "raw" + Constants.l + chapter.getId() + ".txt");
+        String text = FileUtils.file2string(path + "/raw/" + chapter.getId() + ".txt");
         ArrayList<String> imgList = new ArrayList<String>();
         Pattern r = Pattern.compile("<img.*?src=\"(.*?)\"", Pattern.MULTILINE);
         Matcher m = r.matcher(text);
@@ -131,14 +139,15 @@ public class Config {
             String imgPath = imgList.get(i);
             if (!imgPath.startsWith("http")) continue;
             String img = imgPath.substring(imgPath.lastIndexOf("."), imgPath.length()).toLowerCase(); //TÁch đuôi
-            text = text.replace(imgPath, "../Images/" + Integer.toString(chapter.getId()) + "_" + Integer.toString(i) + img).replace("\">", "\"/>");
-            img = path + Constants.l + "data" + Constants.l + "Images" + Constants.l + Integer.toString(chapter.getId()) + "_" + Integer.toString(i) + img;
-            fa.url2file(imgList.get(i), img);
+            text = text.replace(imgPath, "../Images/" + chapter.getId() + "_" + Integer.toString(i) + img).replace("\">", "\"/>");
+            img = path + "/data/Images/" + chapter.getId() + "_" + Integer.toString(i) + img;
+            FileUtils.url2file(imgList.get(i), img);
         }
-        fa.string2file(text, path + Constants.l + "raw" + Constants.l + chapter.getId() + ".txt");
+        FileUtils.string2file(text, path + "/raw/" + chapter.getId() + ".txt");
     }
 
     private int findMatchs(String src, String regex) {
+        if (src == null) return 0;
         Pattern r = Pattern.compile(regex);
         Matcher m = r.matcher(src);
         int match = 0;
@@ -149,6 +158,7 @@ public class Config {
     }
 
     private String splitMatchs(String src, String regex, int group) {
+        if (src == null) return "";
         Pattern r = Pattern.compile(regex);
         Matcher m = r.matcher(src);
         String math = "";

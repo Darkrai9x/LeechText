@@ -1,28 +1,34 @@
 package dark.leech.text.action;
 
-import dark.leech.text.enums.State;
-import dark.leech.text.getter.Chap;
-import dark.leech.text.getter.Page;
+import dark.leech.text.get.Chap;
+import dark.leech.text.get.Page;
+import dark.leech.text.listeners.ChangeListener;
 import dark.leech.text.listeners.DownloadListener;
 import dark.leech.text.models.Chapter;
 import dark.leech.text.models.Pager;
 import dark.leech.text.models.Properties;
+import dark.leech.text.plugin.PluginGetter;
+import dark.leech.text.plugin.PluginManager;
 
 import java.util.ArrayList;
 
-import static dark.leech.text.constant.SettingConstants.MAX_CONN;
+import static dark.leech.text.util.SettingUtils.MAX_CONN;
 
-public class Download {
-    private Properties properties;
-    private int downloaded = 0;
-    private State state;
+public class Download implements ChangeListener {
+    public static final int DOWNLOADING = 0, PAUSE = 1, COMPLETED = 2, CHECKING = 3, CANCEL = 4, ERROR = 5;
+    private DownloadListener downloadListener;
     private ArrayList<Chapter> chapList;
     private ArrayList<Pager> pageList;
+    private PluginGetter pluginGetter;
+    private Properties properties;
+    private int downloaded;
+    private int status;
     private int size;
     private int next;
-    private DownloadListener downloadListener;
 
     public Download(Properties properties) {
+        PluginManager pluginManager = PluginManager.getManager();
+        this.pluginGetter = pluginManager.get(properties.getUrl());
         this.properties = properties;
         this.chapList = properties.getChapList();
         this.pageList = properties.getPageList();
@@ -35,108 +41,101 @@ public class Download {
 
     // Status action
     public void pause() {
-        state = State.PAUSE;
-        downloadListener.updateDownload(downloaded, state);
+        status = PAUSE;
+        downloadListener.updateDownload(downloaded, status);
     }
 
     public void cancel() {
-        state = State.CANCEL;
-        downloadListener.updateDownload(downloaded, state);
+        status = CANCEL;
+        downloadListener.updateDownload(downloaded, status);
     }
 
     public void resume() {
-        state = State.DOWNLOADING;
+        status = DOWNLOADING;
         startDownload();
-        downloadListener.updateDownload(downloaded, state);
+        downloadListener.updateDownload(downloaded, status);
     }
 
     // Bắt đầu quá trình
     public void startDownload() {
-        state = State.DOWNLOADING;
-        next = MAX_CONN;
-        if (properties.isForum()) {
-            doForumDownload();
-        } else
-            for (int i = 0; i < MAX_CONN; i++)
-                doDownload(i);
+        status = DOWNLOADING;
+        next = next + MAX_CONN - 1;
+        update();
+        for (int i = 0; i < MAX_CONN; i++)
+            if (properties.isForum())
+                forum(downloaded + i);
+            else
+                web(downloaded + i);
+
     }
 
-    private synchronized int getNext() {
-        return (next = next + 1);
-    }
-
-    //download với web thường
-    private void doDownload(final int index) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                web(index);
-            }
-        }).start();
-    }
-
-    //download với forrum
-    private void doForumDownload() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < size; i++) {
-                    forum(i);
-                }
-            }
-        }).start();
-    }
 
     private void forum(final int index) {
-        if (index >= pageList.size()) return;
-        if (pageList.get(index).isGet() && !pageList.get(index).isCompleted())
-            try {
-                if (state == State.DOWNLOADING) {
-                    new Page(chapList, pageList.get(index).getUrl(), properties.getSavePath(), chapList.size()).getData();
-                    updateDownload();
-                    pageList.get(index).setCompleted(true);
-                }
-            } catch (Exception e) {
-                Log.add("Lỗi: " + e.toString());
-            }
+        if (index >= size) {
+            update();
+            return;
+        }
+        new Page()
+                .clazz(pluginGetter.PageGetter())
+                .listener(this)
+                .charset(properties.getCharset())
+                .path(properties.getSavePath())
+                .applyTo(pageList.get(index))
+                .execute();
     }
 
     private void web(final int index) {
-        if (index >= chapList.size())
+        if (index >= size) {
+            update();
             return;
-        if (chapList.get(index).isGet() && !chapList.get(index).isCompleted()) {
-            try {
-                chapList.set(index,
-                        new Chap(chapList.get(index), properties.getSavePath()).getChapter());
-                if (state == State.DOWNLOADING) {
-                    updateDownload();
-                    chapList.get(index).setCompleted(true);
-                } else return;
-            } catch (Exception e) {
-                Log.add("Lỗi: ID = " + Integer.toString(index) + " - " + e.toString());
-            }
         }
-        web(getNext() - 1);
+        new Chap()
+                .clazz(pluginGetter.ChapGetter())
+                .listener(this)
+                .charset(properties.getCharset())
+                .path(properties.getSavePath())
+                .applyTo(chapList.get(index))
+                .execute();
     }
 
-    private synchronized void updateDownload() {
-        downloaded++;
+    private void update() {
         if (downloaded >= size) {
             downloaded = size;
-            state = State.CHECKING;
+            status = CHECKING;
             check();
         }
-        downloadListener.updateDownload(downloaded, state);
+        downloadListener.updateDownload(downloaded, status);
     }
 
 
     private void check() {
-        if (!properties.isForum())
-            for (int i = 0; i < downloaded; i++)
-                if (!chapList.get(i).isCompleted()) doDownload(i);
-        state = State.COMPLETED;
-        new History().save(properties);
-        downloadListener.updateDownload(downloaded, state);
+        downloadListener.updateDownload(downloaded, status);
+        for (int i = 0; i < size; i++) {
+            if (properties.isForum())
+                if (!pageList.get(i).isCompleted())
+                    forum(i);
+                else if (!chapList.get(i).isCompleted())
+                    web(i);
+
+        }
+        status = COMPLETED;
+    }
+
+    @Override
+    public synchronized void doChanger() {
+        if (status != CHECKING) {
+            downloaded++;
+            next++;
+        }
+        if (status == DOWNLOADING) {
+            update();
+            if (next < size) {
+                if (properties.isForum())
+                    forum(next);
+                else
+                    web(next);
+            }
+        }
     }
 }
 

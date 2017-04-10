@@ -1,39 +1,42 @@
 package dark.leech.text.action.export;
 
-import dark.leech.text.constant.Constants;
-import dark.leech.text.constant.SettingConstants;
-import dark.leech.text.constant.TypeConstants;
+import dark.leech.text.action.Log;
 import dark.leech.text.listeners.ProgressListener;
-import dark.leech.text.models.*;
+import dark.leech.text.models.Chapter;
+import dark.leech.text.models.Properties;
+import dark.leech.text.models.Trash;
+import dark.leech.text.util.*;
 
 import java.util.ArrayList;
 
 /**
  * Created by Long on 9/17/2016.
  */
-public class Text extends Syntax {
+public class Text {
     private Properties properties;
     private int type;
     private boolean makeToc;
     private int tach;
     private ProgressListener progressListener;
     private String syntax;
-    private FileAction fileAction;
+    private String charset;
+
 
     public Text(Properties properties, int type, boolean makeToc, int tach) {
         this.properties = properties;
         this.type = type;
         this.makeToc = makeToc;
         this.tach = tach;
-        fileAction = new FileAction();
+        this.charset = properties.getCharset();
+
     }
 
     public void export() {
-        if (type == TypeConstants.HTML) {
-            syntax = SettingConstants.HTML;
+        if (type == TypeUtils.HTML) {
+            syntax = SettingUtils.HTML_SYNTAX.replaceAll("[Uu][Tt][Ff]-8", charset);
             exportTach(".html");
         } else {
-            syntax = SettingConstants.TXT;
+            syntax = SettingUtils.TXT_SYNTAX;
             exportTach(".txt");
         }
 
@@ -46,8 +49,7 @@ public class Text extends Syntax {
         //Tạo file gộp tach == 1
 
         if (tach == 1) {
-
-            if (type == TypeConstants.HTML) {
+            if (type == TypeUtils.HTML) {
                 String head = syntax;
                 head = head.replaceAll("<title>.*?</title>", "<title>" + properties.getName() + "</title>");
                 head = head.replaceAll("(?s)(.*?<body.*?>).*", "$1");
@@ -57,44 +59,42 @@ public class Text extends Syntax {
         if (properties.isAddGt()) {
             Chapter gt = new Chapter();
             gt.setChapName("Giới Thiệu");
-            gt.setID("gioithieu");
-            gt.setGet(true);
+            gt.setId("gioithieu");
             String text = "";
             try {
                 text = chapterReplace(gt, false);
             } catch (Exception e) {
+                Log.add(e);
             }
             if (tach == 0) {
-                String savePath = properties.getSavePath() + Constants.l + "data" + Constants.l + "Text" + Constants.l + gt.getID() + duoi;
-                fileAction.string2file(text, savePath);
+                String savePath = properties.getSavePath() + "/data/Text/" + gt.getId() + duoi;
+                FileUtils.string2file(text, savePath, charset);
             } else {
-                if (type == TypeConstants.HTML)
+                if (type == TypeUtils.HTML)
                     text = text.replaceAll("(?s).*?<body.*?>(.*?)</body>.*", "$1");
                 else text += "\n\n";
                 gop.append(text);
             }
         }
         //Tạo mục lục
-        if (makeToc && type == TypeConstants.HTML) {
+        if (makeToc && type == TypeUtils.HTML) {
             String toc = "\n<h4>Mục lục</h4>\n";
             if (tach == 0) {
                 if (properties.isAddGt())
-                    toc += "<div class=\"toc-lv2\"><a href=\"../Text/gioithieu.html\">Giới Thiệu</a></div>\n";
+                    toc += "<div class=\"lv2\"><a href=\"../Text/gioithieu.html\">Giới Thiệu</a></div>\n";
                 for (Chapter ch : chapList)
-                    if (ch.isGet())
-                        toc += "<div class=\"toc-lv2\"><a href=\"../Text/" + Integer.toString(ch.getId()) + ".html\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
+                    toc += "<div class=\"lv2\"><a href=\"../Text/" + ch.getId() + ".html\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
                 String head = syntax;
                 head = head.replaceAll("<title>.*?</title>", "<title>" + properties.getName() + "</title>");
                 head = head.replaceAll("(?s)(.*?<body.*?>).*", "$1");
                 toc = head + toc + "</body>\n</html>";
-                fileAction.string2file(toc, properties.getSavePath() + Constants.l + "data" + Constants.l + "Text" + Constants.l + "mucluc.html");
+                FileUtils.string2file(toc, properties.getSavePath() + "/data/Text/mucluc.html", charset);
 
             } else {
                 if (properties.isAddGt())
-                    toc += "<div class=\"toc-lv2\"><a href=\"#toc-gioithieu\">Giới Thiệu</a></div>\n";
+                    toc += "<div class=\"lv2\"><a href=\"#gioithieu\">Giới Thiệu</a></div>\n";
                 for (Chapter ch : chapList) {
-                    if (ch.isGet())
-                        toc += "<div class=\"toc-lv2\"><a href=\"#toc-" + Integer.toString(ch.getId()) + "\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
+                    toc += "<div class=\"lv2\"><a href=\"#" + ch.getId() + "\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
                 }
                 gop.append(toc);
             }
@@ -103,41 +103,42 @@ public class Text extends Syntax {
         int value = 0;
 
         for (Chapter ch : chapList) {
-            if (ch.isGet() && ch.isCompleted()) {
+            if (ch.isCompleted()) {
                 String text = "";
                 try {
                     text = chapterReplace(ch);
                 } catch (Exception e) {
                 }
                 if (tach == 0) {
-                    String savePath = properties.getSavePath() + Constants.l + "data" + Constants.l + "Text" + Constants.l + Integer.toString(ch.getId()) + duoi;
-                    fileAction.string2file(text, savePath);
+                    String savePath = properties.getSavePath() + "/data/Text/" + ch.getId() + duoi;
+                    FileUtils.string2file(text, savePath, charset);
                 } else {
-                    if (type == TypeConstants.HTML)
+                    if (type == TypeUtils.HTML)
                         text = text.replaceAll("(?s).*?<body.*?>(.*?)</body>.*", "$1");
                     else text += "\n\n";
                     gop.append(text);
                 }
                 value++;
-                if (progressListener != null) progressListener.setProgress(value * 100 / properties.getSize(), "");
+                if (progressListener != null)
+                    progressListener.setProgress(value * 100 / properties.getSize(), "[2/3]Xuất text...");
             }
         }
         if (tach == 1) {
-            if (type == TypeConstants.HTML)
+            if (type == TypeUtils.HTML)
                 gop.append("</body>\n</html>");
-            fileAction.string2file(gop.toString(), properties.getSavePath() + Constants.l + "out" + Constants.l + "text" + duoi);
+            FileUtils.string2file(gop.toString(), properties.getSavePath() + "/out/text" + duoi, charset);
         }
 
     }
 
     private String clearText(String text) {
-        for (Trash tr : SettingConstants.TRASH)
+        for (Trash tr : SettingUtils.TRASH)
             if (tr.isReplace()) {
                 String src = tr.getSrc().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
                 String to = tr.getTo().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
                 text = text.replaceAll(src, to);
             }
-        return text;
+        return SyntaxUtils.covertString(text);
     }
 
     private String chapterReplace(Chapter chapter) throws Exception {
@@ -145,7 +146,7 @@ public class Text extends Syntax {
     }
 
     private String chapterReplace(Chapter chapter, boolean pp) throws Exception {
-        String nd = fileAction.file2string(properties.getSavePath() + Constants.l + "raw" + Constants.l + chapter.getID() + ".txt");
+        String nd = FileUtils.file2string(properties.getSavePath() + "/raw/" + chapter.getId() + ".txt", charset);
         nd = clearText(nd);
         String text = syntax;
         //
@@ -153,16 +154,16 @@ public class Text extends Syntax {
         text = replaceString(text, properties.getAuthor(), "\\[2\\]", "AUTHOR");
         text = replaceString(text, chapter.getPartName(), "\\[3\\]", "NAME_PART");
         text = replaceString(text, chapter.getChapName(), "\\[4\\]", "NAME_CHAP");
-        text = text.replace("[ID]", chapter.getID());
+        text = text.replace("[ID]", chapter.getId());
         //replace paragraph
-        String firstTag = search(syntax, "\\[5\\](.*)\\[PARAGRAPH\\](.*)\\[5\\]", 1);
-        String lastTag = search(syntax, "\\[5\\](.*)\\[PARAGRAPH\\](.*)\\[5\\]", 2);
+        String firstTag = RegexUtils.find(syntax, "\\[5\\](.*)\\[PARAGRAPH\\](.*)\\[5\\]", 1);
+        String lastTag = RegexUtils.find(syntax, "\\[5\\](.*)\\[PARAGRAPH\\](.*)\\[5\\]", 2);
         nd = replaceDrop(nd);
         if (pp) {
             nd = nd.replace("\n", lastTag + "\n" + firstTag);
             nd = firstTag + nd + lastTag;
         }
-        text = text.replace(search(text, "(\\[5\\].*\\[PARAGRAPH\\].*\\[5\\])", 1), nd);
+        text = text.replace(RegexUtils.find(text, "(\\[5\\].*\\[PARAGRAPH\\].*\\[5\\])", 1), nd);
 
         return text;
     }
@@ -178,9 +179,9 @@ public class Text extends Syntax {
         if (text.length() == 0) return text;
         char drop = text.charAt(0);
         String newt;
-        if (SettingConstants.isDROP && type == TypeConstants.HTML)
+        if (SettingUtils.IS_DROP_SELECTED && type == TypeUtils.HTML)
             if (drop != Character.toLowerCase(drop)) {
-                newt = (SettingConstants.DROP).replace("[DROP]", String.valueOf(drop));
+                newt = (SettingUtils.DROP_SYNTAX).replace("[DROP]", String.valueOf(drop));
                 text = newt + text.substring(1, text.length());
             }
         return text;

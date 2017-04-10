@@ -15,8 +15,10 @@ public class Properties {
     private boolean forum; //Trang get có phải forum hay không
     private int size; //Số chương
     private String savePath; //Thư mục lưu
-    private  String gioiThieu;
+    private String gioiThieu;
     private boolean addGt;
+    private String charset = "UTF-8";
+    private String[] urlList;
 
     public boolean isAddGt() {
         return addGt;
@@ -113,4 +115,19 @@ public class Properties {
         this.pageList = pageList;
     }
 
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
+    public String[] getUrlList() {
+        return urlList;
+    }
+
+    public void setUrlList(String[] urlList) {
+        this.urlList = urlList;
+    }
 }

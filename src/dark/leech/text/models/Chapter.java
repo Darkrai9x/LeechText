@@ -1,25 +1,16 @@
 package dark.leech.text.models;
 
-public class Chapter {
+public class Chapter implements Cloneable{
 
     private String url; // Đường dẩn
     private String partName; // Tên quyển
     private String chapName; // Tên chương
-    private boolean get; // Cho phép lấy chương này
     private boolean completed; //Đã tải hoàn tất
     private boolean error; // Lỗi
-    private boolean imgChap;
-    private int id; // ID chương
-    private String ID;
-
-    public String getID() {
-        if (ID == null) ID = Integer.toString(getId());
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
+    private boolean empty;
+    private boolean imageChapter;
+    private String id; // ID chương
+    private boolean purchase;
 
     public Chapter() {
         this("");
@@ -34,17 +25,35 @@ public class Chapter {
     }
 
     public Chapter(String url, int id, String partName, String chapName) {
-        this(url, id, partName, chapName, false, false, false);
+        this(url, id, partName, chapName, false, false);
     }
 
-    public Chapter(String url, int id, String partName, String chapName, boolean get, boolean completed, boolean error) {
+    public Chapter(String url, int id, String partName, String chapName, boolean completed, boolean error) {
         this.url = url;
-        this.id = id;
+        this.id = "C" + Integer.toString(id);
         this.partName = partName;
         this.chapName = chapName;
-        this.get = get;
         this.error = error;
         this.completed = completed;
+    }
+
+    public Chapter(String url, int id, String chapName) {
+        this(url, id, null, chapName);
+    }
+
+    public Chapter(String url, String id, String partName, String chapName) {
+        this.url = url;
+        this.partName = partName;
+        this.chapName = chapName;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUrl() {
@@ -56,6 +65,7 @@ public class Chapter {
     }
 
     public String getChapName() {
+        if (chapName == null) chapName = "";
         return chapName;
     }
 
@@ -64,6 +74,7 @@ public class Chapter {
     }
 
     public String getPartName() {
+        if (partName == null) partName = "";
         return partName;
     }
 
@@ -87,28 +98,31 @@ public class Chapter {
         this.completed = completed;
     }
 
-    public boolean isImgChap() {
-        return imgChap;
+    public boolean isImageChapter() {
+        return imageChapter;
     }
 
-    public void setImgChap(boolean imgChap) {
-        this.imgChap = imgChap;
-    }
-
-    public boolean isGet() {
-        return get;
-    }
-
-    public void setGet(boolean get) {
-        this.get = get;
-    }
-
-    public int getId() {
-        return id;
+    public void setImageChapter(boolean imageChapter) {
+        this.imageChapter = imageChapter;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = "C" + Integer.toString(id);
     }
 
+    public boolean isPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(boolean purchase) {
+        this.purchase = purchase;
+    }
+
+    public boolean isEmpty() {
+        return empty;
+    }
+
+    public void setEmpty(boolean empty) {
+        this.empty = empty;
+    }
 }

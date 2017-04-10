@@ -1,105 +1,88 @@
 package dark.leech.text.action;
 
-import dark.leech.text.constant.Constants;
 import dark.leech.text.models.Chapter;
-import dark.leech.text.models.FileAction;
 import dark.leech.text.models.Properties;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import dark.leech.text.util.AppUtils;
+import dark.leech.text.util.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class History extends FileAction {
-    private Properties newProperties;
-    private Properties oldProperties;
+public class History {
 
+    private History() {
+    }
+
+    public static History getHistory() {
+        return new History();
+    }
 
     public Properties load(String path) {
-        if (!(new File(path).exists())) return null;
-        Document doc = Jsoup.parse(file2string(path));
         Properties properties = new Properties();
-        properties.setName(doc.select("string#name").text());
-        properties.setAuthor(doc.select("string#author").text());
-        properties.setUrl(doc.select("string#url").text());
-        properties.setCover(doc.select("string#cover").text(), "");
-        properties.setSize(Integer.parseInt(doc.select("string#size").text()));
-        properties.setSavePath(doc.select("string#path").text());
-
-        Elements el = doc.select("list chapter");
-        ArrayList<Chapter> list = new ArrayList<Chapter>();
-        for (Element e : el)
-            list.add(new Chapter(e.select("url").text(), Integer.parseInt(e.attr("id")), e.select("part").text(), e.select("name").text(),
-                    true, true, Boolean.parseBoolean(e.select("error").text())));
-        properties.setChapList(list);
+        try {
+            if (!(new File(path).exists())) return null;
+            JSONObject obj = new JSONObject(FileUtils.file2string(path));
+            JSONObject metadata = obj.getJSONObject("metadata");
+            properties.setName(metadata.getString("name"));
+            properties.setAuthor(metadata.getString("author"));
+            properties.setUrl(metadata.getString("url"));
+            properties.setCover(metadata.getString("cover"), "");
+            properties.setSize(metadata.getInt("size"));
+            properties.setSavePath(metadata.getString("path"));
+            properties.setGioiThieu(metadata.getString("gioithieu"));
+            JSONArray array = obj.getJSONArray("list");
+            ArrayList<Chapter> list = new ArrayList<Chapter>();
+            for (int i = 0; i < array.length(); i++)
+                list.add(getChapter(array.getJSONObject(i)));
+            properties.setChapList(list);
+        } catch (Exception e) {
+            Log.add(e);
+        }
         return properties;
     }
 
-    public boolean parse(Properties newProperties) {
-        this.newProperties = newProperties;
-        oldProperties = load(newProperties.getSavePath() + Constants.l + "properties.xml");
-        if (oldProperties == null) return false;
-        if (oldProperties.getSize() < newProperties.getSize()) return true;
-        else return false;
-    }
-
-    public Properties getProperties() {
-        return newProperties;
-    }
-
-
-    public void overwrite() {
-        ArrayList<Chapter> oldList = oldProperties.getChapList();
-        ArrayList<Chapter> newList = newProperties.getChapList();
-
-        for (int i = 0; i < oldList.size(); i++)
-            newList.set(i, oldList.get(i));
-        newProperties.setChapList(newList);
-        newProperties.setSize(newList.size());
-    }
-
     public void save(Properties properties) {
-        File file = new File(properties.getSavePath() + Constants.l + "properties.xml");
-        if (file.exists()) file.delete();
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-        }
-        add2file("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n", file);
-        add2file(genItem("url", properties.getUrl(), "  "), file);
-        add2file(genItem("name", properties.getName(), "  "), file);
-        add2file(genItem("author", properties.getAuthor(), "  "), file);
-        add2file(genItem("cover", properties.getCover(), "  "), file);
-        add2file(genItem("size", Integer.toString(properties.getSize()), "  "), file);
-        add2file(genItem("path", properties.getSavePath(), "  "), file);
+        JSONObject his = new JSONObject();
+        JSONObject metadata = new JSONObject();
+        metadata.put("url", properties.getUrl());
+        metadata.put("name", properties.getName());
+        metadata.put("author", properties.getAuthor());
+        metadata.put("cover", properties.getCover());
+        metadata.put("size", properties.getSize());
+        metadata.put("path", properties.getSavePath());
+        metadata.put("gioithieu", properties.getGioiThieu());
+        his.put("metadata", metadata);
+        JSONArray list = new JSONArray();
 
         // danh sách chương
-        add2file("  <list>\n", file);
-        ArrayList<Chapter> list = properties.getChapList();
-        for (Chapter c : list)
-            add2file(genItem(Integer.toString(c.getId()),
-                    c.getUrl(), c.getPartName(),
-                    c.getChapName(),
-                    c.isError(),
-                    "    "),
-                    file);
-        add2file("  </list>\n</resource>", file);
+        for (Chapter c : properties.getChapList())
+            list.put(getObjectList(c));
+        his.put("list", list);
+
+        FileUtils.string2file(his.toString(), properties.getSavePath() + "/properties.json");
     }
 
-    private String genItem(String id, String text, String tab) {
-        return tab + "<string" + " id=\"" + id + "\">" + text + "</string>\n";
+    private JSONObject getObjectList(Chapter chapter) {
+        JSONObject obj = new JSONObject();
+        obj.put("id", chapter.getId());
+        obj.put("error", chapter.isError());
+        obj.put("part", chapter.getPartName());
+        obj.put("chap", chapter.getChapName());
+        obj.put("url", chapter.getUrl());
+        return obj;
     }
 
-    private String genItem(String id, String url, String part, String chap, boolean status, String tab) {
-        return tab + "<chapter" + " id=\"" + id + "\">\n"
-                + tab + "  <error>" + Boolean.toString(status) + "</error>\n"
-                + tab + "  <part>" + part + "</part>\n"
-                + tab + "  <name>" + chap + "</name>\n"
-                + tab + "  <url>" + url + "</url>\n"
-                + tab + "</chapter>\n";
+    private Chapter getChapter(JSONObject jsonObject) {
+        Chapter chapter = new Chapter();
+        chapter.setId(jsonObject.getString("id"));
+        chapter.setError(jsonObject.getBoolean("error"));
+        chapter.setPartName(jsonObject.getString("part"));
+        chapter.setChapName(jsonObject.getString("chap"));
+        chapter.setUrl(jsonObject.getString("url"));
+        chapter.setCompleted(true);
+        return chapter;
     }
 }
 

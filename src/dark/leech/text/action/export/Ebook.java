@@ -1,15 +1,10 @@
 package dark.leech.text.action.export;
 
 import dark.leech.text.action.Log;
-import dark.leech.text.constant.Constants;
-import dark.leech.text.constant.SettingConstants;
-import dark.leech.text.constant.TypeConstants;
-import dark.leech.text.gui.components.notification.AlertNotification;
 import dark.leech.text.listeners.ProgressListener;
-import dark.leech.text.models.FileAction;
 import dark.leech.text.models.Properties;
-import dark.leech.text.models.Syntax;
-import dark.leech.text.models.ZipEngine;
+import dark.leech.text.ui.notification.Alert;
+import dark.leech.text.util.*;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.BufferedReader;
@@ -18,7 +13,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Ebook {
-    private FileAction fileAction;
     private Properties properties;
     private boolean autoSplit;
     private String compressLevel;
@@ -30,7 +24,6 @@ public class Ebook {
 
     public Ebook(Properties properties) {
         this.properties = properties;
-        fileAction = new FileAction();
     }
 
     public void setData(int type, String tool, String compressLevel, boolean autoSplit, boolean includeImg) {
@@ -42,20 +35,29 @@ public class Ebook {
     }
 
     public void export() {
-        fileAction.string2file(SettingConstants.CSS, properties.getSavePath() + Constants.l + "data" + Constants.l + "stylesheet.css");
-        new Text(properties, TypeConstants.HTML, false, 0).export();
-        createToc();
+        FileUtils.string2file(SettingUtils.CSS_SYNTAX, properties.getSavePath() + "/data/stylesheet.css");
+        progressListener.setProgress(0, "[1/3]Xuất Text...");
+        Text text =
+                new Text(properties, TypeUtils.HTML, false, 0);
+        text.addProgressListener(progressListener);
+        text.export();
+        progressListener.setProgress(10, "[2/3]Tạo mục lục...");
+        ToC toC = new ToC(properties);
+        toC.setAutoSplit(autoSplit);
+        toC.setIncludeImg(includeImg);
+        toC.mkToC();
+        progressListener.setProgress(14, "[3/3]Tạo Ebook...");
         switch (type) {
-            case TypeConstants.EPUB:
+            case TypeUtils.EPUB:
                 exportEpub(tool);
                 break;
-            case TypeConstants.MOBI:
+            case TypeUtils.MOBI:
                 exportMobi(tool);
                 break;
-            case TypeConstants.AZW3:
+            case TypeUtils.AZW3:
                 exportAzw3();
                 break;
-            case TypeConstants.PDF:
+            case TypeUtils.PDF:
                 exportPdf();
                 break;
             default:
@@ -69,18 +71,18 @@ public class Ebook {
         } catch (Exception e) {
         }
         else {
-            tool = SettingConstants.CALIBRE;
+            tool = SettingUtils.CALIBRE;
             if (!checkTool(tool)) {
-                new AlertNotification("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!").setVisible(true);
+                Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
                 return;
             }
             String fileName = properties.getName() + " - " + properties.getAuthor() + ".epub";
             fileName = fileName.replaceAll("[:/\\?\\*]", "");
             String cmd = tinyCmd(tool)
                     + " "
-                    + tinyCmd(properties.getSavePath() + Constants.l + "data" + Constants.l + "content.opf")
+                    + tinyCmd(properties.getSavePath() + "/data/content.opf")
                     + " "
-                    + tinyCmd(properties.getSavePath() + Constants.l + "out" + Constants.l + fileName);
+                    + tinyCmd(properties.getSavePath() + "/out/" + fileName);
             runCmd(cmd);
         }
     }
@@ -88,36 +90,36 @@ public class Ebook {
     private void exportMobi(String tool) {
         String cmd = "";
         if (tool.equals("Calibre")) {
-            tool = SettingConstants.CALIBRE;
+            tool = SettingUtils.CALIBRE;
             if (!checkTool(tool)) {
-                new AlertNotification("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!").setVisible(true);
+                Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
                 return;
             }
             String fileName = properties.getName() + " - " + properties.getAuthor() + ".mobi";
             fileName = fileName.replaceAll("[:/\\?\\*]", "");
             cmd = tinyCmd(tool)
                     + " "
-                    + tinyCmd(properties.getSavePath() + Constants.l + "data" + Constants.l + "content.opf")
+                    + tinyCmd(properties.getSavePath() + "/data/content.opf")
                     + " "
-                    + tinyCmd(properties.getSavePath() + Constants.l + "out" + Constants.l + fileName)
+                    + tinyCmd(properties.getSavePath() + "/out/" + fileName)
                     + " --mobi-file-type=" + compressLevel
                     + " --no-inline-toc --share-not-sync";
             runCmd(cmd);
         } else {
-            tool = SettingConstants.KINDLEGEN;
+            tool = SettingUtils.KINDLEGEN;
             if (!checkTool(tool)) {
-                new AlertNotification("Đường dẫn Kindlegen (Kindlegen.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!").setVisible(true);
+                Alert.show("Đường dẫn Kindlegen (Kindlegen.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
                 return;
             }
             String fileName = properties.getName() + " - " + properties.getAuthor() + ".mobi";
             fileName = fileName.replaceAll("[:/\\?\\*]", "");
             cmd = tinyCmd(tool)
                     + " "
-                    + tinyCmd(properties.getSavePath() + Constants.l + "data" + Constants.l + "content.opf")
+                    + tinyCmd(properties.getSavePath() + "/data/content.opf")
                     + " "
                     + compressLevel;
             runCmd(cmd);
-            fileAction.cutFile(properties.getSavePath() + Constants.l + "data" + Constants.l + "content.mobi", properties.getSavePath() + Constants.l + "out" + Constants.l + fileName);
+            FileUtils.cutFile(properties.getSavePath() + "/data/content.mobi", properties.getSavePath() + "/out/" + fileName);
         }
     }
 
@@ -125,64 +127,72 @@ public class Ebook {
         InputStream in = getClass().getResourceAsStream("/dark/leech/res/untitled.epub");
         String fileName = properties.getName() + " - " + properties.getAuthor() + ".epub";
         fileName = fileName.replaceAll("[:/\\?\\*]", "");
-        fileName = properties.getSavePath() + Constants.l + "out" + Constants.l + fileName;
-        fileAction.byte2file(fileAction.stream2byte(in), fileName);
+        fileName = properties.getSavePath() + "/out/" + fileName;
+        FileUtils.byte2file(FileUtils.stream2byte(in), fileName);
         ZipUtil.setDefaultCompressionLevel(Integer.parseInt(compressLevel));
-        ZipEngine.addFolders(fileName, properties.getSavePath() + Constants.l + "data" + Constants.l + "Text", "Text");
-        progressListener.setProgress(90, "Sắp xong");
-        ZipEngine.addFile(fileName, properties.getSavePath() + Constants.l + "data" + Constants.l + "content.opf");
-        ZipEngine.addFile(fileName, properties.getSavePath() + Constants.l + "data" + Constants.l + "toc.ncx");
-        ZipEngine.addFile(fileName, properties.getSavePath() + Constants.l + "data" + Constants.l + "stylesheet.css");
-        ZipEngine.addFile(fileName, properties.getSavePath() + Constants.l + "data" + Constants.l + "cover.jpg");
+        ZipUtils.addFolders(fileName, properties.getSavePath() + "/data/Text", "Text");
+        progressListener.setProgress(75, "(3/3)Tạo Ebook...");
+        ZipUtils.addFile(fileName, properties.getSavePath() + "/data/content.opf");
+        ZipUtils.addFile(fileName, properties.getSavePath() + "/data/toc.ncx");
+        ZipUtils.addFile(fileName, properties.getSavePath() + "/data/stylesheet.css");
+        ZipUtils.addFile(fileName, properties.getSavePath() + "/data/cover.jpg");
         if (includeImg)
-            ZipEngine.addFolders(fileName, properties.getSavePath() + Constants.l + "data" + Constants.l + "Images");
+            ZipUtils.addFolders(fileName, properties.getSavePath() + "/data/Images");
         progressListener.setProgress(100, "Hoàn tất!");
 
     }
 
     private void exportAzw3() {
-        tool = SettingConstants.CALIBRE;
+        tool = SettingUtils.CALIBRE;
         if (!checkTool(tool)) {
-            new AlertNotification("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!").setVisible(true);
+            Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
             return;
         }
         String fileName = properties.getName() + " - " + properties.getAuthor() + ".azw3";
         fileName = fileName.replaceAll("[:/\\?\\*]", "");
         String cmd = tinyCmd(tool)
                 + " "
-                + tinyCmd(properties.getSavePath() + Constants.l + "data" + Constants.l + "content.opf")
+                + tinyCmd(properties.getSavePath() + "/data/content.opf")
                 + " "
-                + tinyCmd(properties.getSavePath() + Constants.l + "out" + Constants.l + fileName)
+                + tinyCmd(properties.getSavePath() + "/out/" + fileName)
                 + " --share-not-sync --no-inline-toc";
         runCmd(cmd);
     }
 
     private void exportPdf() {
-        tool = SettingConstants.CALIBRE;
+        tool = SettingUtils.CALIBRE;
         if (!checkTool(tool)) {
-            new AlertNotification("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!").setVisible(true);
+            Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
             return;
         }
         String fileName = properties.getName() + " - " + properties.getAuthor() + ".pdf";
         fileName = fileName.replaceAll("[:/\\?\\*]", "");
         String cmd = tinyCmd(tool)
                 + " "
-                + tinyCmd(properties.getSavePath() + Constants.l + "data" + Constants.l + "content.opf")
+                + tinyCmd(properties.getSavePath() + "/data/content.opf")
                 + " "
-                + tinyCmd(properties.getSavePath() + Constants.l + "out" + Constants.l + fileName)
+                + tinyCmd(properties.getSavePath() + "/out/" + fileName)
                 + " --paper-size=" + compressLevel;
         runCmd(cmd);
 
     }
 
     public void createToc() {
-        TableOfContent tableOfContent = new TableOfContent(properties);
+        ToC tableOfContent = new ToC(properties);
         tableOfContent.setAutoSplit(autoSplit);
         tableOfContent.setIncludeImg(includeImg);
-        tableOfContent.makeTableOfContent();
+        tableOfContent.mkToC();
     }
 
     private boolean checkTool(String tool) {
+        boolean b = Tool(tool);
+        if (b)
+            createToc();
+        return b;
+
+    }
+
+    private boolean Tool(String tool) {
         if (tool == null) return false;
         if (tool.length() < 2) return false;
         File file = new File(tool);
@@ -203,22 +213,23 @@ public class Ebook {
             String temp;
             int percent = 0;
             while ((temp = in.readLine()) != null) {
-                String pe = new Syntax().search(temp, "(^\\d+)%", 1);
-                if (pe.length() != 0)
+                String pe = RegexUtils.find(temp, "(^\\d+)%", 1);
+                if (pe != null)
                     percent = Integer.parseInt(pe);
-                progressListener.setProgress(percent, temp.replaceAll("[\n\r]", " "));
+                progressListener.setProgress(percent, "[3/3]" + temp.replaceAll("[\n\r]", " "));
             }
             progressListener.setProgress(100, "Hoàn tất!");
 
         } catch (Exception e) {
-            Log.add("Lỗi CMD: " + cmd);
+            e.printStackTrace();
+            Log.add(e);
         }
     }
 
     private String tinyCmd(String cmd) {
         if (cmd.indexOf(" ") != -1)
             cmd = "\"" + cmd + "\"";
-        return cmd;
+        return FileUtils.validate(cmd);
     }
 
     public void addProgressListener(ProgressListener progressListener) {

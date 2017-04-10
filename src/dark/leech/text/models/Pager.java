@@ -7,14 +7,14 @@ import java.util.ArrayList;
  */
 public class Pager {
     private String url;
+    private String name;
     private ArrayList<Chapter> chapter;
-    private int id;
-    private boolean get = false;
-    private boolean completed = false;
+    private String id;
+    private boolean completed;
 
     public Pager(String url, int id) {
         this.url = url;
-        this.id = id;
+        this.id = "Q" + Integer.toString(id);
     }
 
     public Pager(String url) {
@@ -37,20 +37,24 @@ public class Pager {
         this.chapter = chapter;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public boolean isGet() {
-        return get;
+    public void setId(int id) {
+        this.id = "P" + Integer.toString(id);
     }
 
-    public void setGet(boolean get) {
-        this.get = get;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isCompleted() {
