@@ -95,10 +95,11 @@ class ImageLoader extends SwingWorker<InputStream, Void> {
 
     @Override
     protected void done() {
-        super.done();
+
         try {
             setImage(get());
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

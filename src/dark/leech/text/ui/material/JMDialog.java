@@ -24,6 +24,7 @@ public abstract class JMDialog extends JDialog implements BlurListener {
     private ChangeListener changeListener;
     private Color borderColor;
 
+
     public JMDialog() {
         super(App.getMain());
         blurListener = App.getMain();
@@ -41,14 +42,16 @@ public abstract class JMDialog extends JDialog implements BlurListener {
         setModal(true);
         setResizable(false);
         setUndecorated(true);
-        setOpacity(0.0f);
+        if (GraphicsUtils.TRANSLUCENT_SUPPORT)
+            setOpacity(0.0f);
         setTitle("LeechText");
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/dark/leech/res/icon.png")));
 
     }
 
+
     public void open() {
-        SwingUtilities.invokeLater(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 blurListener.setBlur(true);
@@ -62,9 +65,9 @@ public abstract class JMDialog extends JDialog implements BlurListener {
                 Y = Y < 10 ? 10 : Y;
                 setLocation(X, Y);
                 Animation.fadeIn(JMDialog.this);
-                JMDialog.this.setVisible(true);
+                setVisible(true);
             }
-        });
+        }).start();
 
 
     }

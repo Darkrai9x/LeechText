@@ -16,6 +16,7 @@ public class PluginGetter {
     private String classListGetter;
     private String classChapGetter;
     private String classPageGetter;
+    private String classLoginGetter;
     private String info;
     private String icon;
     public double version;
@@ -27,6 +28,7 @@ public class PluginGetter {
     private Class listGetter;
     private Class chapGetter;
     private Class pageGetter;
+    private Class loginGetter;
 
     public PluginGetter(File plugin, boolean checked) {
         this.plugin = plugin;
@@ -55,6 +57,10 @@ public class PluginGetter {
         JSONObject manifest = js.getJSONObject("class");
         classInfoGetter = manifest.getString("InfoGetter");
         classListGetter = manifest.getString("ListGetter");
+        try {
+            classLoginGetter = manifest.getString("LoginGetter");
+        } catch (Exception e) {
+        }
         if (!isForum())
             classChapGetter = manifest.getString("ChapGetter");
         else
@@ -141,6 +147,14 @@ public class PluginGetter {
         return pageGetter;
     }
 
+    public Class LoginGetter() {
+        if (classLoginGetter == null) return null;
+        if (loginGetter == null) {
+            PluginLoader pluginLoader = new PluginLoader(ZipUtils.readInZipAsByte(plugin, classLoginGetter));
+            loginGetter = pluginLoader.loadClass(parseClassName(classLoginGetter));
+        }
+        return loginGetter;
+    }
 
     private String parseClassName(String path) {
         path = path.replaceAll("(.*?/|^)(.*?).class", "$2");

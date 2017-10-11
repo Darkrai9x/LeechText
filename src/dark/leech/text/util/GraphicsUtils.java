@@ -82,6 +82,8 @@ import java.net.URL;
  */
 @SuppressWarnings("nls")
 public class GraphicsUtils {
+    public static final boolean TRANSLUCENT_SUPPORT = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
+
     private GraphicsUtils() {
     }
 

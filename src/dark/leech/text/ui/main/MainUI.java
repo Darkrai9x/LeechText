@@ -52,7 +52,7 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
     private BufferedImage blurBuffer;
     private BufferedImage backBuffer;
     private Timer timer;
-
+    private int i = 0;
 
     public MainUI() {
         setLocation(AppUtils.width - 420, AppUtils.height - 650);
@@ -87,10 +87,11 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
         setting.setBounds(390, 20, 390, 535);
         pnHeader.setBounds(0, 0, 390, 55);
         container.add(setting);
+        checkUpdate();
     }
 
     private void actionExit() {
-        flyOut();
+        Animation.fadeOut(this);
     }
 
     private void actionAdd() {
@@ -157,13 +158,6 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
         JLabel logo;
         logo = new JLabel();
         logo.setText("Leech Text");
-//        logo.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                if (e.getClickCount() == 3)
-//                    new LoginUI().open();
-//            }
-//        });
         logo.setFont(FontUtils.TITLE_BIG);
         logo.setForeground(Color.white);
         logo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -244,13 +238,12 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
     }
 
     private void checkUpdate() {
-        String[] s = new String[]{".", "..", "...","...."};
-        final int[] i = {0};
-        Timer time = new Timer(100, new ActionListener() {
+        i = 0;
+        String[] s = new String[]{".", "..", "...", "...."};
+        Timer time = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                lbStatus.setText("Đang kiểm tra cập nhật" + s[i[0]]);
-                i[0] = (i[0] + 1) % 4;
+                lbStatus.setText("Đang kiểm tra cập nhật" + s[i = (i + 1) % 4]);
             }
         });
         time.start();
@@ -261,41 +254,6 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
         timer.start();
     }
 
-    public void flyIn() {
-        final int x = getLocation().x;
-        final int y = getLocation().y - 20;
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                for (int i = 1; i <= 20; i++) {
-                    setLocation(x, y + i);
-                    setOpacity((float) 0.05 * i);
-                    AppUtils.pause(i * 2);
-                }
-                checkUpdate();
-            }
-
-        }).start();
-
-    }
-
-    public void flyOut() {
-        final int x = getLocation().x;
-        final int y = getLocation().y;
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                for (int i = 1; i <= 10; i++) {
-                    setLocation(x, y + i);
-                    setOpacity((float) 0.05 * (10 - i));
-                    AppUtils.pause(i * 2);
-                }
-                System.exit(0);
-            }
-        }).start();
-    }
 
     private void createBlur() {
         Component root = getRootPane();

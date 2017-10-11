@@ -23,13 +23,20 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
     private SelectBox sbStyle;
     private SelectBox sbType;
     private JMCheckBox cbToc;
+    private JMCheckBox cbCss;
     private BasicButton btOk;
     private JMProgressBar progressBar;
     private Properties properties;
 
     public ExportText(Properties properties) {
         this.properties = properties;
-        onCreate();
+        setSize(245, 255);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onCreate();
+            }
+        });
     }
 
     @Override
@@ -61,6 +68,7 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
         //---- sbType ----
         sbType = new SelectBox("Kiểu xuất", new String[]{"Tách", "Gộp"}, 0);
         sbType.addBlurListener(this);
+        sbType.addChangeListener(this);
         container.add(sbType);
         sbType.setBounds(15, 95, 200, 30);
 
@@ -68,6 +76,11 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
         container.add(cbToc);
         cbToc.setBounds(15, 130, 200, 30);
         cbToc.setVisible(sbStyle.getSelectIndex() == 0 ? true : false);
+
+        cbCss = new JMCheckBox("Đính kèm CSS");
+        container.add(cbCss);
+        cbCss.setBounds(15, 165, 200, 30);
+        cbCss.setVisible(sbStyle.getSelectIndex() == 0 && sbType.getSelectIndex() == 1 ? true : false);
         //---- btOk ----
         btOk.setText("XUẤT");
         btOk.addActionListener(new ActionListener() {
@@ -87,13 +100,13 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
         container.add(progressBar);
         progressBar.setBounds(15, 210, 210, 35);
         progressBar.setVisible(false);
-        setSize(245, 255);
+
     }
 
     private void doExport() {
         progressBar.setVisible(true);
         btOk.setVisible(false);
-        Text exportText = new Text(properties, sbStyle.getSelectIndex(), cbToc.isChecked(), sbType.getSelectIndex());
+        Text exportText = new Text(properties, sbStyle.getSelectIndex(), cbToc.isChecked(), cbCss.isChecked(), sbType.getSelectIndex());
         exportText.addProgressListener(this);
         exportText.export();
 
@@ -115,5 +128,6 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
     @Override
     public void doChanger() {
         cbToc.setVisible(sbStyle.getSelectIndex() == 0 ? true : false);
+        cbCss.setVisible(sbStyle.getSelectIndex() == 0 && sbType.getSelectIndex() == 1 ? true : false);
     }
 }

@@ -120,6 +120,7 @@ public class FileUtils {
             fo = new FileOutputStream(f);
             fo.write(source);
         } catch (Exception e) {
+            Log.add(e);
         } finally {
             try {
                 if (fo != null) fo.close();
@@ -134,6 +135,7 @@ public class FileUtils {
             fo = new FileOutputStream(file, true);
             fo.write(str.getBytes(charset));
         } catch (Exception e) {
+            Log.add(e);
         } finally {
             try {
                 if (fo != null) fo.close();
@@ -153,6 +155,7 @@ public class FileUtils {
             fo.write("\n".getBytes());
             fo.write(file2byte(from));
         } catch (Exception e) {
+            Log.add(e);
         } finally {
             try {
                 if (fo != null) fo.close();
@@ -190,7 +193,6 @@ public class FileUtils {
     }
 
     public static synchronized String validate(String path) {
-        path = path.replace("/", AppUtils.SEPARATOR);
-        return path;
+        return path.replace("/", AppUtils.SEPARATOR);
     }
 }

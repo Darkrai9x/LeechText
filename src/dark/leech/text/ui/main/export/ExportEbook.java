@@ -37,7 +37,13 @@ public class ExportEbook extends JMDialog implements ProgressListener {
 
     public ExportEbook(Properties properties) {
         this.properties = properties;
-        onCreate();
+        setSize(245, 300);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onCreate();
+            }
+        });
     }
 
     @Override
@@ -119,7 +125,7 @@ public class ExportEbook extends JMDialog implements ProgressListener {
         container.add(progressBar);
         progressBar.setBounds(15, 250, 210, 35);
         progressBar.setVisible(false);
-        setSize(245, 300);
+
     }
 
     private void doClick() {

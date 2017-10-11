@@ -35,6 +35,8 @@ public class AddDialog extends JMDialog {
     private BasicButton btShowChap;
     private BasicButton btOk;
     private BasicButton btCancel;
+
+
     private CircleWait circleWait;
     private Properties properties;
     private AddListener addListener;
@@ -204,7 +206,9 @@ public class AddDialog extends JMDialog {
                 return;
             }
             String savePath = SyntaxUtils.xoaDau(tfName.getText());
-            savePath = savePath.replaceAll("[^a-zA-Z0-9_]", "_");
+            savePath = savePath.replaceAll("[^a-zA-Z0-9_]", "_")
+                    .replace("\"", "")
+                    .trim();
             savePath = FileUtils.validate(SettingUtils.WORKPATH + "/output/" + savePath);
             properties.setSavePath(savePath);
             properties.setUrl(url);

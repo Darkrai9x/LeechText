@@ -106,9 +106,10 @@ public class DownloadLabel extends JMPanel implements DownloadListener {
         btInfo.setVisible(true);
         if (properties.isForum()) {
             ArrayList<Chapter> chapList = new ArrayList<>();
-            for (Pager pager : properties.getPageList())
+            for (Pager pager : properties.getPageList()) {
                 for (Chapter ch : pager.getChapter())
                     chapList.add(ch);
+            }
             properties.setChapList(chapList);
             properties.setSize(chapList.size());
         }
@@ -119,9 +120,11 @@ public class DownloadLabel extends JMPanel implements DownloadListener {
                 .path(properties.getSavePath() + "/data/cover.jpg")
                 .delay(5000)
                 .open();
+
     }
 
     // Khi bị lỗi
+
     private void doAfterError() {
         pause();
         btInfo.setVisible(true);

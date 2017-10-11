@@ -23,9 +23,10 @@ public class BasicButton extends JButton {
 
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
-        ButtonUI styledButtonUI = new ButtonUI();
-        styledButtonUI.setRolloverBackground(new Color(235, 235, 235));
-        setUI(styledButtonUI);
+        ButtonUI btUi = new ButtonUI();
+        btUi.setRolloverBackground(new Color(235, 235, 235));
+        setUI(btUi);
     }
+
 
 }

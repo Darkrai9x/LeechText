@@ -21,7 +21,7 @@ public class PluginManager {
             public void run() {
                 pluginList = new ArrayList<>();
                 File[] files = new File(FileUtils.validate(AppUtils.curDir + "/tools/plugins")).listFiles();
-                if(files == null) return;
+                if (files == null) return;
                 String js = FileUtils.file2string(AppUtils.curDir + "/tools/plugins/plugin.json");
                 JSONObject obj = null;
                 if (js != null)
@@ -42,6 +42,7 @@ public class PluginManager {
         }).start();
 
     }
+
 
     public static PluginManager getManager() {
         if (manager == null) manager = new PluginManager();

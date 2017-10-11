@@ -4,9 +4,13 @@ import dark.leech.text.listeners.AddListener;
 import dark.leech.text.plugin.PluginGetter;
 import dark.leech.text.plugin.PluginManager;
 import dark.leech.text.ui.button.BasicButton;
+import dark.leech.text.ui.button.CircleButton;
 import dark.leech.text.ui.material.JMDialog;
 import dark.leech.text.ui.material.JMTextField;
+import dark.leech.text.util.CookiesUtils;
 import dark.leech.text.util.FontUtils;
+import dark.leech.text.util.SettingUtils;
+import dark.leech.text.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,9 +24,11 @@ public class AddURL extends JMDialog {
     private BasicButton btOk;
     private BasicButton btCancel;
     private JMTextField tfUrl;
+    private CircleButton btAddMul;
     private JLabel lbUrl;
     private String url;
     private AddListener addListener;
+    private String cookies;
 
     public AddURL() {
         onCreate();
@@ -33,6 +39,7 @@ public class AddURL extends JMDialog {
         super.onCreate();
         btOk = new BasicButton();
         btCancel = new BasicButton();
+        btAddMul = new CircleButton(StringUtils.ADD);
         tfUrl = new JMTextField();
         lbUrl = new JLabel();
         // ---- button1 ----
@@ -51,7 +58,7 @@ public class AddURL extends JMDialog {
         });
 
         container.add(btOk);
-        btOk.setBounds(15, 70, 110, 35);
+        btOk.setBounds(15, 75, 110, 35);
 
         // ---- button2 ----
         btCancel.setText("HỦY");
@@ -62,11 +69,12 @@ public class AddURL extends JMDialog {
             }
         });
         container.add(btCancel);
-        btCancel.setBounds(125, 70, 110, 35);
+        btCancel.setBounds(125, 75, 110, 35);
 
         tfUrl.setText(getClipboard());
         tfUrl.setFont(FontUtils.TEXT_NORMAL);
-        tfUrl.setBounds(15, 25, 220, 37);
+        tfUrl.setBounds(15, 30, 220, 37);
+
         container.add(tfUrl);
 
         // ---- lbUrl ----
@@ -74,8 +82,24 @@ public class AddURL extends JMDialog {
         lbUrl.setFont(FontUtils.TEXT_BOLD);
         container.add(lbUrl);
         lbUrl.setBounds(15, 0, 110, 25);
+
+        btAddMul.setBounds(220, 5, 25, 25);
+        btAddMul.setForeground(SettingUtils.THEME_COLOR);
+        btAddMul.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (tfUrl.getText() == null || tfUrl.getText().length() < 5)
+                    tfUrl.addError("Xin nhập URL!");
+                else {
+                    AddOption lg = new AddOption();
+                    lg.setBlurListener(AddURL.this);
+                    lg.open();
+                }
+            }
+        });
+        container.add(btAddMul);
         container.setBackground(Color.WHITE);
-        setSize(255, 120);
+        setSize(255, 125);
     }
 
     public String getUrl() {
@@ -91,6 +115,8 @@ public class AddURL extends JMDialog {
         else if (pluginGetter.isChecked()) {
             AddDialog add = new AddDialog(getUrl());
             add.setAddListener(addListener);
+            if (cookies != null && cookies.length() != 0)
+                CookiesUtils.put(getUrl(), cookies);
             close();
             add.open();
         } else {
@@ -114,4 +140,51 @@ public class AddURL extends JMDialog {
     public void setAddListener(AddListener addListener) {
         this.addListener = addListener;
     }
+
+    class AddOption extends JMDialog {
+        private BasicButton btOk;
+        private BasicButton btCancel;
+        private JMTextField tfCookies;
+
+        public AddOption() {
+            setSize(300, 100);
+            onCreate();
+        }
+
+        @Override
+        protected void onCreate() {
+            super.onCreate();
+            btOk = new BasicButton();
+            btCancel = new BasicButton();
+            tfCookies = new JMTextField();
+
+            JLabel label = new JLabel("Cookie");
+            label.setBounds(10, 10, 50, 35);
+            tfCookies.setBounds(60, 10, 230, 35);
+            btOk.setText("OK");
+            btOk.setBounds(10, 55, 100, 35);
+            btCancel.setText("HỦY");
+            btCancel.setBounds(180, 55, 100, 35);
+            container.add(btOk);
+            container.add(btCancel);
+            container.add(tfCookies);
+            container.add(label);
+
+            btOk.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    cookies = tfCookies.getText();
+                    close();
+                }
+            });
+            btCancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    close();
+                }
+            });
+
+        }
+    }
+
 }

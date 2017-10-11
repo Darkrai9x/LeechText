@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  */
 public class JMPopupMenu extends JPopupMenu {
     private static final int OFFSET = 4;
-    private transient BufferedImage shadow;
+    private BufferedImage shadow;
     private Border border;
 
     @Override

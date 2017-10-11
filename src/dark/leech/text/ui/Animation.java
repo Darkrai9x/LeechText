@@ -1,8 +1,11 @@
 package dark.leech.text.ui;
 
+import dark.leech.text.ui.main.MainUI;
 import dark.leech.text.util.AppUtils;
+import dark.leech.text.util.GraphicsUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Animation {
 
@@ -21,7 +24,7 @@ public class Animation {
 
     }
 
-    public static void fadeIn(JDialog dialog) {
+    public static void fadeIn(Window dialog) {
         final int x = dialog.getLocation().x;
         final int y = dialog.getLocation().y - 20;
 
@@ -32,7 +35,8 @@ public class Animation {
                 for (int i = 0; i <= 20; i++) {
                     dialog.setLocation(x, y + i);
                     dialog.repaint();
-                    dialog.setOpacity((float) 0.05 * i);
+                    if (GraphicsUtils.TRANSLUCENT_SUPPORT)
+                        dialog.setOpacity((float) 0.05 * i);
                     AppUtils.pause(i * 2);
 
                 }
@@ -41,8 +45,9 @@ public class Animation {
         }).start();
     }
 
-    public static void fadeOut(JDialog dialog) {
-        dialog.setModal(false);
+    public static void fadeOut(Window dialog) {
+        if (dialog instanceof JDialog)
+            ((JDialog) dialog).setModal(false);
         final int x = dialog.getLocation().x;
         final int y = dialog.getLocation().y;
         new Thread(new Runnable() {
@@ -52,10 +57,13 @@ public class Animation {
                 for (int i = 1; i <= 20; i++) {
                     dialog.setLocation(x, y + i);
                     dialog.repaint();
-                    dialog.setOpacity((float) 0.05 * (20 - i));
+                    if (GraphicsUtils.TRANSLUCENT_SUPPORT)
+                        dialog.setOpacity((float) 0.05 * (20 - i));
                     AppUtils.pause(i * 2);
                 }
                 dialog.dispose();
+                if (dialog instanceof MainUI)
+                    System.exit(0);
             }
         }).start();
     }

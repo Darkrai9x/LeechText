@@ -25,6 +25,7 @@ class FindAndReplace extends JMDialog {
 
     public FindAndReplace(JMTable table) {
         this.table = table;
+        setSize(290, 270);
         onCreate();
     }
 
@@ -87,14 +88,14 @@ class FindAndReplace extends JMDialog {
         btReplace.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Thread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         btReplace.setEnabled(false);
                         replace();
                         btReplace.setEnabled(true);
                     }
-                }).start();
+                });
             }
         });
         container.add(btReplace);
@@ -104,7 +105,7 @@ class FindAndReplace extends JMDialog {
         container.add(progressBar);
         progressBar.setVisible(false);
         progressBar.setBounds(30, 230, 250, 19);
-        setSize(290, 270);
+
     }
 
 

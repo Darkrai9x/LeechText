@@ -16,7 +16,7 @@ public class SyntaxUtils {
     public static String PART_NAME;
 
     // convert string
-    public static synchronized String covertString(String source) {
+    public static String covertString(String source) {
         for (int i = 0; i < src.length; i++)
             source = source.replace(dau[i], src[i]);
         return source;

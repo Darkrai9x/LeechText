@@ -26,7 +26,10 @@ public class SyntaxDialog extends JMDialog {
         this.title = title;
         this.text = text;
         this.type = type;
+        this.setSize(360, 410);
+
         onCreate();
+
 
     }
 
@@ -83,7 +86,7 @@ public class SyntaxDialog extends JMDialog {
         scrollPane.setViewportView(edit);
         container.add(scrollPane);
         scrollPane.setBounds(10, 47, 348, 310);
-        this.setSize(360, 410);
+
     }
 
 

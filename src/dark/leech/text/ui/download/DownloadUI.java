@@ -4,6 +4,7 @@ import dark.leech.text.action.History;
 import dark.leech.text.listeners.AddListener;
 import dark.leech.text.listeners.RemoveListener;
 import dark.leech.text.models.Properties;
+import dark.leech.text.ui.material.JMPanel;
 import dark.leech.text.ui.material.JMScrollPane;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ import java.io.File;
  * Created by Dark on 1/14/2017.
  */
 public class DownloadUI extends JPanel implements AddListener, RemoveListener, DropTargetListener {
-    private JPanel download;
+    private JMPanel download;
     private JMScrollPane scrollPane;
 
     public DownloadUI() {
@@ -26,7 +27,7 @@ public class DownloadUI extends JPanel implements AddListener, RemoveListener, D
 
     private void onCreate() {
         setLayout(null);
-        download = new JPanel(new GridBagLayout());
+        download = new JMPanel(new GridBagLayout());
         download.setBackground(Color.white);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;

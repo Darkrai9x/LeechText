@@ -68,7 +68,6 @@ public class RippleEffect {
      *
      * @param target target component
      * @return ripple effect for that component
-     * @see MaterialButton for an example of how the ripple effect is used
      */
     public static RippleEffect applyTo(final JComponent target) {
         final RippleEffect rippleEffect = new RippleEffect(target);
@@ -87,7 +86,6 @@ public class RippleEffect {
      *
      * @param target target component
      * @return ripple effect for that component
-     * @see MaterialButton for an example of how the ripple effect is used
      */
     public static RippleEffect applyFixedTo(final JComponent target) {
         final RippleEffect rippleEffect = new RippleEffect(target);

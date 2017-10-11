@@ -12,8 +12,8 @@ public class AppUtils {
     private AppUtils() {
     }
 
-    public static final String VERSION = "2017.03.17";
-    public static final String TIME = "20:00";
+    public static final String VERSION = "2017.10.07";
+    public static final String TIME = "12:00";
     public static String curDir = System.getProperty("user.dir");
     public static final String SEPARATOR = System.getProperty("file.separator");
     public static Point LOCATION = new Point();

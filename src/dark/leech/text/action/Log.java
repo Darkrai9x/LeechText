@@ -20,7 +20,10 @@ public class Log {
         Date todaysDate = new Date();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String date = "Logs_" + df.format(todaysDate) + ".txt";
-        log = new File(FileUtils.validate(SettingUtils.WORKPATH + "/tools/logs"), date);
+        File dir = new File(FileUtils.validate(SettingUtils.WORKPATH + "/tools/logs"));
+        if (!dir.exists())
+            dir.mkdir();
+        log = new File(FileUtils.validate(SettingUtils.WORKPATH + "/tools/logs/" + date));
         if (!log.exists())
             try {
                 log.createNewFile();
@@ -29,6 +32,7 @@ public class Log {
     }
 
     public static void add(String logStr) {
+        System.out.println(logStr);
         if (log == null) gen();
         Date todaysDate = new Date();
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
@@ -37,6 +41,7 @@ public class Log {
     }
 
     public static void add(Exception e) {
+        e.printStackTrace();
         if (log == null) gen();
         Date todaysDate = new Date();
         DateFormat df = new SimpleDateFormat("HH:mm:ss");

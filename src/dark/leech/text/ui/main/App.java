@@ -1,7 +1,6 @@
 package dark.leech.text.ui.main;
 
-import dark.leech.text.plugin.PluginManager;
-import dark.leech.text.ui.notification.Toast;
+import dark.leech.text.ui.Animation;
 import dark.leech.text.util.AppUtils;
 import dark.leech.text.util.SettingUtils;
 
@@ -16,7 +15,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        SwingUtilities.invokeLater(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -26,11 +25,11 @@ public class App {
                 AppUtils.doLoad();
                 SettingUtils.doLoad();
                 mainFrame = new MainUI();
-                mainFrame.flyIn();
+                Animation.fadeIn(mainFrame);
                 mainFrame.setVisible(true);
                 AppUtils.LOCATION = new Point(mainFrame.getLocation().x, mainFrame.getLocation().y + 20);
             }
-        });
+        }).start();
     }
 
     public static MainUI getMain() {

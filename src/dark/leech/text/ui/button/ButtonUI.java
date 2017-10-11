@@ -24,7 +24,7 @@ class ButtonUI extends BasicButtonUI {
         Color bc = ColorUtils.BUTTON_CLICK;
         rolloverBackground = new Color(bc.getRed(), bc.getGreen(), bc.getBlue());
         pressedBackground = new Color(bc.getRed(), bc.getGreen(), bc.getBlue(), 100);
-        defaultBackground = new Color(0, 0, 0, 0);
+        defaultBackground = new Color(bc.getRed(), bc.getGreen(), bc.getBlue(), 0);
         this.round = round;
     }
 

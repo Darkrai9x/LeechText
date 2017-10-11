@@ -47,6 +47,7 @@ public class List extends SwingWorker {
             listGetter.getter(properties);
             success = true;
         } catch (Exception e) {
+            Log.add(e);
         }
         return null;
     }
@@ -59,7 +60,7 @@ public class List extends SwingWorker {
                 for (int i = 0; i < pageList.size(); i++) {
                     Pager pager = pageList.get(i);
                     if (pager.getName() == null)
-                        pager.setName("Trang" + Integer.toString(i + 1));
+                        pager.setName("Trang " + Integer.toString(i + 1));
                     pager.setId(i);
                 }
             } else {

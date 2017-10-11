@@ -3,6 +3,7 @@ package dark.leech.text.ui.notification;
 import dark.leech.text.util.AppUtils;
 import dark.leech.text.util.ColorUtils;
 import dark.leech.text.util.FontUtils;
+import dark.leech.text.util.GraphicsUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +50,7 @@ public class Toast extends JWindow {
         setAlwaysOnTop(true);
         getContentPane().setBackground(ColorUtils.THEME_COLOR);
         JLabel label = new JLabel("  " + text + "  ");
-       // label.setPreferredSize(new Dimension(label.getPreferredSize().width, label.getPreferredSize().height + 6));
+        // label.setPreferredSize(new Dimension(label.getPreferredSize().width, label.getPreferredSize().height + 6));
         label.setForeground(Color.white);
         label.setFont(fontText);
         getContentPane().add(label);
@@ -66,13 +67,15 @@ public class Toast extends JWindow {
                 try {
                     for (int i = 0; i < 10; i++) {
                         setLocation(x, y + i);
-                        setOpacity((float) i / 10);
+                        if (GraphicsUtils.TRANSLUCENT_SUPPORT)
+                            setOpacity((float) i / 10);
                         AppUtils.pause(20);
                     }
                     AppUtils.pause(timeShow);
                     for (int i = 0; i < 10; i++) {
                         setLocation(x, y - i);
-                        setOpacity((float) (10 - i) / 10);
+                        if (GraphicsUtils.TRANSLUCENT_SUPPORT)
+                            setOpacity((float) (10 - i) / 10);
                         AppUtils.pause(20);
                     }
                 } catch (Exception e) {

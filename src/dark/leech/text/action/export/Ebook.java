@@ -35,10 +35,52 @@ public class Ebook {
     }
 
     public void export() {
+        switch (type) {
+            case TypeUtils.EPUB:
+                if (tool.equals("Calibre")) {
+                    tool = SettingUtils.CALIBRE;
+                    if (!checkTool(tool)) {
+                        error(1);
+                        return;
+                    }
+                }
+                break;
+            case TypeUtils.MOBI:
+                if (tool.equals("Calibre")) {
+                    tool = SettingUtils.CALIBRE;
+                    if (!checkTool(tool)) {
+                        error(1);
+                        return;
+                    }
+                } else {
+                    tool = SettingUtils.KINDLEGEN;
+                    if (!checkTool(tool)) {
+                        error(2);
+                        return;
+                    }
+                }
+                break;
+            case TypeUtils.AZW3:
+                tool = SettingUtils.CALIBRE;
+                if (!checkTool(tool)) {
+                    error(1);
+                    return;
+                }
+                break;
+            case TypeUtils.PDF:
+                tool = SettingUtils.CALIBRE;
+                if (!checkTool(tool)) {
+                    error(1);
+                    return;
+                }
+                break;
+            default:
+                break;
+        }
         FileUtils.string2file(SettingUtils.CSS_SYNTAX, properties.getSavePath() + "/data/stylesheet.css");
         progressListener.setProgress(0, "[1/3]Xuất Text...");
         Text text =
-                new Text(properties, TypeUtils.HTML, false, 0);
+                new Text(properties, TypeUtils.HTML, false, false, 0);
         text.addProgressListener(progressListener);
         text.export();
         progressListener.setProgress(10, "[2/3]Tạo mục lục...");
@@ -65,17 +107,18 @@ public class Ebook {
         }
     }
 
+    private void error(int stt) {
+        if (stt == 1)
+            Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
+        else Alert.show("Đường dẫn Kindlegen (Kindlegen.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
+    }
+
     private void exportEpub(String tool) {
         if (tool.equals("Mặc định")) try {
             exportEpub();
         } catch (Exception e) {
         }
         else {
-            tool = SettingUtils.CALIBRE;
-            if (!checkTool(tool)) {
-                Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
-                return;
-            }
             String fileName = properties.getName() + " - " + properties.getAuthor() + ".epub";
             fileName = fileName.replaceAll("[:/\\?\\*]", "");
             String cmd = tinyCmd(tool)
@@ -89,12 +132,8 @@ public class Ebook {
 
     private void exportMobi(String tool) {
         String cmd = "";
-        if (tool.equals("Calibre")) {
+        if (tool.equals(SettingUtils.CALIBRE)) {
             tool = SettingUtils.CALIBRE;
-            if (!checkTool(tool)) {
-                Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
-                return;
-            }
             String fileName = properties.getName() + " - " + properties.getAuthor() + ".mobi";
             fileName = fileName.replaceAll("[:/\\?\\*]", "");
             cmd = tinyCmd(tool)
@@ -107,10 +146,6 @@ public class Ebook {
             runCmd(cmd);
         } else {
             tool = SettingUtils.KINDLEGEN;
-            if (!checkTool(tool)) {
-                Alert.show("Đường dẫn Kindlegen (Kindlegen.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
-                return;
-            }
             String fileName = properties.getName() + " - " + properties.getAuthor() + ".mobi";
             fileName = fileName.replaceAll("[:/\\?\\*]", "");
             cmd = tinyCmd(tool)
@@ -144,10 +179,6 @@ public class Ebook {
 
     private void exportAzw3() {
         tool = SettingUtils.CALIBRE;
-        if (!checkTool(tool)) {
-            Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
-            return;
-        }
         String fileName = properties.getName() + " - " + properties.getAuthor() + ".azw3";
         fileName = fileName.replaceAll("[:/\\?\\*]", "");
         String cmd = tinyCmd(tool)
@@ -161,10 +192,6 @@ public class Ebook {
 
     private void exportPdf() {
         tool = SettingUtils.CALIBRE;
-        if (!checkTool(tool)) {
-            Alert.show("Đường dẫn Calibre (ebook-convert.exe) không hợp lệ!\nXem lại thiết lập trong cài đặt!");
-            return;
-        }
         String fileName = properties.getName() + " - " + properties.getAuthor() + ".pdf";
         fileName = fileName.replaceAll("[:/\\?\\*]", "");
         String cmd = tinyCmd(tool)

@@ -16,16 +16,19 @@ public class Text {
     private Properties properties;
     private int type;
     private boolean makeToc;
+    private boolean includeCss;
     private int tach;
     private ProgressListener progressListener;
     private String syntax;
     private String charset;
+    private ArrayList<Chapter> chapList;
 
 
-    public Text(Properties properties, int type, boolean makeToc, int tach) {
+    public Text(Properties properties, int type, boolean makeToc, boolean includeCss, int tach) {
         this.properties = properties;
         this.type = type;
         this.makeToc = makeToc;
+        this.includeCss = includeCss;
         this.tach = tach;
         this.charset = properties.getCharset();
 
@@ -44,7 +47,7 @@ public class Text {
     }
 
     public void exportTach(String duoi) {
-        ArrayList<Chapter> chapList = properties.getChapList();
+        chapList = properties.getChapList();
         StringBuffer gop = new StringBuffer();
         //Tạo file gộp tach == 1
 
@@ -53,6 +56,8 @@ public class Text {
                 String head = syntax;
                 head = head.replaceAll("<title>.*?</title>", "<title>" + properties.getName() + "</title>");
                 head = head.replaceAll("(?s)(.*?<body.*?>).*", "$1");
+                if (includeCss)
+                    head = head.replace("</head>", "<style>\n" + SettingUtils.CSS_SYNTAX + "\n</style>\n</head>");
                 gop.append(head);
             }
         }
@@ -83,7 +88,12 @@ public class Text {
                 if (properties.isAddGt())
                     toc += "<div class=\"lv2\"><a href=\"../Text/gioithieu.html\">Giới Thiệu</a></div>\n";
                 for (Chapter ch : chapList)
-                    toc += "<div class=\"lv2\"><a href=\"../Text/" + ch.getId() + ".html\">" + (ch.getPartName().length() == 0 ? "" : ch.getPartName() + " - ") + ch.getChapName() + "</a></div>\n";
+                    toc += "<div class=\"lv2\"><a href=\"../Text/"
+                            + ch.getId() + ".html\">"
+                            + (ch.getPartName().length() == 0 ? "" : ch.getPartName()
+                            + " - ")
+                            + ch.getChapName()
+                            + "</a></div>\n";
                 String head = syntax;
                 head = head.replaceAll("<title>.*?</title>", "<title>" + properties.getName() + "</title>");
                 head = head.replaceAll("(?s)(.*?<body.*?>).*", "$1");
@@ -134,8 +144,14 @@ public class Text {
     private String clearText(String text) {
         for (Trash tr : SettingUtils.TRASH)
             if (tr.isReplace()) {
-                String src = tr.getSrc().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
-                String to = tr.getTo().replace("\\n", "\n").replace("\\r", "\r").replace("\\t", "\t");
+                String src = tr.getSrc()
+                        .replace("\\n", "\n")
+                        .replace("\\r", "\r")
+                        .replace("\\t", "\t");
+                String to = tr.getTo()
+                        .replace("\\n", "\n")
+                        .replace("\\r", "\r")
+                        .replace("\\t", "\t");
                 text = text.replaceAll(src, to);
             }
         return SyntaxUtils.covertString(text);
@@ -171,7 +187,8 @@ public class Text {
     private String replaceString(String src, String replace, String tag, String key) {
         if (replace == null || replace.length() < 2)
             return src.replaceAll("\\s*" + tag + ".*?" + tag, "");
-        src = src.replaceAll(tag + "(.*?" + "\\[" + key + "\\]" + ".*?)" + tag, "$1").replace("[" + key + "]", replace);
+        src = src.replaceAll(tag + "(.*?" + "\\[" + key + "\\]" + ".*?)" + tag, "$1")
+                .replace("[" + key + "]", replace);
         return src;
     }
 

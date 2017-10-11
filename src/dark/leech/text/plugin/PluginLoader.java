@@ -6,7 +6,7 @@ import dark.leech.text.action.Log;
  * Created by Long on 1/11/2017.
  */
 public class PluginLoader extends ClassLoader {
-    byte[] plugin;
+    private byte[] plugin;
 
     public PluginLoader(byte[] plugin) {
         this.plugin = plugin;
@@ -17,6 +17,7 @@ public class PluginLoader extends ClassLoader {
     }
 
     public Class loadClass(String classname, boolean resolve) {
+        if (classname == null || classname.length() == 0) return null;
         try {
             Class c = findLoadedClass(classname);
             if (c == null)

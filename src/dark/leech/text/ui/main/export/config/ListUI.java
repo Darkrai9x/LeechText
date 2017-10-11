@@ -4,6 +4,7 @@ import dark.leech.text.action.Config;
 import dark.leech.text.listeners.ChangeListener;
 import dark.leech.text.listeners.TableListener;
 import dark.leech.text.models.Chapter;
+import dark.leech.text.models.Properties;
 import dark.leech.text.ui.PanelTitle;
 import dark.leech.text.ui.button.BasicButton;
 import dark.leech.text.ui.button.CircleButton;
@@ -34,7 +35,7 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
     private JMPopupMenu popupMenu;
     private JMPopupMenu popupAction;
     private String name;
-    private String[] nameButton = new String[]{"Auto Fix", "Tải ảnh", "", "Optimize"};
+    private String[] nameButton = new String[]{"Auto Fix", "Tải ảnh", "Tải Lại", "Optimize"};
     private BasicButton bt3;
     private JMProgressBar progressBar;
     private int action;
@@ -51,17 +52,31 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
     private CircleButton btSearch;
     private ArrayList<Integer> idList;
 
+    private Properties properties;
+
     public ListUI(ArrayList<Chapter> chapList, String name) {
         this.chapList = chapList;
         this.name = name;
-        onCreate();
+        setSize(380, 430);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onCreate();
+            }
+        });
     }
 
     public ListUI(ArrayList<Chapter> chapList, String name, String path) {
         this.chapList = chapList;
         this.name = name;
         this.path = path;
-        onCreate();
+        setSize(380, 430);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onCreate();
+            }
+        });
     }
 
     @Override
@@ -130,7 +145,6 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
         btOk.setBounds(200, 390, 75, 30);
 
         //---- bt3 ----
-        bt3.setVisible(!(action == ConfigUI.ERROR));
         bt3.setText(nameButton[action]);
         bt3.addActionListener(this);
         container.add(bt3);
@@ -178,7 +192,7 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
             }
         });
         tableList.addKeyListener(this);
-        setSize(380, 430);
+
     }
 
     public void setAction(int action) {
@@ -188,18 +202,25 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
     private void doAction() {
         bt3.setVisible(false);
         progressBar.setVisible(true);
-        new Thread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (action == ConfigUI.NAME)
-                    fixName();
-                if (action == ConfigUI.IMG)
-                    downImg();
-                if (action == ConfigUI.OPTIMIZE)
-                    Optimize();
+                switch (action) {
+                    case ConfigUI.NAME:
+                        fixName();
+                        break;
+                    case ConfigUI.IMG:
+                        downImg();
+                        break;
+                    case ConfigUI.ERROR:
+                        fixError();
+                        break;
+                    case ConfigUI.OPTIMIZE:
+                        Optimize();
+                        break;
+                }
             }
-        }).start();
-
+        });
     }
 
     private void doEdit() {
@@ -277,6 +298,17 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
         config.addTableListener(this);
         config.setPath(path);
         config.downloadImg();
+    }
+
+    private void fixError() {
+        Config config = new Config(chapList);
+        config.setBlurListener(this);
+        config.addTableListener(this);
+        config.downloadChap(properties);
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 
     private void Optimize() {
@@ -427,7 +459,7 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
     @Override
     public void updateData(int row, Chapter chapter) {
         if (tableList.getCellEditor() != null) tableList.getCellEditor().stopCellEditing();
-        tableModel.setValueAt(chapter.getId() + "√", row, 0);
+        tableModel.setValueAt("Ok", row, 0);
         tableModel.setValueAt(chapter.getPartName(), row, 1);
         tableModel.setValueAt(chapter.getChapName(), row, 2);
         tableModel.fireTableCellUpdated(row, 0);

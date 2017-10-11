@@ -9,9 +9,9 @@ import dark.leech.text.ui.SyntaxDialog;
 import dark.leech.text.ui.button.BasicButton;
 import dark.leech.text.ui.button.CircleButton;
 import dark.leech.text.ui.button.SelectButton;
-import dark.leech.text.ui.main.export.config.ConfigUI;
 import dark.leech.text.ui.main.export.ExportEbook;
 import dark.leech.text.ui.main.export.ExportText;
+import dark.leech.text.ui.main.export.config.ConfigUI;
 import dark.leech.text.ui.material.JMDialog;
 import dark.leech.text.ui.material.JMPanel;
 import dark.leech.text.ui.material.JMTextField;
@@ -45,7 +45,13 @@ public class InfoUI extends JMDialog {
 
     public InfoUI(Properties properties) {
         this.properties = properties;
-        onCreate();
+        setSize(340, 265);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onCreate();
+            }
+        });
     }
 
     @Override
@@ -168,7 +174,7 @@ public class InfoUI extends JMDialog {
         lbStatus.setBounds(115, 170, 220, 30);
         lbCover.path(properties.getSavePath() + "/data/cover.jpg")
                 .load();
-        setSize(340, 265);
+
     }
 
     private void doConfig() {
@@ -252,7 +258,7 @@ class GioiThieu extends JMPanel {
             if (!file.exists())
                 FileUtils.string2file(properties.getGioiThieu(), properties.getSavePath() + "/raw/gioithieu.txt");
             else
-               properties.setGioiThieu(FileUtils.file2string(properties.getSavePath() + "/raw/gioithieu.txt"));
+                properties.setGioiThieu(FileUtils.file2string(properties.getSavePath() + "/raw/gioithieu.txt"));
         }
     }
 
@@ -264,7 +270,7 @@ class GioiThieu extends JMPanel {
             public void doChanger() {
                 properties.setGioiThieu(editDialog.getText());
                 if (properties.isAddGt())
-                    FileUtils.string2file(properties.getGioiThieu(),properties.getSavePath() + "/raw/gioithieu.txt");
+                    FileUtils.string2file(properties.getGioiThieu(), properties.getSavePath() + "/raw/gioithieu.txt");
             }
         });
         editDialog.open();

@@ -94,6 +94,8 @@ public class Page extends SwingWorker<ArrayList<Post>, Void> {
             }
             pager.setChapter(chapters);
         } catch (Exception e) {
+            Log.add(e);
+            pager.setChapter(new ArrayList<Chapter>());
         }
         changeListener.doChanger();
     }

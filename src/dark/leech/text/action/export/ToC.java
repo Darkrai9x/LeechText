@@ -58,7 +58,7 @@ public class ToC {
                 part.add(index);
                 break;
             }
-            if (RegexUtils.find(chapList.get(index).getChapName(), "(Ch..ng \\d+)", 1).length() != 0) {
+            if (RegexUtils.find(chapList.get(index).getChapName(), "(Ch..ng\\s*\\d+)", 1).length() != 0) {
                 part.add(index);
                 break;
             }
@@ -68,7 +68,7 @@ public class ToC {
         //Lấy các quyển tiếp
         int nextPart = 2;
         for (index = c1; index < chapList.size(); index++) {
-            if (toInt(RegexUtils.find(chapList.get(index).getPartName(), "(Q|Quy.n )(\\d+)", 2)) == nextPart) {
+            if (toInt(RegexUtils.find(chapList.get(index).getChapName(), "(Q|Quy.n\\s*)(\\d+)", 2)) == nextPart) {
                 part.add(index);
                 nextPart++;
             }
@@ -78,8 +78,8 @@ public class ToC {
 
         //Chia tự động theo c1
         for (index = c1; index < chapList.size(); index++)
-            if (toInt(RegexUtils.find(chapList.get(index).getChapName(), "Ch..ng\\s+(\\d+)", 1)) == 1) {
-                if (toInt(RegexUtils.find(chapList.get(index - 1).getChapName(), "Ch..ng (\\d+)", 1)) != 1)
+            if (toInt(RegexUtils.find(chapList.get(index).getChapName(), "Ch..ng\\s*(\\d+)", 1)) == 1) {
+                if (toInt(RegexUtils.find(chapList.get(index - 1).getChapName(), "Ch..ng\\s*(\\d+)", 1)) != 1)
                     part.add(index);
             }
 
@@ -88,7 +88,7 @@ public class ToC {
         if (chapList.size() < 300) return part;
         int partNum = 100;
         for (index = c1; index < chapList.size(); index++) {
-            int i = Math.abs(partNum - toInt(RegexUtils.find(chapList.get(index).getChapName(), "Ch..ng\\s+(\\d+)", 1)));
+            int i = Math.abs(partNum - toInt(RegexUtils.find(chapList.get(index).getChapName(), "Ch..ng\\s*(\\d+)", 1)));
             if (i >= 0 && i <= 5) {
                 int vt = findAround(index, 10, partNum);
                 if (vt == -1)
@@ -105,7 +105,7 @@ public class ToC {
     private int findAround(int point, int range, int value) {
         for (int i = 0; i < range; i++)
             if (i + point < chapList.size())
-                if (value < toInt(RegexUtils.find(chapList.get(i + point).getChapName(), "Ch..ng (\\d+)", 1))) {
+                if (value < toInt(RegexUtils.find(chapList.get(i + point).getChapName(), "Ch..ng\\s*(\\d+)", 1))) {
                     return i + point;
                 }
         return -1;
@@ -150,7 +150,7 @@ public class ToC {
         for (int i = 0; i < part.size(); i++) {
             String namePart = chapList.get(part.get(i)).getPartName();
             if (namePart.length() == 0)
-                namePart = "Quyển " + Integer.toString(i + 1);
+                namePart = "Chương " + Integer.toString(i * 100 + 1) + "→" + ((i == part.size() - 1) ? "Hết" : String.valueOf((i + 1) * 100));
             String s = "    <navPoint id=\"nav" + Integer.toString(id) + "\" playorder=\"" + Integer.toString(id)
                     + "\">\n" + "      <navLabel>\n" + "        <text>" + namePart + "</text>\n"
                     + "      </navLabel>\n" + "      <content src=\"Text/Q" + Integer.toString(i + 1) + ".html\"/>\n";

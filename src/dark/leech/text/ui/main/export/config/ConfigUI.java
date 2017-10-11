@@ -7,12 +7,12 @@ import dark.leech.text.models.Chapter;
 import dark.leech.text.models.Properties;
 import dark.leech.text.ui.PanelTitle;
 import dark.leech.text.ui.button.BasicButton;
-import dark.leech.text.ui.main.export.config.ListUI;
-import dark.leech.text.ui.material.*;
-import dark.leech.text.util.*;
+import dark.leech.text.ui.material.JMDialog;
+import dark.leech.text.util.FontUtils;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class ConfigUI extends JMDialog implements ChangeListener {
 
-    protected static final int NAME = 0, IMG = 1, ERROR = 2, OPTIMIZE = 3;
+    public static final int NAME = 0, IMG = 1, ERROR = 2, OPTIMIZE = 3;
     private PanelTitle pnTitle;
     private BasicButton btOk;
     private JLabel lbName;
@@ -40,13 +40,15 @@ public class ConfigUI extends JMDialog implements ChangeListener {
     public ConfigUI(Properties properties) {
         this.properties = properties;
         this.chapList = properties.getChapList();
-        onCreate();
+        setSize(295, 260);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                onCreate();
                 loadErr();
             }
         });
+
     }
 
     @Override
@@ -146,7 +148,7 @@ public class ConfigUI extends JMDialog implements ChangeListener {
         container.add(btImg);
         btImg.setBounds(185, 105, 95, 35);
 
-        setSize(295, 260);
+
     }
 
     private void loadErr() {
@@ -184,6 +186,7 @@ public class ConfigUI extends JMDialog implements ChangeListener {
     private void editError() {
         ListUI listError = new ListUI(errorList, "Chương lỗi", properties.getSavePath());
         listError.setBlurListener(this);
+        listError.setProperties(properties);
         listError.setAction(ERROR);
         listError.open();
     }

@@ -1,21 +1,21 @@
 package dark.leech.text.ui.main;
 
 
-import dark.leech.text.util.ColorUtils;
-import dark.leech.text.util.FontUtils;
+import dark.leech.text.get.LoginGetter;
+import dark.leech.text.plugin.PluginGetter;
+import dark.leech.text.plugin.PluginManager;
+import dark.leech.text.ui.button.BasicButton;
 import dark.leech.text.ui.material.JMCheckBox;
 import dark.leech.text.ui.material.JMDialog;
 import dark.leech.text.ui.material.JMTextField;
-import dark.leech.text.ui.button.BasicButton;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
+import dark.leech.text.ui.notification.Toast;
+import dark.leech.text.util.ColorUtils;
+import dark.leech.text.util.FontUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by Long on 11/2/2016.
@@ -29,11 +29,13 @@ public class LoginUI extends JMDialog {
     private JLabel lbPass;
     private BasicButton btCancel;
     private BasicButton btLogin;
+    private String url;
 
-    public LoginUI() {
+    public LoginUI(String url) {
         setUndecorated(true);
         setModal(true);
         onCreate();
+        this.url = url;
     }
 
     protected void onCreate() {
@@ -107,20 +109,29 @@ public class LoginUI extends JMDialog {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Connection connection = Jsoup.connect("http://goctruyen.com/login/")
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36")
-                        .data("txtuser", tfUser.getText())
-                        .data("txtpass", tfPass.getText())
-                        .data("remember", "on")
-                        .data("login", "Login")
-                        .followRedirects(true)
-                        .ignoreContentType(true);
-                try {
-                    Map<String, String> cookies = connection.method(Connection.Method.POST).execute().cookies();
-                   // Constants.Connection.cookies = cookies;
-                    close();
-                } catch (IOException e) {
-                }
+                PluginGetter pl = PluginManager.getManager().get(url);
+                Class cl = pl.LoginGetter();
+                if (cl != null) {
+                    try {
+                        LoginGetter loginGetter = (LoginGetter) cl.newInstance();
+                        if (loginGetter.login(url, tfUser.getText(), tfPass.getText())) {
+                            Toast.Build()
+                                    .content("Đăng nhập thành công!")
+                                    .time(2000)
+                                    .open();
+                            close();
+                        } else Toast.Build()
+                                .content("Đăng nhập thất bại!")
+                                .time(1000)
+                                .open();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                } else Toast.Build()
+                        .content("Trang này không hỗ trợ đăng nhập!")
+                        .open();
             }
         }).start();
 

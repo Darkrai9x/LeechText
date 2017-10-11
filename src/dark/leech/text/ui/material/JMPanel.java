@@ -11,6 +11,18 @@ import java.awt.event.MouseEvent;
 public class JMPanel extends JPanel {
     RippleEffect rippleEffect;
 
+    public JMPanel(LayoutManager layoutManager) {
+        super(layoutManager);
+        setBackground(Color.WHITE);
+        rippleEffect = RippleEffect.applyTo(this);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                repaint();
+            }
+        });
+    }
+
     public JMPanel() {
         setLayout(null);
         setBackground(Color.WHITE);
