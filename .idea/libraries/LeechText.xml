@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="LeechText">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/LeechText_jar/LeechText.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
