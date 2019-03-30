@@ -8,11 +8,10 @@ public class FontUtils {
 private FontUtils(){}
     public static Font iconFont(float size) {
         try {
-            InputStream in = Class.class.getResourceAsStream("/dark/leech/res/font/icon.ttf");
+            InputStream in = FontUtils.class.getResourceAsStream("/dark/leech/res/font/icon.ttf");
             return Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(size);
-        } catch (IOException e) {
-        } catch (FontFormatException e) {
-
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -21,9 +20,7 @@ private FontUtils(){}
         try {
             InputStream in = FontUtils.class.getResourceAsStream("/dark/leech/res/font/title.ttf");
             return Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(size);
-        } catch (IOException e) {
-        } catch (FontFormatException e) {
-
+        } catch (IOException | FontFormatException e) {
         }
         return null;
 
@@ -34,9 +31,7 @@ private FontUtils(){}
             InputStream in = FontUtils.class.getResourceAsStream(
                     "/dark/leech/res/font/" + ((type == Font.BOLD) ? "textbold.ttf" : "textregular.ttf"));
             return Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(size);
-        } catch (IOException e) {
-        } catch (FontFormatException e) {
-
+        } catch (IOException | FontFormatException e) {
         }
         return null;
     }
@@ -45,9 +40,7 @@ private FontUtils(){}
         try {
             InputStream in = FontUtils.class.getResourceAsStream("/dark/leech/res/font/code.ttf");
             return Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(size);
-        } catch (IOException e) {
-
-        } catch (FontFormatException e) {
+        } catch (IOException | FontFormatException e) {
 
         }
         return null;

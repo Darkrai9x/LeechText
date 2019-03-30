@@ -12,9 +12,10 @@ public class AppUtils {
     private AppUtils() {
     }
 
-    public static final String VERSION = "2017.10.07";
-    public static final String TIME = "12:00";
+    public static final String VERSION = "2019.03.30";
+    public static final String TIME = "00:00";
     public static String curDir = System.getProperty("user.dir");
+    public static String cacheDir = curDir;
     public static final String SEPARATOR = System.getProperty("file.separator");
     public static Point LOCATION = new Point();
     private static final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -25,7 +26,7 @@ public class AppUtils {
     public static void doLoad() {
         try {
             if (curDir.endsWith(SEPARATOR)) curDir = curDir.substring(0, curDir.length() - 1);
-            JSONObject json = new JSONObject(FileUtils.file2string(curDir + "/tools/syntax.json"));
+            JSONObject json = new JSONObject(FileUtils.stream2string("/dark/leech/res/syntax.json"));
             JSONObject find = json.getJSONObject("find");
             SyntaxUtils.CHAP_NAME = find.getString("chap");
             SyntaxUtils.PART_NAME = find.getString("part");

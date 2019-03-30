@@ -389,7 +389,7 @@ public abstract class AbstractBean {
      * Returns the list of VetoableChangeListeners. If named vetoable change listeners
      * were added, then VetoableChangeListenerProxy wrappers will returned
      * <p>
-     * @return List of VetoableChangeListeners and VetoableChangeListenerProxys
+     * @return ListExecute of VetoableChangeListeners and VetoableChangeListenerProxys
      *         if named property change listeners were added.
      */
     public final VetoableChangeListener[] getVetoableChangeListeners(){

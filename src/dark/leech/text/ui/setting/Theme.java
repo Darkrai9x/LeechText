@@ -44,7 +44,7 @@ public class Theme extends JMPanel {
     }
 
     private void clickChooserColor() {
-        ChooserColor chooserColor = new ChooserColor(color);
+        final ChooserColor chooserColor = new ChooserColor(color);
 
         chooserColor.setChangeListener(new ChangeListener() {
             @Override

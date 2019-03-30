@@ -97,7 +97,7 @@ class TrashItem extends JMPanel {
     }
 
     private void doEdit() {
-        TrashItemIDialog tiDialog = new TrashItemIDialog(trash);
+        final TrashItemIDialog tiDialog = new TrashItemIDialog(trash);
         tiDialog.setBlurListener(blurListener);
         tiDialog.setChangeListener(new ChangeListener() {
             @Override

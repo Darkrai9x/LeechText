@@ -1,21 +1,20 @@
 package dark.leech.text.ui.main.plugin;
 
+import dark.leech.text.enities.PluginEntity;
 import dark.leech.text.image.ImageLabel;
-import dark.leech.text.plugin.PluginGetter;
-import dark.leech.text.ui.button.BasicButton;
-import dark.leech.text.ui.button.CircleButton;
 import dark.leech.text.ui.button.SelectButton;
 import dark.leech.text.ui.material.DropShadowBorder;
 import dark.leech.text.ui.material.JMPanel;
-import dark.leech.text.ui.notification.Notification;
-import dark.leech.text.util.*;
+import dark.leech.text.util.Base64;
+import dark.leech.text.util.FontUtils;
+import dark.leech.text.util.SettingUtils;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * Created by Long on 1/11/2017.
@@ -25,9 +24,9 @@ public class PluginItem extends JMPanel {
     private JLabel lbName;
     private JLabel lbInfo;
     private SelectButton btCheckBox;
-    private PluginGetter pluginGetter;
+    private PluginEntity pluginGetter;
 
-    public PluginItem(PluginGetter pluginGetter) {
+    public PluginItem(PluginEntity pluginGetter) {
         this.pluginGetter = pluginGetter;
         onCreate();
     }
@@ -40,11 +39,13 @@ public class PluginItem extends JMPanel {
         //---- pnIcon ----
         add(pnIcon);
         pnIcon.setBounds(10, 5, 55, 55);
-        if (pluginGetter.getIcon() == null)
+        if (pluginGetter.getIcon() == null) {
             pnIcon.input(PluginItem.class.getResourceAsStream("/dark/leech/res/img/book.png"))
                     .load();
-        else
-            pnIcon.input(pluginGetter.getIcon()).load();
+        } else {
+            InputStream in = new ByteArrayInputStream(Base64.decode(pluginGetter.getIcon()));
+            pnIcon.input(in).load();
+        }
 
         //---- lbName ----
         lbName.setText(pluginGetter.getName() + " - v" + pluginGetter.getVersion());
@@ -53,7 +54,7 @@ public class PluginItem extends JMPanel {
         lbName.setBounds(70, 5, 220, 25);
 
         //---- lbInfo ----
-        lbInfo.setText(pluginGetter.getInfo());
+        lbInfo.setText(pluginGetter.getSource());
         lbInfo.setFont(FontUtils.TEXT_THIN);
         add(lbInfo);
         lbInfo.setBounds(70, 35, 295, 25);
@@ -73,8 +74,6 @@ public class PluginItem extends JMPanel {
         setPreferredSize(new Dimension(375, 70));
 
     }
-
-
 
 
 }

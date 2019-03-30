@@ -23,7 +23,7 @@
   "style": {
     "txt": {
       "checked": false,
-      "value": "[1][NAME][1]\n[2][AUTHOR][2]\n[3][NAME_PART][3]\n[4][NAME_CHAP][4]\n\n[5][PARAGRAPH][5]"
+      "value": "[3][NAME_PART][3]\n[4][NAME_CHAP][4]\n\n[5][PARAGRAPH][5]"
     },
     "css": {
       "checked": false,
@@ -31,7 +31,7 @@
     },
     "html": {
       "checked": false,
-      "value": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n  \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <title>[4][NAME_CHAP][4]<\/title>\n  <link href=\"../stylesheet.css\" rel=\"stylesheet\" type=\"text/css\" />\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n<\/head>\n\n<body>\n[1]<div class=\"header\">[NAME]<\/div>[1]\n[2]<div class=\"author\">[AUTHOR]<\/div>[2]\n[3]<div class=\"part\">[NAME_PART]<\/div>[3]\n[4]<h4 id=\"[ID]\">[NAME_CHAP]<\/h4>[4]\n[5]<p>[PARAGRAPH]<\/p>[5]\n<\/body>\n<\/html>\n"
+      "value": "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n  \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <title>[4][NAME_CHAP][4]<\/title>\n  <link href=\"../stylesheet.css\" rel=\"stylesheet\" type=\"text/css\" />\n  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n<\/head>\n\n<body>\n[3]<div class=\"part\">[NAME_PART]<\/div>[3]\n[4]<h4 id=\"[ID]\">[NAME_CHAP]<\/h4>[4]\n\n[5]<p>[PARAGRAPH]<\/p>[5]\n<\/body>\n<\/html>\n"
     },
     "dropcaps": {
       "checked": false,

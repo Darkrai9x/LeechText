@@ -13,13 +13,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dark on 2/13/2017.
  */
 class TrashUI extends JMDialog implements RemoveListener {
     public int numTrash = 0;
-    private ArrayList<Trash> trash;
+    private List<Trash> trash;
     private BasicButton add;
     private BasicButton ok;
     private BasicButton cancel;
@@ -27,7 +28,7 @@ class TrashUI extends JMDialog implements RemoveListener {
     private GridBagConstraints gbc;
     private boolean done;
 
-    public TrashUI(ArrayList<Trash> trash) {
+    public TrashUI(List<Trash> trash) {
         done = false;
         numTrash = 0;
         this.trash = trash;
@@ -118,7 +119,7 @@ class TrashUI extends JMDialog implements RemoveListener {
             addItem(trash.get(i));
     }
 
-    public ArrayList<Trash> getTrash() {
+    public List<Trash> getTrash() {
         trash = new ArrayList<Trash>();
         for (int i = 0; i < body.getComponentCount() - 1; i++)
             trash.add(((TrashItem) body.getComponent(i)).getTrash());
@@ -126,7 +127,7 @@ class TrashUI extends JMDialog implements RemoveListener {
     }
 
     private void addItem() {
-        TrashItemIDialog trashItemDialog = new TrashItemIDialog();
+        final TrashItemIDialog trashItemDialog = new TrashItemIDialog();
         trashItemDialog.setBlurListener(this);
         trashItemDialog.setChangeListener(new ChangeListener() {
             @Override

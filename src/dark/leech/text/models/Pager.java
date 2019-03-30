@@ -1,6 +1,7 @@
 package dark.leech.text.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Long on 9/15/2016.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class Pager {
     private String url;
     private String name;
-    private ArrayList<Chapter> chapter;
+    private List<Chapter> chapter;
     private String id;
     private boolean completed;
 
@@ -29,11 +30,11 @@ public class Pager {
         this.url = url;
     }
 
-    public ArrayList<Chapter> getChapter() {
+    public List<Chapter> getChapter() {
         return chapter;
     }
 
-    public void setChapter(ArrayList<Chapter> chapter) {
+    public void setChapter(List<Chapter> chapter) {
         this.chapter = chapter;
     }
 

@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Animation {
 
-    public static void go(JPanel from, JPanel to) {
+    public static void go(final JPanel from, final JPanel to) {
         final int y = from.getY();
         new Thread(new Runnable() {
             @Override
@@ -24,7 +24,7 @@ public class Animation {
 
     }
 
-    public static void fadeIn(Window dialog) {
+    public static void fadeIn(final Window dialog) {
         final int x = dialog.getLocation().x;
         final int y = dialog.getLocation().y - 20;
 
@@ -45,7 +45,7 @@ public class Animation {
         }).start();
     }
 
-    public static void fadeOut(Window dialog) {
+    public static void fadeOut(final Window dialog) {
         if (dialog instanceof JDialog)
             ((JDialog) dialog).setModal(false);
         final int x = dialog.getLocation().x;

@@ -89,7 +89,7 @@ public class ItemStyle extends JMPanel {
         btEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SyntaxDialog edit = new SyntaxDialog(name, text, style);
+                final SyntaxDialog edit = new SyntaxDialog(name, text, style);
                 edit.setChangeListener(new ChangeListener() {
                     @Override
                     public void doChanger() {

@@ -1,7 +1,5 @@
 package dark.leech.text.util;
 
-import dark.leech.text.action.Log;
-
 import java.io.*;
 import java.util.regex.Pattern;
 
@@ -10,6 +8,10 @@ import java.util.regex.Pattern;
  */
 public class FileUtils {
     private FileUtils() {
+    }
+
+    public static void init() {
+        mkdir(validate(AppUtils.curDir + "/tools/plugins"));
     }
 
     //Tao thu muc
@@ -48,6 +50,7 @@ public class FileUtils {
             in.read(bytes);
             return bytes;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         } finally {
             try {
@@ -66,6 +69,7 @@ public class FileUtils {
             in.read(bytes);
             return new String(bytes, "UTF-8");
         } catch (Exception e) {
+            e.printStackTrace();
             return "";
         } finally {
             try {
@@ -86,6 +90,7 @@ public class FileUtils {
             fi.read(b);
             return b;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         } finally {
             try {
@@ -107,7 +112,6 @@ public class FileUtils {
         try {
             byte2file(src.getBytes(charset), svp);
         } catch (Exception e) {
-            Log.add(src + e);
         }
     }
 
@@ -120,7 +124,7 @@ public class FileUtils {
             fo = new FileOutputStream(f);
             fo.write(source);
         } catch (Exception e) {
-            Log.add(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (fo != null) fo.close();
@@ -135,7 +139,7 @@ public class FileUtils {
             fo = new FileOutputStream(file, true);
             fo.write(str.getBytes(charset));
         } catch (Exception e) {
-            Log.add(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (fo != null) fo.close();
@@ -155,7 +159,7 @@ public class FileUtils {
             fo.write("\n".getBytes());
             fo.write(file2byte(from));
         } catch (Exception e) {
-            Log.add(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (fo != null) fo.close();
@@ -179,7 +183,6 @@ public class FileUtils {
                     .execute()
                     .bodyAsBytes(), savePath);
         } catch (IOException e) {
-            Log.add(e);
         }
     }
 

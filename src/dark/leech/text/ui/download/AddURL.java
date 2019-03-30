@@ -1,7 +1,7 @@
 package dark.leech.text.ui.download;
 
+import dark.leech.text.enities.PluginEntity;
 import dark.leech.text.listeners.AddListener;
-import dark.leech.text.plugin.PluginGetter;
 import dark.leech.text.plugin.PluginManager;
 import dark.leech.text.ui.button.BasicButton;
 import dark.leech.text.ui.button.CircleButton;
@@ -109,7 +109,7 @@ public class AddURL extends JMDialog {
     }
 
     private void checkURL() {
-        PluginGetter pluginGetter = PluginManager.getManager().get(url);
+        PluginEntity pluginGetter = PluginManager.getManager().get(url);
         if (pluginGetter == null)
             tfUrl.addError("Liên kết này không được hỗ trợ!");
         else if (pluginGetter.isChecked()) {

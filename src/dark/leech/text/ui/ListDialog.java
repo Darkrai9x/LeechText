@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListDialog extends JMDialog {
 
@@ -27,14 +28,14 @@ public class ListDialog extends JMDialog {
     private BasicButton btOk;
     private BasicButton btSelect;
     private PanelTitle pnTitle;
-    private ArrayList<Chapter> chapList;
-    private ArrayList<Pager> pageList;
+    private List<Chapter> chapList;
+    private List<Pager> pageList;
     private String parseList;
     private boolean selected = true;
     private boolean forum;
 
 
-    public ListDialog(ArrayList<Pager> pageList, String parseList, boolean forum) {
+    public ListDialog(List<Pager> pageList, String parseList, boolean forum) {
         this.pageList = pageList;
         this.parseList = parseList;
         this.forum = forum;
@@ -42,7 +43,7 @@ public class ListDialog extends JMDialog {
 
     }
 
-    public ListDialog(ArrayList<Chapter> chapList, String parseList) {
+    public ListDialog(List<Chapter> chapList, String parseList) {
         this.parseList = parseList;
         this.chapList = chapList;
         forum = false;

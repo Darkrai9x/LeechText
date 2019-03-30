@@ -32,7 +32,7 @@ public class SyntaxUtils {
 
     //fix name
     public static String fixName(String source) {
-        if (source == null) return source;
+        if (source == null) return null;
         source = covertString(source)
                 .trim()
                 .replaceAll(":+", ":")

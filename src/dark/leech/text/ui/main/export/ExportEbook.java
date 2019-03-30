@@ -132,7 +132,7 @@ public class ExportEbook extends JMDialog implements ProgressListener {
         btOk.setVisible(false);
         progressBar.setVisible(true);
         labelProgress.setVisible(true);
-        Ebook ebook = new Ebook(properties);
+        final Ebook ebook = new Ebook(properties);
         ebook.addProgressListener(this);
         ebook.setData(pnType.getSelectIndex(), pnTool.getSelectText(), pnComp.getSelectText(), cbSplit.isChecked(), true);
         runOnUiThread(new Runnable() {

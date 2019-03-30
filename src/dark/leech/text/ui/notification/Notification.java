@@ -106,8 +106,8 @@ public class Notification extends JWindow {
                 int height = AppUtils.height;
                 if (pointX == 0) pointX = width;
                 if (pointY == 0) pointY = height - getHeight() - 50;
-                int x = pointX;
-                int y = pointY;
+                final int x = pointX;
+                final int y = pointY;
                 pointY -= getHeight() + 5;
                 new Thread(new Runnable() {
                     @Override
@@ -128,8 +128,8 @@ public class Notification extends JWindow {
     private void doClose() {
         if (close) return;
         close = true;
-        int x = getLocation().x;
-        int y = getLocation().y;
+        final int x = getLocation().x;
+        final int y = getLocation().y;
         pointY = y;
         new Thread(new Runnable() {
             @Override

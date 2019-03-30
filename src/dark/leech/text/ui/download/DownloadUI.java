@@ -36,7 +36,7 @@ public class DownloadUI extends JPanel implements AddListener, RemoveListener, D
         scrollPane = new JMScrollPane(download);
 
         JPanel demo = new JPanel();
-        demo.setBackground(Color.WHITE);
+        demo.setBackground(new Color(0,0,0,0));
         download.add(demo, gbc);
 
         add(scrollPane);

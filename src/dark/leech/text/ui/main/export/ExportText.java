@@ -75,12 +75,12 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
         cbToc = new JMCheckBox("Đính kèm mục lục");
         container.add(cbToc);
         cbToc.setBounds(15, 130, 200, 30);
-        cbToc.setVisible(sbStyle.getSelectIndex() == 0 ? true : false);
+        cbToc.setVisible(sbStyle.getSelectIndex() == 0);
 
         cbCss = new JMCheckBox("Đính kèm CSS");
         container.add(cbCss);
         cbCss.setBounds(15, 165, 200, 30);
-        cbCss.setVisible(sbStyle.getSelectIndex() == 0 && sbType.getSelectIndex() == 1 ? true : false);
+        cbCss.setVisible(sbStyle.getSelectIndex() == 0 && sbType.getSelectIndex() == 1);
         //---- btOk ----
         btOk.setText("XUẤT");
         btOk.addActionListener(new ActionListener() {
@@ -127,7 +127,7 @@ public class ExportText extends JMDialog implements ProgressListener, ChangeList
 
     @Override
     public void doChanger() {
-        cbToc.setVisible(sbStyle.getSelectIndex() == 0 ? true : false);
-        cbCss.setVisible(sbStyle.getSelectIndex() == 0 && sbType.getSelectIndex() == 1 ? true : false);
+        cbToc.setVisible(sbStyle.getSelectIndex() == 0);
+        cbCss.setVisible(sbStyle.getSelectIndex() == 0 && sbType.getSelectIndex() == 1);
     }
 }

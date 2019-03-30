@@ -18,7 +18,7 @@ import java.io.IOException;
  * Created by Dark on 2/25/2017.
  */
 public class UpdateUI extends JMDialog {
-    private static final String URL = "https://onedrive.live.com/download?cid=BE45FD5F0AA9EF73&resid=BE45FD5F0AA9EF73%211190&authkey=AHuSg7PkCD4e5qE";
+    private static final String URL = "https://dl.dropboxusercontent.com/s/c701wrrsbhl63l2/update.json?dl=1";
     private JSONObject obj;
 
 

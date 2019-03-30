@@ -7,14 +7,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Long on 9/10/2016.
  */
 public class JMTable extends JTable {
 
-    public JMTable(ArrayList<Chapter> chapter) {
+    public JMTable(List<Chapter> chapter) {
         this();
         Object[][] data = new Object[chapter.size()][3];
         for (int i = 0; i < chapter.size(); i++) {

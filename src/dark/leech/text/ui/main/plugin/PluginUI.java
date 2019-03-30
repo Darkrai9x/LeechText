@@ -1,13 +1,13 @@
 package dark.leech.text.ui.main.plugin;
 
-import dark.leech.text.plugin.PluginGetter;
+import com.google.gson.Gson;
+import dark.leech.text.enities.PluginEntity;
 import dark.leech.text.plugin.PluginManager;
 import dark.leech.text.ui.PanelTitle;
 import dark.leech.text.ui.material.JMDialog;
 import dark.leech.text.ui.material.JMScrollPane;
 import dark.leech.text.util.AppUtils;
 import dark.leech.text.util.FileUtils;
-import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,10 +36,20 @@ public class PluginUI extends JMDialog {
         pnTitle.addCloseListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JSONObject json = new JSONObject();
-                for (PluginGetter pl : PluginManager.getManager().list())
-                    json.put(pl.getName(), pl.isChecked());
-                FileUtils.string2file(json.toString(), AppUtils.curDir + "/tools/plugins/plugin.json");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (PluginEntity pl : PluginManager.getManager().list()) {
+                            String path = AppUtils.curDir
+                                    + "/tools/plugins/"
+                                    + pl.getUuid()
+                                    + ".plugin";
+                            FileUtils.string2file(new Gson().toJson(pl), path);
+
+                        }
+                    }
+                }).start();
+
                 close();
             }
         });
@@ -69,7 +79,7 @@ public class PluginUI extends JMDialog {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                for (PluginGetter pluginGetter : PluginManager.getManager().list())
+                for (PluginEntity pluginGetter : PluginManager.getManager().list())
                     addItem(pluginGetter);
             }
         });
@@ -78,7 +88,7 @@ public class PluginUI extends JMDialog {
 
     }
 
-    private void addItem(PluginGetter pluginGetter) {
+    private void addItem(PluginEntity pluginGetter) {
         PluginItem pluginItem = new PluginItem(pluginGetter);
         pnList.add(pluginItem, gbc, 0);
         validate();

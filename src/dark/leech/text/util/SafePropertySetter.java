@@ -24,6 +24,7 @@ public class SafePropertySetter <T> extends TimingTargetAdapter {
         this.setter = setter;
     }
 
+    @SafeVarargs
     public static <T> TimingTarget getTarget(SafePropertySetter.Setter<T> setter, T... values) {
         return new SafePropertySetter<>(new KeyFrames.Builder<T>().addFrames(values).build(), false, null, setter);
     }
@@ -32,6 +33,7 @@ public class SafePropertySetter <T> extends TimingTargetAdapter {
         return new SafePropertySetter<>(keyFrames, false, null, setter);
     }
 
+    @SafeVarargs
     public static <T> TimingTarget getTargetTo(SafePropertySetter.Getter<T> getter, SafePropertySetter.Setter<T> setter, T... values) {
         return getTargetTo(getter, setter, new KeyFrames.Builder<T>(values[0]).addFrames(values).build());
     }

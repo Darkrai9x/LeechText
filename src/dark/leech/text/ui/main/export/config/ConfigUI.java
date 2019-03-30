@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Long on 9/10/2016.
@@ -31,11 +32,11 @@ public class ConfigUI extends JMDialog implements ChangeListener {
     private BasicButton btImg;
     private BasicButton btList;
     protected Properties properties;
-    private ArrayList<Chapter> chapList;
+    private List<Chapter> chapList;
     private Config config;
-    private ArrayList<Chapter> nameList;
-    private ArrayList<Chapter> imgList;
-    private ArrayList<Chapter> errorList;
+    private List<Chapter> nameList;
+    private List<Chapter> imgList;
+    private List<Chapter> errorList;
 
     public ConfigUI(Properties properties) {
         this.properties = properties;

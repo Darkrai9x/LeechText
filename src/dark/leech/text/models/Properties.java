@@ -4,14 +4,15 @@ package dark.leech.text.models;
  */
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Properties {
     private String name; //Tên truyện
     private String author; //Tác giả
     private String url; //Đường dẩn truyện
     private String cover; //Đường dẫn Cover
-    private ArrayList<Chapter> chapList; //Danh sách chương
-    private ArrayList<Pager> pageList; //Danh sách trang
+    private List<Chapter> chapList; //Danh sách chương
+    private List<Pager> pageList; //Danh sách trang
     private boolean forum; //Trang get có phải forum hay không
     private int size; //Số chương
     private String savePath; //Thư mục lưu
@@ -99,19 +100,19 @@ public class Properties {
         this.forum = forum;
     }
 
-    public ArrayList<Chapter> getChapList() {
+    public List<Chapter> getChapList() {
         return chapList;
     }
 
-    public void setChapList(ArrayList<Chapter> chapList) {
+    public void setChapList(List<Chapter> chapList) {
         this.chapList = chapList;
     }
 
-    public ArrayList<Pager> getPageList() {
+    public List<Pager> getPageList() {
         return pageList;
     }
 
-    public void setPageList(ArrayList<Pager> pageList) {
+    public void setPageList(List<Pager> pageList) {
         this.pageList = pageList;
     }
 

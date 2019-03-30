@@ -1,25 +1,25 @@
 package dark.leech.text.action;
 
-import dark.leech.text.get.Chap;
-import dark.leech.text.get.Page;
+import dark.leech.text.enities.PluginEntity;
+import dark.leech.text.get.ChapExecute;
+import dark.leech.text.get.PageExecute;
 import dark.leech.text.listeners.ChangeListener;
 import dark.leech.text.listeners.DownloadListener;
 import dark.leech.text.models.Chapter;
 import dark.leech.text.models.Pager;
 import dark.leech.text.models.Properties;
-import dark.leech.text.plugin.PluginGetter;
 import dark.leech.text.plugin.PluginManager;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static dark.leech.text.util.SettingUtils.MAX_CONN;
 
 public class Download implements ChangeListener {
     public static final int DOWNLOADING = 0, PAUSE = 1, COMPLETED = 2, CHECKING = 3, CANCEL = 4, ERROR = 5;
     private DownloadListener downloadListener;
-    private ArrayList<Chapter> chapList;
-    private ArrayList<Pager> pageList;
-    private PluginGetter pluginGetter;
+    private List<Chapter> chapList;
+    private List<Pager> pageList;
+    private PluginEntity pluginGetter;
     private Properties properties;
     private int downloaded;
     private int status;
@@ -75,13 +75,13 @@ public class Download implements ChangeListener {
             update();
             return;
         }
-        new Page()
-                .clazz(pluginGetter.PageGetter())
-                .listener(this)
-                .charset(properties.getCharset())
-                .path(properties.getSavePath())
-                .applyTo(pageList.get(index))
-                .execute();
+//        new PageExecute()
+//                .clazz(pluginGetter)
+//                .listener(this)
+//                .charset(properties.getCharset())
+//                .path(properties.getSavePath())
+//                .applyTo(pageList.get(index))
+//                .execute();
     }
 
     private void web(final int index) {
@@ -89,8 +89,8 @@ public class Download implements ChangeListener {
             update();
             return;
         }
-        new Chap()
-                .clazz(pluginGetter.ChapGetter())
+        new ChapExecute()
+                .plugin(pluginGetter)
                 .listener(this)
                 .charset(properties.getCharset())
                 .path(properties.getSavePath())

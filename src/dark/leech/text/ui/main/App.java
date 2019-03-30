@@ -2,6 +2,7 @@ package dark.leech.text.ui.main;
 
 import dark.leech.text.ui.Animation;
 import dark.leech.text.util.AppUtils;
+import dark.leech.text.util.FileUtils;
 import dark.leech.text.util.SettingUtils;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class App {
                 } catch (Exception ex) {
                 }
                 AppUtils.doLoad();
+                FileUtils.init();
                 SettingUtils.doLoad();
                 mainFrame = new MainUI();
                 Animation.fadeIn(mainFrame);

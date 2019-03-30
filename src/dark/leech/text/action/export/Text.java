@@ -8,6 +8,7 @@ import dark.leech.text.models.Trash;
 import dark.leech.text.util.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Long on 9/17/2016.
@@ -21,7 +22,7 @@ public class Text {
     private ProgressListener progressListener;
     private String syntax;
     private String charset;
-    private ArrayList<Chapter> chapList;
+    private List<Chapter> chapList;
 
 
     public Text(Properties properties, int type, boolean makeToc, boolean includeCss, int tach) {
@@ -199,7 +200,7 @@ public class Text {
         if (SettingUtils.IS_DROP_SELECTED && type == TypeUtils.HTML)
             if (drop != Character.toLowerCase(drop)) {
                 newt = (SettingUtils.DROP_SYNTAX).replace("[DROP]", String.valueOf(drop));
-                text = newt + text.substring(1, text.length());
+                text = newt + text.substring(1);
             }
         return text;
     }

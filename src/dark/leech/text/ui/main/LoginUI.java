@@ -1,8 +1,8 @@
 package dark.leech.text.ui.main;
 
 
+import dark.leech.text.enities.PluginEntity;
 import dark.leech.text.get.LoginGetter;
-import dark.leech.text.plugin.PluginGetter;
 import dark.leech.text.plugin.PluginManager;
 import dark.leech.text.ui.button.BasicButton;
 import dark.leech.text.ui.material.JMCheckBox;
@@ -106,34 +106,34 @@ public class LoginUI extends JMDialog {
     }
 
     private void doLogin() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PluginGetter pl = PluginManager.getManager().get(url);
-                Class cl = pl.LoginGetter();
-                if (cl != null) {
-                    try {
-                        LoginGetter loginGetter = (LoginGetter) cl.newInstance();
-                        if (loginGetter.login(url, tfUser.getText(), tfPass.getText())) {
-                            Toast.Build()
-                                    .content("Đăng nhập thành công!")
-                                    .time(2000)
-                                    .open();
-                            close();
-                        } else Toast.Build()
-                                .content("Đăng nhập thất bại!")
-                                .time(1000)
-                                .open();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                } else Toast.Build()
-                        .content("Trang này không hỗ trợ đăng nhập!")
-                        .open();
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                PluginEntity pl = PluginManager.getManager().get(url);
+//                Class cl = pl.LoginGetter();
+//                if (cl != null) {
+//                    try {
+//                        LoginGetter loginGetter = (LoginGetter) cl.newInstance();
+//                        if (loginGetter.login(url, tfUser.getText(), tfPass.getText())) {
+//                            Toast.Build()
+//                                    .content("Đăng nhập thành công!")
+//                                    .time(2000)
+//                                    .open();
+//                            close();
+//                        } else Toast.Build()
+//                                .content("Đăng nhập thất bại!")
+//                                .time(1000)
+//                                .open();
+//                    } catch (InstantiationException e) {
+//                        e.printStackTrace();
+//                    } catch (IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    }
+//                } else Toast.Build()
+//                        .content("Trang này không hỗ trợ đăng nhập!")
+//                        .open();
+//            }
+//        }).start();
 
     }
 

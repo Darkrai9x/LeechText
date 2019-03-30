@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Long on 9/17/2016.
@@ -18,13 +19,13 @@ import java.util.Date;
 public class ToC {
     private int id;
     private Properties properties;
-    private ArrayList<Chapter> chapList;
+    private List<Chapter> chapList;
     private boolean autoSplit;
     private StringBuilder toc;
     private StringBuilder content;
     private StringBuilder muclucHtml;
-    private ArrayList<String> partList;
-    private ArrayList<String> namePartList;
+    private List<String> partList;
+    private List<String> namePartList;
     private boolean includeImg;
     private String charset;
 

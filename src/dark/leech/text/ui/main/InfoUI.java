@@ -263,7 +263,7 @@ class GioiThieu extends JMPanel {
     }
 
     private void doEdit() {
-        SyntaxDialog editDialog = new SyntaxDialog("Giới thiệu", properties.getGioiThieu(), SyntaxConstants.SYNTAX_STYLE_HTML);
+        final SyntaxDialog editDialog = new SyntaxDialog("Giới thiệu", properties.getGioiThieu(), SyntaxConstants.SYNTAX_STYLE_HTML);
         editDialog.setBlurListener(blurListener);
         editDialog.setChangeListener(new ChangeListener() {
             @Override

@@ -24,12 +24,13 @@ import java.awt.event.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dark on 3/8/2017.
  */
 class ListUI extends JMDialog implements TableListener, ActionListener, KeyListener {
-    private ArrayList<Chapter> chapList;
+    private List<Chapter> chapList;
     private JMTable tableList;
     private DefaultTableModel tableModel;
     private JMPopupMenu popupMenu;
@@ -54,7 +55,7 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
 
     private Properties properties;
 
-    public ListUI(ArrayList<Chapter> chapList, String name) {
+    public ListUI(List<Chapter> chapList, String name) {
         this.chapList = chapList;
         this.name = name;
         setSize(380, 430);
@@ -66,7 +67,7 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
         });
     }
 
-    public ListUI(ArrayList<Chapter> chapList, String name, String path) {
+    public ListUI(List<Chapter> chapList, String name, String path) {
         this.chapList = chapList;
         this.name = name;
         this.path = path;
@@ -224,8 +225,8 @@ class ListUI extends JMDialog implements TableListener, ActionListener, KeyListe
     }
 
     private void doEdit() {
-        int row = tableList.getSelectedRow();
-        Chapter chapter = chapList.get(idList.get(row));
+        final int row = tableList.getSelectedRow();
+        final Chapter chapter = chapList.get(idList.get(row));
         ListUI.Edit edit = new ListUI.Edit(chapter);
         edit.setBlurListener(this);
         edit.setChangeListener(new ChangeListener() {

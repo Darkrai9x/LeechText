@@ -67,6 +67,7 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
                 onCreate();
             }
         }).start();
+
     }
 
     private void onCreate() {
@@ -239,7 +240,7 @@ public class MainUI extends JFrame implements BlurListener, ActionListener {
 
     private void checkUpdate() {
         i = 0;
-        String[] s = new String[]{".", "..", "...", "...."};
+        final String[] s = new String[]{".", "..", "...", "...."};
         Timer time = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

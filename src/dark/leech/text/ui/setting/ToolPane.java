@@ -21,7 +21,7 @@ public class ToolPane extends JMPanel {
     private boolean selectDirectory = false;
 
 
-    public ToolPane(String name, String path, int type) {
+    public ToolPane(String name,final String path,final int type) {
         JLabel lbName = new JLabel();
         lbPath = new JLabel();
 

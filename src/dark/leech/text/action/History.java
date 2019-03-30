@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class History {
 
@@ -33,7 +34,7 @@ public class History {
             properties.setSavePath(metadata.getString("path"));
             properties.setGioiThieu(metadata.getString("gioithieu"));
             JSONArray array = obj.getJSONArray("list");
-            ArrayList<Chapter> list = new ArrayList<Chapter>();
+            List<Chapter> list = new ArrayList<Chapter>();
             for (int i = 0; i < array.length(); i++)
                 list.add(getChapter(array.getJSONObject(i)));
             properties.setChapList(list);

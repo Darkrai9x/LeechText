@@ -13,18 +13,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrashPane extends JMPanel {
 
     private static final long serialVersionUID = 1L;
-    private ArrayList<Trash> trash;
+    private List<Trash> trash;
     private CircleButton buttonEdit;
 
     public TrashPane() {
         this(null);
     }
 
-    public TrashPane(ArrayList<Trash> trash) {
+    public TrashPane(List<Trash> trash) {
         this.trash = trash;
         JLabel labelName = new JLabel();
         JLabel labelTip = new JLabel();
@@ -55,16 +56,16 @@ public class TrashPane extends JMPanel {
         setLayout(null);
     }
 
-    public ArrayList<Trash> getTrash() {
+    public List<Trash> getTrash() {
         return trash;
     }
 
-    public void setTrash(ArrayList<Trash> trash) {
+    public void setTrash(List<Trash> trash) {
         this.trash = trash;
     }
 
     private void actionEdit() {
-        TrashUI trashUI = new TrashUI(trash);
+        final TrashUI trashUI = new TrashUI(trash);
         trashUI.setChangeListener(new ChangeListener() {
             @Override
             public void doChanger() {

@@ -1,6 +1,6 @@
 package dark.leech.text.ui.main;
 
-import dark.leech.text.plugin.PluginGetter;
+import dark.leech.text.enities.PluginEntity;
 import dark.leech.text.plugin.PluginManager;
 import dark.leech.text.ui.PanelTitle;
 import dark.leech.text.ui.button.BasicButton;
@@ -33,8 +33,8 @@ public class HelpUI extends JMDialog {
         INFO.append("<br>JRE: " + JRE);
         INFO.append("<br>JVM: " + JVM);
         support = new StringBuilder();
-        for (PluginGetter pl : PluginManager.getManager().list()) {
-            support.append("• " + pl.getDemoUrl() + "<br>");
+        for (PluginEntity pl : PluginManager.getManager().list()) {
+            support.append("• " + pl.getSource() + "<br>");
         }
         onCreate();
     }

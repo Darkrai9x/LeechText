@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Long on 10/3/2016.
@@ -34,7 +35,7 @@ public class SettingUtils {
     public static String CSS_SYNTAX;
 
     //Other
-    public static ArrayList<Trash> TRASH;
+    public static List<Trash> TRASH;
     public static String WORKPATH;
     public static String KINDLEGEN;
     public static String CALIBRE;
@@ -74,7 +75,7 @@ public class SettingUtils {
         if (WORKPATH.length() == 0) WORKPATH = AppUtils.curDir;
         CALIBRE = other.getString("calibre");
         KINDLEGEN = other.getString("kindlegen");
-        ArrayList<Trash> trash = new ArrayList<Trash>();
+        List<Trash> trash = new ArrayList<Trash>();
         JSONArray trashArr = other.getJSONArray("trash");
         for (int i = 0; i < trashArr.length(); i++) {
             JSONObject obj = trashArr.getJSONObject(i);

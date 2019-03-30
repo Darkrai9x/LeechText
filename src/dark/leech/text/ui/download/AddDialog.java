@@ -1,13 +1,13 @@
 package dark.leech.text.ui.download;
 
-import dark.leech.text.get.Info;
-import dark.leech.text.get.List;
+import dark.leech.text.enities.PluginEntity;
+import dark.leech.text.get.InfoExecute;
+import dark.leech.text.get.ListExecute;
 import dark.leech.text.listeners.AddListener;
 import dark.leech.text.listeners.ChangeListener;
 import dark.leech.text.models.Chapter;
 import dark.leech.text.models.Pager;
 import dark.leech.text.models.Properties;
-import dark.leech.text.plugin.PluginGetter;
 import dark.leech.text.plugin.PluginManager;
 import dark.leech.text.ui.CircleWait;
 import dark.leech.text.ui.ListDialog;
@@ -23,6 +23,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class AddDialog extends JMDialog {
 
@@ -40,7 +42,7 @@ public class AddDialog extends JMDialog {
     private CircleWait circleWait;
     private Properties properties;
     private AddListener addListener;
-    private PluginGetter pluginGetter;
+    private PluginEntity plugin;
     private String url;
     private boolean doImp;
 
@@ -153,17 +155,16 @@ public class AddDialog extends JMDialog {
     private void doLoad() {
         PluginManager pluginManager = PluginManager.getManager();
 
-        pluginGetter = pluginManager.get(url);
+        plugin = pluginManager.get(url);
 
         //Bắt đầu lấy thông tin
         circleWait.startWait();
         properties = new Properties();
         properties.setUrl(url);
-        properties.setForum(pluginGetter.isForum());
-        Info getInfo = new Info();
-        List getList = new List();
+        InfoExecute getInfo = new InfoExecute();
+        final ListExecute getList = new ListExecute();
 
-        getList.clazz(pluginGetter.ListGetter())
+        getList.plugin(plugin)
                 .listener(new ChangeListener() {
                     @Override
                     public void doChanger() {
@@ -175,7 +176,7 @@ public class AddDialog extends JMDialog {
                     }
                 })
                 .applyTo(properties);
-        getInfo.clazz(pluginGetter.InfoGetter())
+        getInfo.plugin(plugin)
                 .listener(new ChangeListener() {
                     @Override
                     public void doChanger() {
@@ -221,7 +222,7 @@ public class AddDialog extends JMDialog {
     }
 
     private void actionShow() {
-        ListDialog list;
+        final ListDialog list;
         if (properties.isForum())
             list = new ListDialog(properties.getPageList(), tfChap.getText(), true);
         else
@@ -239,11 +240,11 @@ public class AddDialog extends JMDialog {
 
     private boolean parseListChap() {
         int size = 0;
-        ArrayList<Pager> pageList = properties.getPageList();
-        ArrayList<Chapter> chapList = properties.getChapList();
+        List<Pager> pageList = properties.getPageList();
+        List<Chapter> chapList = properties.getChapList();
 
-        ArrayList<Pager> newPageList = new ArrayList<>();
-        ArrayList<Chapter> newChapList = new ArrayList<>();
+        List<Pager> newPageList = new ArrayList<>();
+        List<Chapter> newChapList = new ArrayList<>();
         try {
             String[] list = tfChap.getText().replaceAll("\\s+", "").split(",");
             for (int i = 0; i < list.length; i++) {

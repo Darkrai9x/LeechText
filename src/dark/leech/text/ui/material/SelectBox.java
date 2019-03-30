@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SelectBox extends JMPanel {
     private int selectIndex;
@@ -64,7 +65,7 @@ public class SelectBox extends JMPanel {
     }
 
     private void doClick() {
-        JMDialogChooser dc = new JMDialogChooser(list, selectIndex);
+        final JMDialogChooser dc = new JMDialogChooser(list, selectIndex);
         dc.setBlurListener(blurListener);
         dc.setChangeListener(new ChangeListener() {
             @Override
@@ -89,7 +90,7 @@ public class SelectBox extends JMPanel {
 }
 
 class JMDialogChooser extends JMDialog {
-    private ArrayList<ChooserItem> listItem;
+    private List<ChooserItem> listItem;
     private int selectIndex;
     private String[] list;
     private MouseAdapter mo = new MouseAdapter() {
@@ -163,7 +164,7 @@ class ChooserItem extends JMPanel {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-        labelSelect.setText(selected ? StringUtils.CHECK: "");
+        labelSelect.setText(selected ? StringUtils.CHECK : "");
     }
 
 }
